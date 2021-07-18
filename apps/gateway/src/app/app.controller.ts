@@ -1,10 +1,16 @@
 import { Controller, Get, Sse, Post, Body } from '@nestjs/common';
-import { BehaviorSubject, interval, Observable } from 'rxjs';
+import { BehaviorSubject, interval, Observable, of } from 'rxjs';
 import { Contact } from './entities/contact.entity';
 import { map } from 'rxjs/operators';
 
 import { AppService } from './app.service';
 
+export interface MessageEvent {
+  data: string | object;
+  id?: string;
+  type?: string;
+  retry?: number;
+}
 
 @Controller()
 export class AppController {
@@ -15,25 +21,27 @@ export class AppController {
     this._call = new BehaviorSubject({ ping: true, to: '' });
   }
 
-  @Get()
-  getData() {
-    return this.appService.getData();
-  }
-
   @Sse('ping')
-  ping(@Body() { to }: Pick<Contact, 'to'>) {
+  ping() {
     return interval(5000).pipe(
       map((ping) => {
-        return { data: { to, ping } };
+        return { data: { ping, date: new Date() } };
       })
     );
   }
 
-  @Post('call')
-  call(@Body() contact: Contact) {
-    return this.appService.getData();
+  @Post('pong')
+  pong(@Body() { from }: Pick<Contact, 'from'>) {
+    console.log(from);
+    return this.appService.createPing({ to: from })
   }
 
   @Sse('call')
-  onCall() {}
+  onCall() {
+    return interval(1000).pipe(
+      map((ping) => {
+        return { data: 'data' };
+      })
+    );
+  }
 }
