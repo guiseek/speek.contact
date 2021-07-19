@@ -146,7 +146,7 @@
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/angular"
+    "defaultCollection": "@nrwl/nest"
   },
   "defaultProject": "gateway",
   "generators": {
