@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
+import { AppConnection } from './app.connection';
+import { AppSignaling } from './app.signaling';
+import { AppConfig } from './app.config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -12,7 +15,11 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     RouterModule.forRoot([], { initialNavigation: 'enabledBlocking' }),
   ],
-  providers: [],
+  providers: [
+    AppConfig,
+    AppSignaling,
+    AppConnection
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

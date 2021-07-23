@@ -27,6 +27,9 @@
     ]
   },
   "projects": {
+    "common-definitions": {
+      "tags": []
+    },
     "gateway": {
       "tags": ["type:app"]
     },

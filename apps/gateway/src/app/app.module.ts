@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { dbConfig } from './config/database';
 import { AppService } from './app.service';
+import { AppGateway } from './app.gateway';
 import { Module } from '@nestjs/common';
 
 
@@ -12,6 +13,6 @@ import { Module } from '@nestjs/common';
     MongooseModule.forRoot(dbConfig),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}

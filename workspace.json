@@ -1,6 +1,38 @@
 {
   "version": 2,
   "projects": {
+    "common-definitions": {
+      "root": "libs/common/definitions",
+      "sourceRoot": "libs/common/definitions/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/common/definitions",
+            "tsConfig": "libs/common/definitions/tsconfig.lib.json",
+            "packageJson": "libs/common/definitions/package.json",
+            "main": "libs/common/definitions/src/index.ts",
+            "assets": ["libs/common/definitions/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/common/definitions/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/common/definitions"],
+          "options": {
+            "jestConfig": "libs/common/definitions/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "gateway": {
       "root": "apps/gateway",
       "sourceRoot": "apps/gateway/src",
@@ -146,7 +178,7 @@
     }
   },
   "cli": {
-    "defaultCollection": "@nrwl/nest"
+    "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "gateway",
   "generators": {
