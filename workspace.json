@@ -54,8 +54,8 @@
               "inspect": false,
               "fileReplacements": [
                 {
-                  "replace": "apps/gateway/src/environments/environment.ts",
-                  "with": "apps/gateway/src/environments/environment.prod.ts"
+                  "replace": "apps/gateway/src/envs/env.ts",
+                  "with": "apps/gateway/src/envs/env.prod.ts"
                 }
               ]
             }
@@ -119,8 +119,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "apps/webapp/src/environments/environment.ts",
-                  "with": "apps/webapp/src/environments/environment.prod.ts"
+                  "replace": "apps/webapp/src/envs/env.ts",
+                  "with": "apps/webapp/src/envs/env.prod.ts"
                 }
               ],
               "outputHashing": "all"

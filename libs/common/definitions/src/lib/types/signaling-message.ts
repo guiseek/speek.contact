@@ -1,1 +1,1 @@
-export type SignalingMessage<K, T> = { id: string } & { [K: string]: T }
+export type SignalingMessage<K, T> = { id: string } & { [K: string]: T };

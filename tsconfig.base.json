@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@speek/common-definitions": ["libs/common/definitions/src/index.ts"]
+      "@speek/common-definitions": ["libs/common/definitions/src/index.ts"],
+      "@speek/envs/webapp": ["envs/webapp/env.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

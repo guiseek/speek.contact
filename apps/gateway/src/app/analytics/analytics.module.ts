@@ -5,8 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Touch.name, schema: TouchSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Touch.name, schema: TouchSchema }]),
+  ],
   controllers: [AnalyticsController],
-  providers: [AnalyticsService]
+  providers: [AnalyticsService],
 })
-export class AnalyticsModule { }
+export class AnalyticsModule {}

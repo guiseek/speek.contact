@@ -1,7 +1,7 @@
 export class CreateTouchDto {
   mailing: number;
 
-  date: Date
+  date: Date;
 
   headers: Object;
 }
