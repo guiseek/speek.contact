@@ -1,18 +1,6 @@
-<header class="flex">
-  <h1>Welcome to {{ title }}!</h1>
-</header>
 <main>
-  <section>
-    <fieldset>
-      <legend>Local</legend>
-      <video #local autoplay playsinline muted></video>
-    </fieldset>
 
-    <fieldset>
-      <legend>Remoto</legend>
-      <video #remote autoplay playsinline muted></video>
-    </fieldset>
-  </section>
+  <router-outlet></router-outlet>
+
 </main>
 
-<router-outlet></router-outlet>

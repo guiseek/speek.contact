@@ -3,4 +3,5 @@ export enum SignalingEvent {
   Answer = 'answer',
   Candidate = 'candidate',
   Connection = 'connection',
+  Knocknock = 'knocknock'
 }

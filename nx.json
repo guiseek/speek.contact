@@ -27,6 +27,9 @@
     ]
   },
   "projects": {
+    "common-adapters": {
+      "tags": []
+    },
     "common-definitions": {
       "tags": []
     },

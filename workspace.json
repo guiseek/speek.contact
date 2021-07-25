@@ -1,6 +1,38 @@
 {
   "version": 2,
   "projects": {
+    "common-adapters": {
+      "root": "libs/common/adapters",
+      "sourceRoot": "libs/common/adapters/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/common/adapters",
+            "tsConfig": "libs/common/adapters/tsconfig.lib.json",
+            "packageJson": "libs/common/adapters/package.json",
+            "main": "libs/common/adapters/src/index.ts",
+            "assets": ["libs/common/adapters/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/common/adapters/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/common/adapters"],
+          "options": {
+            "jestConfig": "libs/common/adapters/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "common-definitions": {
       "root": "libs/common/definitions",
       "sourceRoot": "libs/common/definitions/src",

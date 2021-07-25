@@ -6,14 +6,12 @@ export const env: {
   production: boolean;
   signalServer: string;
   iceServers: RTCIceServer[];
-  peers: RTCPeerConnection[];
 } = {
   production: false,
   signalServer: 'http://localhost:3333',
-  peers: [],
   iceServers: [
     {
-      urls: ['stun:54.152.127.6:3478'],
+      urls: ['stun:54.90.98.123:3478'],
       username: 'speek',
       credential: 'contact',
       credentialType: 'password',

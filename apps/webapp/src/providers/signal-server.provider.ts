@@ -1,22 +1,32 @@
-import { InjectionToken, ValueProvider } from '@angular/core';
+import { FactoryProvider, InjectionToken, ValueProvider } from '@angular/core';
+import { SignalingImpl } from '@speek/common-adapters';
+import { Signaling } from '@speek/common-definitions';
 import { env } from './../envs/env';
 
 export const SIGNAL_SERVER = new InjectionToken<string>('SignalServer');
 
-export class SignalServerProvider {
-  private static readonly _defaultValue = env.signalServer;
-
-  static withDefault(): ValueProvider {
-    return {
-      provide: SIGNAL_SERVER,
-      useValue: SignalServerProvider._defaultValue
-    };
-  }
-
-  static withValue(useValue: string): ValueProvider {
-    return {
+function buildProviders(useValue: string): [ValueProvider, FactoryProvider] {
+  return [
+    {
       provide: SIGNAL_SERVER,
       useValue: useValue,
-    }
+    },
+    {
+      provide: Signaling,
+      useFactory: (host: string) => {
+        return new SignalingImpl(host);
+      },
+      deps: [SIGNAL_SERVER],
+    },
+  ];
+}
+
+export class SignalServerProvider {
+  static withDefault() {
+    return buildProviders(env.signalServer);
+  }
+
+  static withValue(useValue: string) {
+    return buildProviders(useValue);
   }
 }

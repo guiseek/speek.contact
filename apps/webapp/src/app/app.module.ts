@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { AppConnection } from './app.connection';
 import { AppSignaling } from './app.signaling';
-import { SignalServerProvider} from '../providers/signal-server.provider';
+import { SignalServerProvider } from '../providers/signal-server.provider';
 import { IceServersProvider } from '../providers/ice-servers.provider';
 
 @NgModule({
@@ -15,7 +15,22 @@ import { IceServersProvider } from '../providers/ice-servers.provider';
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot([], { initialNavigation: 'enabledBlocking' }),
+    RouterModule.forRoot(
+      [
+        {
+          path: '',
+          pathMatch: 'full',
+          redirectTo: 'meet'
+        },
+        {
+          path: 'meet',
+          loadChildren: () =>
+            import('./meet/meet.module')
+              .then((m) => m.MeetModule),
+        },
+      ],
+      { initialNavigation: 'enabledBlocking' }
+    ),
   ],
   providers: [
     SignalServerProvider.withValue('http://localhost:3333'),
@@ -25,4 +40,4 @@ import { IceServersProvider } from '../providers/ice-servers.provider';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

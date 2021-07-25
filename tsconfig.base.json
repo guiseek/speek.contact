@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@speek/common-adapters": ["libs/common/adapters/src/index.ts"],
       "@speek/common-definitions": ["libs/common/definitions/src/index.ts"],
       "@speek/envs/webapp": ["envs/webapp/env.ts"]
     }

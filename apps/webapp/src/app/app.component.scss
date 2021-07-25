@@ -3,10 +3,34 @@
    */
 :host {
   display: block;
+  height: 100%;
   font-family: sans-serif;
   min-width: 300px;
   max-width: 960;
-  margin: 50px auto;
+  margin: 0px auto;
+
+  main {
+    padding: 50px;
+    height: 100%;
+  }
+
+  position: relative;
+
+  &::after {
+    display: block;
+    content: '';
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background: #fff url(/assets/bg/rocket.svg);
+    background-size: 100%;
+    opacity: 0.2;
+  }
+
 
   header {
     text-align: center;

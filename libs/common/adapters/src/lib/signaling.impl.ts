@@ -1,19 +1,12 @@
-import { SignalingEventMap, SignalingMessage } from '@speek/common-definitions';
-import { SIGNAL_SERVER } from './../providers/signal-server.provider';
-import { Inject, Injectable } from '@angular/core';
+import { Signaling, SignalingEventMap, SignalingMessage } from '@speek/common-definitions';
 import { Socket, io } from 'socket.io-client';
 
-
-@Injectable()
-export class AppSignaling {
-  private client: Socket;
+export class SignalingImpl implements Signaling {
+  client: Socket;
 
   public id = '';
 
-  constructor(
-    @Inject(SIGNAL_SERVER)
-    readonly host: string
-  ) {
+  constructor(readonly host: string) {
     this.client = io(host);
 
     this.on('connection', ({ id }) => {

@@ -37,4 +37,9 @@ export class AppGateway implements OnGatewayConnection {
   candidate(@MessageBody() payload: IceCandidate) {
     this.server.emit(SignalingEvent.Candidate, payload);
   }
+
+  @SubscribeMessage(SignalingEvent.Knocknock)
+  knocknock(@MessageBody() payload: RTCOfferOptions) {
+    this.server.emit(SignalingEvent.Knocknock, payload);
+  }
 }

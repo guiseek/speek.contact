@@ -1,4 +1,4 @@
-export type PeerConnectionEventMap = {
+export type PeerEventMap = {
   /**
    * A nova mídia de entrada foi negociada para um
    * determinado RTCRtpReceivere esse receptor track foi
