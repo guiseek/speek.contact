@@ -212,7 +212,7 @@
   "cli": {
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "gateway",
+  "defaultProject": "webapp",
   "generators": {
     "@nrwl/angular:application": {
       "style": "scss",

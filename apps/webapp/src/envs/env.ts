@@ -4,11 +4,11 @@
 
 export const env: {
   production: boolean;
-  signalServer: string;
+  signaling: string;
   iceServers: RTCIceServer[];
 } = {
   production: false,
-  signalServer: 'http://localhost:3333',
+  signaling: 'http://localhost:3333',
   iceServers: [
     {
       urls: ['stun:54.90.98.123:3478'],

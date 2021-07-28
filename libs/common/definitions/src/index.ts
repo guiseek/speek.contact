@@ -1,3 +1,4 @@
+export * from './lib/interfaces/contact-message-event';
 export * from './lib/interfaces/create-answer';
 export * from './lib/interfaces/create-offer';
 export * from './lib/interfaces/ice-candidate';
@@ -7,5 +8,10 @@ export * from './lib/types/signaling-message';
 export * from './lib/types/signaling-event-map';
 export * from './lib/types/peer-event-map';
 export * from './lib/types/peer-event';
+export * from './lib/types/contact-event-map';
+export * from './lib/types/contact-message';
 export * from './lib/types/callback';
+export * from './lib/ports/contact';
 export * from './lib/ports/signaling';
+export * from './lib/ports/peer';
+export * from './lib/dtos/sign-up';

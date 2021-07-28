@@ -23,7 +23,7 @@ function buildProviders(useValue: string): [ValueProvider, FactoryProvider] {
 
 export class SignalServerProvider {
   static withDefault() {
-    return buildProviders(env.signalServer);
+    return buildProviders(env.signaling);
   }
 
   static withValue(useValue: string) {
