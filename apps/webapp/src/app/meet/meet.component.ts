@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Signaling } from '@speek/common-definitions';
-import { Peer } from '@speek/common-adapters';
+import { PeerImpl } from '@speek/common-adapters';
 import { env } from '@speek/envs/webapp';
 
 @Component({
@@ -18,7 +18,7 @@ export class MeetComponent implements AfterViewInit {
   remoteRef!: ElementRef<HTMLVideoElement>;
   remote!: HTMLVideoElement;
 
-  peer = new Peer(env.iceServers);
+  peer = new PeerImpl(env.iceServers);
 
   constructor(private signaling: Signaling) {
     console.log(signaling);

@@ -16,12 +16,12 @@ export class SignalingImpl implements Signaling {
 
   on<K extends keyof SignalingEventMap>(
     key: K,
-    fn: (value: SignalingMessage<K, SignalingEventMap[K]>) => void
+    fn: (value: SignalingMessage<SignalingEventMap[K]>) => void
   ) {
     this.client.on<keyof SignalingEventMap>(key, fn);
   }
 
   send<K extends keyof SignalingEventMap>(key: K, value: SignalingEventMap[K]) {
-    this.client.emit(key, { id: this.id, [key]: value });
+    this.client.emit(key, { id: this.id, data: value });
   }
 }

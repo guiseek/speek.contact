@@ -21,7 +21,7 @@ export abstract class Peer {
 
   abstract setTracks(stream: MediaStream): void;
 
-  abstract create(options?: RTCOfferOptions): Promise<RTCSessionDescription | RTCSessionDescriptionInit>;
+  abstract create(options?: RTCOfferOptions): Promise<RTCSessionDescriptionInit>;
 
-  abstract answer(offer: RTCSessionDescription, options?: RTCAnswerOptions): Promise<RTCSessionDescription | RTCSessionDescriptionInit>;
+  abstract answer(offer: RTCSessionDescriptionInit, options?: RTCAnswerOptions): Promise<RTCSessionDescription | RTCSessionDescriptionInit>;
 }

@@ -23,7 +23,7 @@ export class AppSignaling {
 
   on<K extends keyof SignalingEventMap>(
     key: K,
-    fn: (value: SignalingMessage<K, SignalingEventMap[K]>) => void
+    fn: (value: SignalingMessage<SignalingEventMap[K]>) => void
   ) {
     this.client.on<keyof SignalingEventMap>(key, fn);
   }

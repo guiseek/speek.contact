@@ -8,7 +8,7 @@ export abstract class Signaling {
 
   abstract on<K extends keyof SignalingEventMap>(
     key: K,
-    fn: (value: SignalingMessage<K, SignalingEventMap[K]>) => void
+    fn: (value: SignalingMessage<SignalingEventMap[K]>) => void
   ): void;
 
   abstract send<K extends keyof SignalingEventMap>(
