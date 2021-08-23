@@ -23,6 +23,13 @@ export class AppGateway implements OnGatewayConnection {
     client.emit(SignalingEvent.Connection, { id: client.id });
   }
 
+  @SubscribeMessage('message')
+  onMessage(@MessageBody() payload: CreateOffer) {
+    console.log(payload);
+
+    this.server.send(payload);
+  }
+
   @SubscribeMessage(SignalingEvent.Offer)
   offer(@MessageBody() payload: CreateOffer) {
     this.server.emit(SignalingEvent.Offer, payload);

@@ -1,64 +1,46 @@
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, Inject } from '@angular/core';
-import { Contact, Peer, Signaling } from '@speek/common-definitions';
+import {
+  Component,
+  ViewChild,
+  TemplateRef,
+  AfterViewInit,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
+
+export function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c == 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  })
+}
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit {
   title = 'webapp';
 
+  @ViewChild('codeTmpl')
+  codeTmpl!: TemplateRef<HTMLElement>;
+
+  codeControl = new FormControl('', [Validators.required]);
+
+  stream!: MediaStream
+
   constructor(
-    private http: HttpClient,
-    private signaling: Signaling,
-    private contact: Contact,
-    private peer: Peer
+    readonly dialog: MatDialog
   ) {
-    console.log(signaling);
-    console.log(contact);
-    console.log(peer);
-
-
-    signaling.on('offer', ({ id, data }) => {
-      console.log(peer.connection);
-      console.log(peer.signaling);
-      peer.setRemote(new RTCSessionDescription(data))
-      if (
-        peer.signaling === 'have-local-offer' ||
-        peer.signaling === 'have-remote-offer' ||
-        peer.signaling === 'have-local-pranswer'
-      ) {
-        peer.answer(data).then((answer) => {
-          signaling.send('answer', new RTCSessionDescription(answer));
-        });
-      }
-    });
-    signaling.on('answer', ({ id, data }) => {
-      if (data.type === 'answer') {
-        console.log(data);
-        peer.setRemote(data);
-      }
-    });
-    peer.create().then((sdp) => {
-      console.log(sdp);
-      signaling.send('offer', sdp);
-    });
-    peer.on('negotiation', (ev) => {
-      console.log(ev);
-
-    })
+    this.codeControl.setValue(uuid());
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => this.stream = stream)
   }
 
   ngAfterViewInit(): void {
-    const eventSource = new EventSource('/gateway/ping');
-    eventSource.onmessage = console.debug;
+
   }
 
-  ping() {
-    this.http
-      .post('/gateway/contact', { id: this.signaling.id })
-      .subscribe(console.log);
-  }
 }

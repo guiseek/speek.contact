@@ -17,7 +17,11 @@
     "paths": {
       "@speek/common-adapters": ["libs/common/adapters/src/index.ts"],
       "@speek/common-definitions": ["libs/common/definitions/src/index.ts"],
-      "@speek/envs/webapp": ["envs/webapp/env.ts"]
+      "@speek/contact/adapters": ["libs/contact/adapters/src/index.ts"],
+      "@speek/contact/feature": ["libs/contact/feature/src/index.ts"],
+      "@speek/contact/ports": ["libs/contact/ports/src/index.ts"],
+      "@speek/envs/webapp": ["envs/webapp/env.ts"],
+      "@speek/media/ui-shared": ["libs/media/ui-shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -65,6 +65,109 @@
         }
       }
     },
+    "contact-adapters": {
+      "root": "libs/contact/adapters",
+      "sourceRoot": "libs/contact/adapters/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/contact/adapters",
+            "main": "libs/contact/adapters/src/index.ts",
+            "tsConfig": "libs/contact/adapters/tsconfig.lib.json",
+            "assets": ["libs/contact/adapters/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/contact/adapters/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/contact/adapters"],
+          "options": {
+            "jestConfig": "libs/contact/adapters/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "contact-feature": {
+      "projectType": "library",
+      "root": "libs/contact/feature",
+      "sourceRoot": "libs/contact/feature/src",
+      "prefix": "contact",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/angular:ng-packagr-lite",
+          "outputs": ["dist/libs/contact/feature"],
+          "options": {
+            "project": "libs/contact/feature/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/contact/feature/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/contact/feature/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/contact/feature"],
+          "options": {
+            "jestConfig": "libs/contact/feature/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/contact/feature/src/**/*.ts",
+              "libs/contact/feature/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "contact-ports": {
+      "root": "libs/contact/ports",
+      "sourceRoot": "libs/contact/ports/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/contact/ports",
+            "main": "libs/contact/ports/src/index.ts",
+            "tsConfig": "libs/contact/ports/tsconfig.lib.json",
+            "assets": ["libs/contact/ports/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/contact/ports/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/contact/ports"],
+          "options": {
+            "jestConfig": "libs/contact/ports/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "gateway": {
       "root": "apps/gateway",
       "sourceRoot": "apps/gateway/src",
@@ -111,6 +214,47 @@
           "options": {
             "jestConfig": "apps/gateway/jest.config.js",
             "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "media-ui-shared": {
+      "projectType": "library",
+      "root": "libs/media/ui-shared",
+      "sourceRoot": "libs/media/ui-shared/src",
+      "prefix": "media",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/angular:ng-packagr-lite",
+          "outputs": ["dist/libs/media/ui-shared"],
+          "options": {
+            "project": "libs/media/ui-shared/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/media/ui-shared/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/media/ui-shared/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/media/ui-shared"],
+          "options": {
+            "jestConfig": "libs/media/ui-shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/media/ui-shared/src/**/*.ts",
+              "libs/media/ui-shared/src/**/*.html"
+            ]
           }
         }
       }

@@ -33,8 +33,20 @@
     "common-definitions": {
       "tags": []
     },
+    "contact-adapters": {
+      "tags": ["type:adapters", "scope:contact"]
+    },
+    "contact-feature": {
+      "tags": ["type:feature", "scope:contact"]
+    },
+    "contact-ports": {
+      "tags": ["type:entity", "scope:contact"]
+    },
     "gateway": {
       "tags": ["type:app"]
+    },
+    "media-ui-shared": {
+      "tags": ["type:ui", "scope:media"]
     },
     "webapp": {
       "tags": ["type:app"]

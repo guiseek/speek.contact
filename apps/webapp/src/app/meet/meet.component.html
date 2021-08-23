@@ -1,12 +1,6 @@
-<p>meet works!</p>
-<section>
-  <fieldset>
-    <legend>Local</legend>
-    <video #local autoplay playsinline muted></video>
-  </fieldset>
+<div id="container">
 
-  <fieldset>
-    <legend>Remoto</legend>
-    <video #remote autoplay playsinline muted></video>
-  </fieldset>
-</section>
+  <video autoplay playsinline [srcObject]="peerContact.remote"></video>
+</div>
+
+<video autoplay playsinline [muted]="true" [srcObject]="peerContact.stream"></video>

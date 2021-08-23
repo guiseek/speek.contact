@@ -1,9 +1,25 @@
-<header>
-  <button type="button" (click)="ping()">PING</button>
-</header>
-<main>
+<router-outlet></router-outlet>
 
-  <router-outlet></router-outlet>
+<ng-template #codeTmpl>
+  <mat-form-field>
+    <mat-label>Código da sala</mat-label>
+    <input
+      matInput
+      readonly
+      type="text"
+      tabindex="-1"
+      [formControl]="codeControl"
+    />
+    <mat-error>Obrigatório</mat-error>
+  </mat-form-field>
 
-</main>
-
+  <footer mat-dialog-actions align="end">
+    <a
+      type="button"
+      mat-stroked-button
+      [routerLink]="['/meet', codeControl.value]"
+    >
+      Entrar
+    </a>
+  </footer>
+</ng-template>
