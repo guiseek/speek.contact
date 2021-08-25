@@ -9,7 +9,7 @@ export class AnalyticsService {
   constructor(
     @InjectModel(Touch.name)
     private touchModel: Model<TouchDocument>
-  ) { }
+  ) {}
 
   async create(createTouchDto: CreateTouchDto): Promise<Touch> {
     const createdTouch = new this.touchModel(createTouchDto);

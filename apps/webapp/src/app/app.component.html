@@ -1,19 +1,25 @@
-<header class="flex">
-  <h1>Welcome to {{ title }}!</h1>
-</header>
-<main>
-
-  <section>
-    <fieldset>
-      <legend>Local</legend>
-      <video #local autoplay playsinline muted></video>
-    </fieldset>
-
-    <fieldset>
-      <legend>Remoto</legend>
-      <video #remote autoplay playsinline muted></video>
-    </fieldset>
-  </section>
-</main>
-
 <router-outlet></router-outlet>
+
+<ng-template #codeTmpl>
+  <mat-form-field>
+    <mat-label>Código da sala</mat-label>
+    <input
+      matInput
+      readonly
+      type="text"
+      tabindex="-1"
+      [formControl]="codeControl"
+    />
+    <mat-error>Obrigatório</mat-error>
+  </mat-form-field>
+
+  <footer mat-dialog-actions align="end">
+    <a
+      type="button"
+      mat-stroked-button
+      [routerLink]="['/meet', codeControl.value]"
+    >
+      Entrar
+    </a>
+  </footer>
+</ng-template>

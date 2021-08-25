@@ -2,27 +2,7 @@
    * Remove template code below
    */
 :host {
-  display: block;
-  font-family: sans-serif;
-  min-width: 300px;
-  max-width: 960;
-  margin: 50px auto;
-
-  header {
-    text-align: center;
-  }
-
-  section {
-    display: flex;
-    justify-content: space-around;
-
-    fieldset {
-      max-width: 40vw;
-      max-height: 60vh;
-
-      video {
-        max-width: 100%;
-      }
-    }
-  }
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
