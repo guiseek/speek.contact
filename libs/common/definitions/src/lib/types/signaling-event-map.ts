@@ -1,6 +1,7 @@
 export type SignalingEventMap = {
-  offer: RTCSessionDescription;
+  offer: RTCSessionDescriptionInit;
   answer: RTCSessionDescription;
   candidate: RTCIceCandidate;
   connection: string;
+  knocknock: RTCOfferOptions;
 };

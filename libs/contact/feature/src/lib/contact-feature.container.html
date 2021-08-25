@@ -1,0 +1,32 @@
+<div class="speek-container" [class.speek-is-mobile]="mobileQuery.matches">
+  <mat-sidenav-container class="speek-sidenav-container">
+    <mat-sidenav
+      #snav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+    >
+      <button type="button" mat-button (click)="onConnect()">Connect</button>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="speek-content">
+      <mat-card id="remote">
+        <video autoplay playsinline [srcObject]="peerContact.remote"></video>
+      </mat-card>
+
+      <mat-card id="local">
+        <video
+          autoplay
+          playsinline
+          [muted]="true"
+          [srcObject]="peerContact.stream"
+        ></video>
+      </mat-card>
+
+      <input
+        type="file"
+        name="files"
+        (change)="onFileChange($event.target)"
+      />
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
