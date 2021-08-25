@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "nx": "nx",
-    "start": "nx run-many --target=serve --projects=gateway,webapp --maxParallel 2 --parallel",
+    "start": "node dist/apps/gateway/main.js",
+    "dev": "nx run-many --target=serve --projects=gateway,webapp --maxParallel 2 --parallel",
     "build": "nx build",
     "test": "nx test",
     "lint": "nx workspace-lint && nx lint",
