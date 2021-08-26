@@ -6,6 +6,7 @@
     "nx": "nx",
     "start": "node dist/apps/gateway/main.js",
     "build": "nx run gateway:build:production",
+    "deploy": "nx run webapp:build:production",
     "dev": "nx run-many --target=serve --projects=gateway,webapp --maxParallel 2 --parallel",
     "test": "nx test",
     "lint": "nx workspace-lint && nx lint",
