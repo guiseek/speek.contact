@@ -20,6 +20,10 @@
 
 .speek-content {
   padding: 16px;
+  .media-container {
+    display: flex;
+    gap: 16px;
+  }
 }
 
 .mat-card {

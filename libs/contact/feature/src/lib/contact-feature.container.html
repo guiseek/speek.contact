@@ -9,24 +9,23 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="speek-content">
-      <mat-card id="remote">
-        <video autoplay playsinline [srcObject]="peerContact.remote"></video>
-      </mat-card>
+      <div class="media-container">
+        <mat-card id="remote">
+          <video autoplay playsinline [srcObject]="peerContact.remote"></video>
+        </mat-card>
 
-      <mat-card id="local">
-        <video
-          autoplay
-          playsinline
-          [muted]="true"
-          [srcObject]="peerContact.stream"
-        ></video>
-      </mat-card>
+        <mat-card id="local">
+          <video
+            #local
+            autoplay
+            playsinline
+            [muted]="true"
+            [srcObject]="peerContact.stream"
+          ></video>
+        </mat-card>
+      </div>
 
-      <input
-        type="file"
-        name="files"
-        (change)="onFileChange($event.target)"
-      />
+      <input type="file" name="files" (change)="onFileChange($event.target)" />
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

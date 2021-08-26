@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { DataContact, PeerContact } from '@speek/contact/ports';
+import { ActivatedRoute } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 type InputTarget<T = HTMLInputElement> =
@@ -13,24 +13,25 @@ type InputTarget<T = HTMLInputElement> =
   styleUrls: ['./contact-feature.container.scss'],
   viewProviders: [],
 })
-export class ContactFeatureContainer implements OnInit, OnDestroy {
+export class ContactFeatureContainer implements AfterViewInit, OnDestroy {
   mobileQuery: MediaQueryList;
 
   private _mobileQueryListener: () => void;
 
   constructor(
+    readonly media: MediaMatcher,
     readonly route: ActivatedRoute,
     readonly peerContact: PeerContact,
     readonly dataContact: DataContact,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    readonly elRef: ElementRef<HTMLElement>,
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.peerContact.connect();
   }
 

@@ -1,6 +1,6 @@
 export const env = {
   production: true,
-  signalServer: 'http://localhost:3333',
+  signalServer: 'https://gateway.speek.contact',
   iceServers: [
     {
       urls: ['stun:54.152.127.6:3478'],
