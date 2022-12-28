@@ -1,0 +1,35 @@
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label>Entrada de áudio</mat-label>
+    <mat-select formControlName="audioInput" [compareWith]="compareFn">
+      <mat-option
+        *ngFor="let device of service.audioInputList$ | async"
+        [value]="device"
+      >
+        {{ device.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Saída de áudio</mat-label>
+    <mat-select formControlName="audioOutput" [compareWith]="compareFn">
+      <mat-option
+        *ngFor="let device of service.audioOutputList$ | async"
+        [value]="device"
+      >
+        {{ device.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Entrada de vídeo</mat-label>
+    <mat-select formControlName="videoInput" [compareWith]="compareFn">
+      <mat-option
+        *ngFor="let device of service.videoInputList$ | async"
+        [value]="device"
+      >
+        {{ device.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

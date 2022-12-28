@@ -1,0 +1,26 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <h1>Speek</h1>
+  <span class="space"></span>
+  <button type="button" mat-icon-button (click)="openSettings()">
+    <mat-icon>settings</mat-icon>
+  </button>
+</mat-toolbar>
+
+<main class="main-container">
+  <mat-card>
+    <router-outlet></router-outlet>
+  </mat-card>
+</main>
+
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <button type="button" mat-icon-button (click)="peer.toggle('audio')">
+    <mat-icon>
+      {{ (peer.audio$ | async) ? 'volume_up' : 'volume_off' }}
+    </mat-icon>
+  </button>
+  <button type="button" mat-icon-button (click)="peer.toggle('video')">
+    <mat-icon>
+      {{ (peer.video$ | async) ? 'videocam' : 'videocam_off' }}
+    </mat-icon>
+  </button>
+</mat-toolbar>

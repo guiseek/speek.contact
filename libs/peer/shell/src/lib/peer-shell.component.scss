@@ -1,0 +1,14 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .space {
+    flex: 1 0 auto;
+  }
+  main.main-container {
+    margin: 8px;
+    flex: 1;
+  }
+}
+
