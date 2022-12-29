@@ -1,21 +1,16 @@
+import {short} from '@speek/peer/utils'
 import {Signaling} from '../ports/signaling'
 import {Socket} from '../interfaces/socket'
 import {Peer} from '../ports/peer'
-
-function short() {
-  const base = 'xxxxxxxx'
-  return base.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0
-    const v = c == 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
+import {SignalEvent} from '../interfaces/signal-event'
+import {Callback} from '../interfaces/callback'
 
 export class PeerImpl implements Peer {
-  id = short()
   stream = new MediaStream()
   remote = new MediaStream()
   conn: RTCPeerConnection
+  call: string
+  user: string
 
   constructor(
     configuration: RTCConfiguration,
@@ -23,6 +18,26 @@ export class PeerImpl implements Peer {
     readonly constraints: MediaStreamConstraints
   ) {
     this.conn = new RTCPeerConnection(configuration)
+    const call = location.hash.replace('#/', '')
+    console.log(call)
+
+    this.call = call ? call : short()
+    this.user = this.stream.id
+  }
+
+  private _onStream: Callback<MediaStream>[] = []
+  set onStream(callback: Callback<MediaStream>) {
+    this._onStream.push(callback)
+  }
+
+  private _onTrack: Callback<RTCTrackEvent>[] = []
+  set onTrack(callback: Callback<RTCTrackEvent>) {
+    this._onTrack.push(callback)
+  }
+
+  private _onChannel: Callback<RTCDataChannel>[] = []
+  set onChannel(callback: Callback<RTCDataChannel>) {
+    this._onChannel.push(callback)
   }
 
   connect(constraints = this.constraints) {
@@ -30,46 +45,89 @@ export class PeerImpl implements Peer {
       const [videoTrack] = stream.getVideoTracks()
       const [audioTrack] = stream.getAudioTracks()
 
+      console.log(videoTrack);
+
+      this.stream = stream
+
       this.conn.addTrack(videoTrack)
       this.conn.addTrack(audioTrack)
 
+      this._onStream.forEach((callback) => callback(this.stream))
+
       this.conn.ontrack = (trackEvent) => {
+        console.log(trackEvent)
         if (trackEvent.isTrusted && trackEvent.track) {
           this.remote.addTrack(trackEvent.track)
+          this._onTrack.forEach((callback) => callback(trackEvent))
         }
       }
 
       this.conn.onicecandidate = (iceEvent) => {
         if (iceEvent.candidate) {
-          this.signaling.emit('message', {
+          this.signaling.emit(SignalEvent.Message, {
             ice: iceEvent.candidate,
-            id: this.id,
+            user: this.user,
+            call: this.call,
           })
         }
       }
 
+      const channel = this.conn.createDataChannel(this.call)
+
+      this.conn.ondatachannel = ({channel}) => {
+        this._onChannel.forEach((callback) => callback(channel))
+      }
+
       this.conn.createOffer().then((description) => {
         this.conn.setLocalDescription(description).then(() => {
-          this.signaling.emit('message', {
+          this.signaling.emit(SignalEvent.Message, {
             sdp: description,
-            id: this.id,
+            user: this.user,
+            call: this.call,
           })
         })
       })
 
-      this.signaling.on('message', (message) => {
-        if (message.id === this.id) return
+      this.signaling.on(SignalEvent.Message, async (message) => {
+        if (message.user === this.user) return
 
         if (message.sdp) {
-          this.conn.setRemoteDescription(message.sdp).then(() => {
-            if (message.sdp.type === 'offer') {
-              this.conn.createAnswer().then((description) => {
-                this.conn.setLocalDescription(description)
+          if (message.sdp.type === 'offer') {
+            if (this.conn.signalingState === 'have-local-offer') {
+              await this.conn.setRemoteDescription(
+                new RTCSessionDescription(message.sdp)
+              )
+            }
+
+            if (
+              this.conn.signalingState === 'have-remote-offer' ||
+              this.conn.signalingState === 'have-local-pranswer'
+            ) {
+              this.conn.createAnswer().then(async (description) => {
+                await this.conn.setLocalDescription(description)
+
+                this.signaling.emit(SignalEvent.Message, {
+                  sdp: description,
+                  user: this.user,
+                  call: this.call,
+                })
               })
             }
-          })
+          }
+          if (message.sdp.type === 'answer') {
+            const states = [
+              'have-local-offer',
+              'have-remote-offer',
+              'have-local-pranswer',
+            ]
+            if (states.includes(this.conn.signalingState)) {
+              this.conn.setRemoteDescription(
+                new RTCSessionDescription(message.sdp)
+              )
+            }
+          }
         } else if (message.ice) {
-          this.conn.addIceCandidate(message.ice)
+          this.conn.addIceCandidate(new RTCIceCandidate(message.ice))
         }
       })
     })

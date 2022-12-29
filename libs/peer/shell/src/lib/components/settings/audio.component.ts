@@ -4,7 +4,9 @@ import {
   OnDestroy,
   ViewChild,
   AfterViewInit,
+  inject,
 } from '@angular/core'
+import {StorageService} from '../../services/storage.service'
 import {frequency} from './utilities/frequency'
 
 @Component({
@@ -28,6 +30,8 @@ export class AudioComponent implements AfterViewInit, OnDestroy {
     return this.canvasRef.nativeElement
   }
 
+  storage = inject(StorageService)
+
   #frequency?: ReturnType<typeof frequency>
   #stream?: MediaStream
 
@@ -36,7 +40,9 @@ export class AudioComponent implements AfterViewInit, OnDestroy {
     const canvasCtx = this.canvas.getContext('2d')
 
     if (canvasCtx) {
-      this.#stream = await navigator.mediaDevices.getUserMedia({audio: true})
+      const {deviceId} = this.storage.getItem('audioInput') ?? {}
+      const constraints = deviceId ? {deviceId, audio: true} : {audio: true}
+      this.#stream = await navigator.mediaDevices.getUserMedia(constraints)
       const microphoneNode = audioCtx.createMediaStreamSource(this.#stream)
       const analyserNode = audioCtx.createAnalyser()
       const speakerNode = audioCtx.destination

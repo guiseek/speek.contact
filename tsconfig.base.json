@@ -15,8 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@speek/keep/data": ["libs/keep/data/src/index.ts"],
+      "@speek/keep/utils": ["libs/keep/utils/src/index.ts"],
       "@speek/peer/data": ["libs/peer/data/src/index.ts"],
-      "@speek/peer/shell": ["libs/peer/shell/src/index.ts"]
+      "@speek/peer/shell": ["libs/peer/shell/src/index.ts"],
+      "@speek/peer/utils": ["libs/peer/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

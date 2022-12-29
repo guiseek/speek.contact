@@ -1,4 +1,4 @@
-import {Route} from '@angular/router'
+import {ExtraOptions, Route} from '@angular/router'
 
 export const appRoutes: Route[] = [
   {
@@ -7,3 +7,8 @@ export const appRoutes: Route[] = [
       import('@speek/peer/shell').then((m) => m.PeerShellModule),
   },
 ]
+
+export const appConfig: ExtraOptions = {
+  initialNavigation: 'enabledBlocking',
+  useHash: true,
+}

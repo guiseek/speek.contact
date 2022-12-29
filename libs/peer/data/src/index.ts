@@ -1,3 +1,5 @@
+export * from './lib/interfaces/signal-message'
+export * from './lib/interfaces/signal-event'
 export * from './lib/ports/peer'
 export * from './lib/ports/signaling'
 export * from './lib/adapters/peer.impl'

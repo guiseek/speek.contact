@@ -6,6 +6,9 @@
   .space {
     flex: 1 0 auto;
   }
+  .main-toolbar {
+    overflow: hidden;
+  }
   main.main-container {
     margin: 8px;
     flex: 1;

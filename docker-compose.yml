@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  speek:
+    image: mariadb:10.4
+    container_name: speek
+    restart: always
+    ports:
+      - '3304:3306'
+    environment:
+      TZ: America/Sao_Paulo
+      MYSQL_ROOT_PASSWORD: 'speek'
+      MYSQL_DATABASE: speek
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+    volumes:
+      - ./data/mariadb:/var/lib/mysql

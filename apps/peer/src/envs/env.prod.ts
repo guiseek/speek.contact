@@ -1,7 +1,7 @@
 export const env = {
   prod: true,
   gateway: {
-    url: 'http://signaling.speek.contact',
+    url: 'http://keep.speek.contact',
   },
   configuration: {
     iceServers: [

@@ -5,7 +5,8 @@ import {Signaling} from '../ports/signaling'
 import {EventEmitterImpl} from './event-emitter.impl'
 
 export class PeerImpl implements Peer {
-  id: string
+  call: string
+  user: string
 
   // uiState: PeerUiState;
 
@@ -31,7 +32,8 @@ export class PeerImpl implements Peer {
 
     this.stream = new MediaStream()
     this.remote = new MediaStream()
-    this.id = this.stream.id
+    this.user = this.stream.id
+    this.call = location.hash
 
     this.event = new EventEmitterImpl()
 
@@ -118,7 +120,8 @@ export class PeerImpl implements Peer {
       this.conn.setLocalDescription(description).then(() => {
         const message = {
           sdp: this.conn.localDescription,
-          id: this.id,
+          call: this.call,
+          user: this.user,
         }
         this.signaling.emit('message', message)
       })
@@ -126,8 +129,8 @@ export class PeerImpl implements Peer {
   }
 
   getSignalMessage(): (message: SignalMessage) => void {
-    return ({id, sdp, ice}) => {
-      if (id === this.id) {
+    return ({user, sdp, ice}) => {
+      if (user === this.user) {
         return
       }
 
@@ -160,7 +163,8 @@ export class PeerImpl implements Peer {
       if (event.candidate != null) {
         const message = {
           ice: event.candidate,
-          id: this.id,
+          call: this.call,
+          user: this.user,
         }
         this.signaling.emit('message', message)
       }

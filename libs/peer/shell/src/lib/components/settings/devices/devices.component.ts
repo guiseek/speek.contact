@@ -44,8 +44,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((value) => {
-        this.saveToStorage(value)
+        console.log(value);
         this.form.patchValue(value)
+        this.service.setValue(value)
       })
 
     this.service.loadDevices()

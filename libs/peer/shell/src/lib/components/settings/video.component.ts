@@ -5,7 +5,10 @@ import {
   ViewChild,
   AfterViewInit,
   Input,
+  inject,
 } from '@angular/core'
+import {StorageService} from '../../services/storage.service'
+import {SettingsService} from './settings.service'
 
 @Component({
   selector: 'speek-video',
@@ -41,15 +44,32 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     return this.videoRef.nativeElement
   }
 
+  storage = inject(StorageService)
+  settings = inject(SettingsService)
+
   @Input()
   poster = '/assets/images/video.svg'
 
   #stream?: MediaStream
 
   async ngAfterViewInit() {
-    this.video.onloadedmetadata = () => this.video.classList.add('fade-in')
-    this.#stream = await navigator.mediaDevices.getUserMedia({video: true})
-    queueMicrotask(() => Object.assign(this.video, {srcObject: this.#stream}))
+    this.settings.videoInput$.subscribe(async (videoInput) => {
+      console.log(videoInput);
+
+      const {deviceId} = videoInput ?? {}
+      console.log(`deviceId: `, deviceId);
+
+      const constraints = deviceId ? {deviceId, video: true} : {video: true}
+      this.#stream = await navigator.mediaDevices.getUserMedia(constraints)
+      this.video.srcObject = this.#stream
+    })
+
+    this.settings.loadDevices()
+    // this.video.onloadedmetadata = () => this.video.classList.add('fade-in')
+    // const {deviceId} = this.storage.getItem('videoInput') ?? {}
+    // const constraints = deviceId ? {deviceId, video: true} : {video: true}
+    // this.#stream = await navigator.mediaDevices.getUserMedia(constraints)
+    // queueMicrotask(() => Object.assign(this.video, {srcObject: this.#stream}))
   }
 
   ngOnDestroy() {
