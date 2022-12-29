@@ -4,7 +4,7 @@ import {SnakeNamingStrategy} from './strategies'
 import {dataOptions} from './config/data-options'
 import {Provider} from '@nestjs/common'
 
-export const KEEP_DATA_PROVIDERS: Provider<unknown>[] = [
+export const DATA_PROVIDERS: Provider<unknown>[] = [
   {
     provide: 'data.options',
     useValue: dataOptions,

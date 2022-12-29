@@ -1,1 +1,7 @@
 export * from './lib/keep-data.module'
+export * from './lib/auth/dto'
+export * from './lib/user/dto'
+export * from './lib/auth/ports/auth.service'
+export * from './lib/user/ports/user.service'
+export * from './lib/auth/ports/interfaces'
+export * from './lib/user/ports/interfaces'

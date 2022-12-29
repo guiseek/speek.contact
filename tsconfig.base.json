@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@speek/keep/apis": ["libs/keep/apis/src/index.ts"],
       "@speek/keep/data": ["libs/keep/data/src/index.ts"],
       "@speek/keep/utils": ["libs/keep/utils/src/index.ts"],
       "@speek/peer/data": ["libs/peer/data/src/index.ts"],
