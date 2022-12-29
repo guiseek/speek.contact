@@ -1,5 +1,4 @@
-import {CreateUser, UpdateUser} from './interfaces'
-import {User} from './user'
+import {CreateUser, UpdateUser, User} from '@speek/type'
 
 export abstract class UserService {
   abstract findAll(): Promise<User[]>

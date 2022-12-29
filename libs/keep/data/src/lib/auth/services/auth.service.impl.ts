@@ -3,7 +3,7 @@ import {CreateUserDto, UserResponseDto} from '../../user/dto'
 import {createPassword, validatePassword} from '../utilities'
 import {AuthRequestDto, AuthResponseDto, CheckUserDto} from '../dto'
 import {UserService} from '../../user/ports/user.service'
-import {User} from '../../user/ports/user'
+import {User} from '@speek/type'
 
 export class AuthServiceImpl {
   constructor(

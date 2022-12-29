@@ -1,6 +1,5 @@
-import {UserResponse} from '../../user/ports/interfaces'
 import {Exclude} from 'class-transformer'
-import {User} from '../ports/user'
+import {UserResponse, User} from '@speek/type'
 
 export class UserResponseDto implements UserResponse {
   id: number

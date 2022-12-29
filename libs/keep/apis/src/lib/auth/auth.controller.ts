@@ -8,7 +8,6 @@ import {
   ApiResponse,
 } from '@nestjs/swagger'
 import {
-  AuthUserRequest,
   AuthRequestDto,
   AuthResponseDto,
   AuthService,
@@ -16,9 +15,9 @@ import {
   CreateUserDto,
   UserResponseDto,
 } from '@speek/keep/data'
-import {JwtAuthGuard} from './guards/jwt-auth.guard'
-import {LocalAuthGuard} from './guards/local-auth.guard'
+import {AuthUserRequest} from '@speek/type'
 import {Allowed} from '@speek/keep/utils'
+import {JwtAuthGuard, LocalAuthGuard} from './guards'
 
 @ApiBearerAuth()
 @ApiTags('auth')

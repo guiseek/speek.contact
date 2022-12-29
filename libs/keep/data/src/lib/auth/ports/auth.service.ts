@@ -1,6 +1,11 @@
-import {AuthRequest, AuthResponse, CheckUser} from './interfaces'
-import {CreateUser, UserResponse} from './interfaces/interfaces'
-import {User} from '../../user/ports/user'
+import {
+  User,
+  CheckUser,
+  CreateUser,
+  AuthRequest,
+  UserResponse,
+  AuthResponse,
+} from '@speek/type'
 
 export abstract class AuthService {
   abstract validateUser({username, password}: AuthRequest): Promise<User>

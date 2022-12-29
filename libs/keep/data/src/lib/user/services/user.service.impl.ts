@@ -2,7 +2,7 @@ import {Repository} from 'typeorm'
 import {CreateUserDto} from '../dto/create-user.dto'
 import {UpdateUserDto} from '../dto/update-user.dto'
 import {UserService} from '../ports/user.service'
-import {User} from '../ports/user'
+import {User} from '@speek/type'
 
 export class UserServiceImpl implements UserService {
   constructor(private userRepository: Repository<User>) {}

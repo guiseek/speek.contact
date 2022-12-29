@@ -3,7 +3,7 @@ import {DataSource, Repository} from 'typeorm'
 import {UserServiceImpl} from './services/user.service.impl'
 import {UserService} from './ports/user.service'
 import {UserImpl} from './entities/user.impl'
-import {User} from './ports/user'
+import {User} from '@speek/type'
 
 export const USER_PROVIDERS: Provider<unknown>[] = [
   {

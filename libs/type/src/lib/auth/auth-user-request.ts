@@ -1,4 +1,4 @@
-import {User} from '../../../user/ports/user'
+import {User} from '../user/user'
 
 export interface AuthUserRequest extends Request {
   user: User
