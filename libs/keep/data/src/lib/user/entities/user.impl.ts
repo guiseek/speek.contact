@@ -1,4 +1,5 @@
 import {entityContainer} from '@speek/keep/utils'
+import {User} from '@speek/type'
 import {
   Column,
   Entity,
@@ -9,7 +10,7 @@ import {
 
 @Entity()
 @Unique(['username'])
-export class UserImpl extends BaseEntity {
+export class UserImpl extends BaseEntity implements User {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -49,7 +50,21 @@ export class UserImpl extends BaseEntity {
     nullable: false,
     default: '',
   })
-  name: string
+  displayName: string
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    default: '',
+  })
+  firstName: string
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    default: '',
+  })
+  lastName: string
 
   @Column({
     type: 'varchar',

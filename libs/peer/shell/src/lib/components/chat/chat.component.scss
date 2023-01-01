@@ -1,0 +1,25 @@
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  > section {
+    margin: 0 8px;
+  }
+
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+}
+
+.emoji-list {
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 300px;
+  margin: 6px;
+  padding: 6px;
+  column-gap: 6px;
+  list-style: none;
+}

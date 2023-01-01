@@ -1,7 +1,8 @@
 import {IsEmail, IsString, MaxLength, MinLength} from 'class-validator'
 import {ApiProperty, ApiHideProperty} from '@nestjs/swagger'
+import { CreateUser } from '@speek/type'
 
-export class CreateUserDto {
+export class CreateUserDto implements CreateUser {
   @IsString()
   @ApiProperty({
     nullable: false,
@@ -26,7 +27,7 @@ export class CreateUserDto {
   @ApiProperty({
     nullable: false,
   })
-  name: string
+  displayName: string
 
   @ApiHideProperty()
   salt?: string

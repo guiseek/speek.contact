@@ -1,25 +1,24 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
+@use './scss/palettes' as palette;
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$peer-primary: mat.define-palette(mat.$deep-purple-palette);
-$peer-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
+$peer-primary: mat.define-palette(palette.$grey-palette);
+$peer-accent: mat.define-palette(palette.$yellow-palette);
 $peer-warn: mat.define-palette(mat.$red-palette);
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$peer-theme: mat.define-light-theme(
+$peer-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $peer-primary,
+      accent: $peer-accent,
+      warn: $peer-warn,
+    ),
+  )
+);
+$peer-light-theme: mat.define-light-theme(
   (
     color: (
       primary: $peer-primary,
@@ -29,12 +28,18 @@ $peer-theme: mat.define-light-theme(
   )
 );
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($peer-theme);
+@include mat.all-component-themes($peer-light-theme);
 
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --background-muted: #E6E6E6;
+}
+
+.secondary {
+  fill: #E6E6E6;
+  /* fill: var(--background-muted); */
+}
 
 html,
 body {
@@ -45,6 +50,24 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+body {
+  &.dark-mode {
+    @include mat.all-component-colors($peer-dark-theme);
+
+    .mat-drawer-container {
+      background-color: #181818;
+    }
+    .mat-mdc-card {
+      --mdc-elevated-card-container-color: #121212;
+    }
+  }
+}
+a:link {
+  text-decoration: none;
+}
+.space {
+  flex: 1 0 auto;
+}
 .fade-in {
   animation: fade-in 1200ms cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
@@ -54,5 +77,38 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+.meet-expansion-panel .mat-expansion-panel-content > .mat-expansion-panel-body {
+  padding: 0;
+  margin-bottom: -4px;
+}
+
+a[href] {
+  display: flex;
+  height: auto;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.flex {
+  display: flex;
+
+  &.col {
+    flex-direction: column;
+
+  }
+  &.row {
+    flex-direction: row;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+
+  &.justify-center {
+    justify-content: center;
   }
 }

@@ -6,7 +6,7 @@ import {
   WebSocketGateway,
   OnGatewayConnection,
 } from '@nestjs/websockets'
-import {SignalEvent, SignalMessage} from '@speek/peer/data'
+import {PeerMessage, SignalingEvent} from '@speek/type'
 import {Server, Socket} from 'socket.io'
 
 @WebSocketGateway({cors: true})
@@ -15,40 +15,40 @@ export class AppGateway implements OnGatewayConnection {
   private server: Server
 
   handleConnection(@ConnectedSocket() client: Socket) {
-    client.emit(SignalEvent.Connection, {id: client.id})
+    client.emit(SignalingEvent.Connection, {id: client.id})
   }
 
-  @SubscribeMessage(SignalEvent.KnockKnock)
+  @SubscribeMessage(SignalingEvent.KnockKnock)
   knockKnock(
     @ConnectedSocket() contact: Socket,
-    @MessageBody() payload: SignalMessage
+    @MessageBody() payload: PeerMessage
   ) {
-    console.log(payload);
+    console.log(payload)
 
     const room = this.takeOrStartRoom(payload)
     if (room.length >= 0 && room.length < 2) {
-      contact.emit(SignalEvent.Available, true)
+      contact.emit(SignalingEvent.Available, true)
     } else {
-      contact.emit(SignalEvent.Available, false)
+      contact.emit(SignalingEvent.Available, false)
     }
   }
 
-  @SubscribeMessage(SignalEvent.Message)
+  @SubscribeMessage(SignalingEvent.Message)
   onMessage(
     @ConnectedSocket() socket: Socket,
-    @MessageBody() payload: SignalMessage
+    @MessageBody() payload: PeerMessage
   ) {
-    console.log(payload);
-    if (socket.rooms.has(payload.call)) {
-      socket.to(payload.call).emit(SignalEvent.Message, payload)
+    console.log(payload)
+    if (socket.rooms.has(payload.meet)) {
+      socket.to(payload.meet).emit(SignalingEvent.Message, payload)
     } else {
-      socket.join(payload.call)
-      socket.broadcast.emit(SignalEvent.Message, payload)
+      socket.join(payload.meet)
+      socket.broadcast.emit(SignalingEvent.Message, payload)
     }
   }
 
-  private takeOrStartRoom({call}: SignalMessage) {
+  private takeOrStartRoom({meet}: PeerMessage) {
     const adapter = this.server.sockets.adapter
-    return adapter.rooms[call] ?? {length: 0}
+    return adapter.rooms[meet] ?? {length: 0}
   }
 }

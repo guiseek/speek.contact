@@ -1,10 +1,11 @@
-import {PartialType} from '@nestjs/mapped-types'
+import {ApiProperty, OmitType, PartialType} from '@nestjs/swagger'
 import {CreateUserDto} from './create-user.dto'
-import {UpdateUser} from '@speek/type'
 
-export class UpdateUserDto
-  extends PartialType(CreateUserDto)
-  implements UpdateUser
-{
+export class UpdateUserDto extends PartialType(
+  OmitType(CreateUserDto, ['password'])
+) {
+  @ApiProperty({
+    nullable: true,
+  })
   id: number
 }

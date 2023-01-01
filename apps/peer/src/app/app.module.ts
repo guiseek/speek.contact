@@ -1,5 +1,6 @@
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {BrowserModule} from '@angular/platform-browser'
+import {HttpClientModule} from '@angular/common/http'
 import {RouterModule} from '@angular/router'
 import {NgModule} from '@angular/core'
 
@@ -11,6 +12,7 @@ import {appConfig, appRoutes} from './app.routes'
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes, appConfig),
   ],

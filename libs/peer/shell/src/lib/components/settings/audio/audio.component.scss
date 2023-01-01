@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  video {
+    width: 360px;
+    height: 180px;
+    object-fit: cover;
+    object-position: center;
+  }
+}

@@ -1,7 +1,7 @@
 import {CanActivate, ExecutionContext, Injectable} from '@nestjs/common'
 import {WsException} from '@nestjs/websockets'
 import {Reflector} from '@nestjs/core'
-import {SignalMessage} from '@speek/peer/data'
+import {PeerMessage} from '@speek/type'
 import {isValid} from '@speek/peer/utils'
 import {Observable} from 'rxjs'
 import {IS_ALLOWED_KEY} from './allowed.decorator'
@@ -22,10 +22,10 @@ export class SignalingGuard implements CanActivate {
     return this.hasCall(context.switchToWs().getData())
   }
 
-  hasCall({call, user}: SignalMessage) {
-    console.log(call, user)
+  hasCall({meet, user}: PeerMessage) {
+    console.log(meet, user)
 
-    if (!call || !isValid(call)) throw new WsException('Missing call.')
-    return !!call
+    if (!meet || !isValid(meet)) throw new WsException('Missing meet.')
+    return !!meet
   }
 }

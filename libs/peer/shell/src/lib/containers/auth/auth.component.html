@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-card-header>
+    <img mat-card-avatar src="/assets/speek.svg" alt="Speek" />
+    <mat-card-title>Speek</mat-card-title>
+    <mat-card-subtitle>Contact</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <section>
+    <mat-tab-group color="accent" dynamicHeight>
+      <mat-tab label="In">
+        <ng-template matTabContent>
+          <speek-sign-in (sign)="onSignIn($event)"></speek-sign-in>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Up">
+        <ng-template matTabContent>
+          <speek-sign-up (sign)="onSignUp($event)"></speek-sign-up>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </section>
+</mat-card>

@@ -3,6 +3,7 @@ import {PassportStrategy} from '@nestjs/passport'
 import {ExtractJwt, Strategy} from 'passport-jwt'
 import {authConfig} from '../../config/auth'
 import {AuthPayload} from '@speek/type'
+import {AuthUserResponseDto} from '@speek/keep/data'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -14,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  async validate(payload: AuthPayload) {
-    return {id: payload.sub, username: payload.username}
+  async validate({sub, email, displayName}: AuthPayload) {
+    return new AuthUserResponseDto(sub, email, displayName)
   }
 }

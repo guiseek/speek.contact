@@ -2,6 +2,6 @@ export interface CreateUser {
   username: string
   password: string
   email: string
-  name: string
+  displayName: string
   salt?: string
 }

@@ -15,8 +15,11 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/peer/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/peer/src/favicon.ico", "apps/peer/src/assets"],
+        "assets": ["apps/peer/src/favicon.svg", "apps/peer/src/assets"],
         "styles": ["apps/peer/src/styles.scss"],
+        "allowedCommonJsDependencies": [
+          "json5"
+       ],
         "scripts": []
       },
       "configurations": {

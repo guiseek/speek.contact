@@ -11,7 +11,9 @@ import {
   AuthRequestDto,
   AuthResponseDto,
   AuthService,
+  AuthUserResponseDto,
   CheckUserDto,
+  CheckUserResponseDto,
   CreateUserDto,
   UserResponseDto,
 } from '@speek/keep/data'
@@ -44,9 +46,13 @@ export class AuthController {
   @Allowed()
   @Post('check')
   @ApiOperation({summary: 'Check user availability'})
+  @ApiResponse({
+    status: 200,
+    description: 'The check user response',
+    type: CheckUserResponseDto,
+  })
   async checkUsername(@Body() {username}: CheckUserDto) {
-    const user = await this.authService.checkUser({username})
-    return user ? {message: 'Username already exists'} : ''
+    return this.authService.checkUser({username})
   }
 
   @Allowed()
@@ -58,8 +64,8 @@ export class AuthController {
     description: 'The auth user record',
     type: UserResponseDto,
   })
-  async register(@Body() user: CreateUserDto) {
-    return this.authService.createUser(user)
+  async register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.createUser(createUserDto)
   }
 
   @Get('me')
@@ -69,7 +75,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'The auth user record',
-    type: UserResponseDto,
+    type: AuthUserResponseDto,
   })
   getProfile(@Request() req: AuthUserRequest) {
     return req.user

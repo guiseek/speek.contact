@@ -1,0 +1,56 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <section>
+    <mat-form-field>
+      <mat-label>Usuário</mat-label>
+      <input
+        type="text"
+        matInput
+        speekCheckUser
+        #checkUser="speekCheckUser"
+        formControlName="username"
+        autocomplete="username"
+      />
+      <mat-error *ngIf="checkUser.alreadyExists$ | async as check">
+        {{ check.message }}
+      </mat-error>
+      <mat-hint *ngIf="checkUser.isAvailable$ | async as check">
+        {{ check.message }}
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Senha</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="password"
+        autocomplete="new-password"
+      />
+      <mat-error>Mínimo de 6 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="displayName"
+        autocomplete="cc-name"
+      />
+      <mat-error>Obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>E-mail</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+        autocomplete="email"
+      />
+      <mat-error>E-mail inválido</mat-error>
+    </mat-form-field>
+  </section>
+
+  <footer>
+    <button mat-raised-button>Enviar</button>
+  </footer>
+</form>

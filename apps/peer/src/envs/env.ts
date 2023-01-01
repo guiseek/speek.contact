@@ -1,5 +1,11 @@
 export const env = {
   prod: false,
+  oauth: {
+    google: {
+      clientId: '1022997783034-mg4hh09im4646t2rkm9cofki3rannhbn.apps.googleusercontent.com',
+      secretId: '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'
+    }
+  },
   gateway: {
     url: 'http://localhost:3333',
   },

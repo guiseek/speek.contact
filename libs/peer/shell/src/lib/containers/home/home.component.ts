@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core'
-import {Peer} from '@speek/peer/data'
-import {short} from '../../shared/utilities/uuid'
+import {Router} from '@angular/router'
+import {AuthService} from '@speek/peer/data'
+import {short} from '@speek/peer/utils'
 
 @Component({
   selector: 'speek-home',
@@ -8,12 +9,15 @@ import {short} from '../../shared/utilities/uuid'
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  randomRoom = short()
+  auth = inject(AuthService)
 
-  peer = inject(Peer)
+  router = inject(Router)
 
-  constructor() {
-    console.log(this.peer);
+  randomCode = short()
+  placeholder = `Sugestão: ${this.randomCode}. -- Enter para usar a sugestão`
 
+  createRoom(code = '') {
+    const route = ['/', code == '' ? this.randomCode : code]
+    this.router.navigate(route)
   }
 }

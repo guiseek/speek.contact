@@ -4,9 +4,11 @@ export interface User {
   password: string
   salt: string
   email: string
-  birthday?: Date
-  name: string
   photoUrl: string
+  displayName: string
+  firstName: string
+  lastName: string
+  birthday?: Date
   status: boolean
   createdAt: Date
   updatedAt: Date
