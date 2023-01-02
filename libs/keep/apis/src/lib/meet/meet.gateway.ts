@@ -4,6 +4,7 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   OnGatewayConnection,
+  OnGatewayDisconnect,
 } from '@nestjs/websockets'
 import {Socket} from 'socket.io'
 import {PeerMessage, SignalingEvent} from '@speek/type'
@@ -11,14 +12,14 @@ import {MeetService} from '@speek/keep/data'
 import {UseGuards} from '@nestjs/common'
 import {SignalingGuard} from './guards/signaling.guard'
 
-// const origin = ['localhost:4200', 'speek.contact']
-
-@WebSocketGateway({
-  cors: true,
-})
-export class MeetGateway implements OnGatewayConnection {
+@WebSocketGateway({cors: true})
+export class MeetGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(@ConnectedSocket() client: Socket) {
-    client.emit(SignalingEvent.Connection, {id: client.id})
+    client.emit(SignalingEvent.Connection, {user: client.conn['id']})
+  }
+
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    client.emit(SignalingEvent.Disconnection, {user: client.conn['id']})
   }
 
   constructor(private readonly meetService: MeetService) {}

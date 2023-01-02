@@ -1,0 +1,29 @@
+<mat-toolbar color="primary" class="mat-elevation-z4">
+  <h3>Chat</h3>
+</mat-toolbar>
+
+<section>
+  <mat-list>
+    <mat-list-item *ngFor="let message of messages$ | async">
+      <span matListItemTitle>
+        {{ message.user === data.meta.user ? 'Você' : 'Outra pessoa' }}
+      </span>
+      <span matListItemLine>{{ message.text }}</span>
+      <small>{{ message.time | date: 'short' }}</small>
+    </mat-list-item>
+  </mat-list>
+</section>
+<mat-form-field>
+  <input
+    matInput
+    #message
+    (keyup.enter)="submit(message)"
+    placeholder="Mensagem"
+  />
+</mat-form-field>
+<footer mat-dialog-actions [align]="'end'">
+  <button mat-raised-button (click)="submit(message)">
+    <mat-icon>send</mat-icon>
+    Enviar
+  </button>
+</footer>

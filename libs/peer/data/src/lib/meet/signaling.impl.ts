@@ -1,6 +1,6 @@
 import {PeerMessageMap, Callback} from '@speek/type'
 import {Signaling} from './ports/signaling'
-import {io, Socket} from 'socket.io-client'
+import {io, Socket, } from 'socket.io-client'
 
 export class SignalingImpl implements Signaling {
   conn: Socket

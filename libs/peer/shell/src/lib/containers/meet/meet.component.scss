@@ -45,17 +45,7 @@
   .meet-card-remote {
     margin: 8px;
     overflow: hidden;
-  }
-
-  .mat-sidenav-end {
-    width: 320px;
-  }
-
-  .icon-flip {
-    transition: transform 250ms ease-in-out;
-
-    &.flipped {
-      transform: rotate(180deg);
-    }
+    min-width: 1280px;
+    max-width: calc(100% - 128px);
   }
 }

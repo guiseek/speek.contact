@@ -1,6 +1,9 @@
-import {Callback} from '@speek/type'
+import {PeerChatMessage} from '@speek/type'
+import {Observable} from 'rxjs'
 
 export abstract class Transfer {
-  abstract set onMesssage(callback: Callback<string>)
-  abstract set onBinary(callback: Callback<ArrayBuffer>)
+  abstract message$: Observable<PeerChatMessage>
+  abstract binary$: Observable<ArrayBuffer>
+  abstract sendMessage(message: PeerChatMessage): void
+  // abstract sendBinary(binary: ArrayBuffer): void
 }

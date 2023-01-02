@@ -1,4 +1,5 @@
 export * from './peer-message-map';
+export * from './peer-direction';
 export * from './peer-message';
 export * from './peer-chat-message';
 export * from './peer-chat';

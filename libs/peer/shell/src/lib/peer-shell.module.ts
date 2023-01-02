@@ -10,7 +10,7 @@ import {PeerShellComponent} from './peer-shell.component'
 import {MeetComponent, HomeComponent, AuthComponent} from './containers'
 import {peerShellRoutes} from './lib.routes'
 // prettier-ignore
-import {SettingsDialog, AudioFrequencyDirective, AudioComponent, VideoComponent, ChatComponent, SignInComponent, SignUpComponent, CheckUserDirective, ToolbarComponent, LocalStreamComponent} from './components'
+import {SettingsDialog, AudioFrequencyDirective, AudioComponent, VideoComponent, SignInComponent, SignUpComponent, CheckUserDirective, ToolbarComponent, LocalStreamComponent, ChatDialog} from './components';
 
 @NgModule({
   imports: [
@@ -30,13 +30,13 @@ import {SettingsDialog, AudioFrequencyDirective, AudioComponent, VideoComponent,
     MeetComponent,
     HomeComponent,
     AudioFrequencyDirective,
-    ChatComponent,
     AuthComponent,
     SignInComponent,
     SignUpComponent,
     CheckUserDirective,
     ToolbarComponent,
     LocalStreamComponent,
+    ChatDialog,
   ],
 })
 export class PeerShellModule {}

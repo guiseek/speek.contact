@@ -18,21 +18,6 @@
         (toggleVideo)="peer.toggleVideo($event)"
       ></speek-local-stream>
     </mat-sidenav-content>
-
-    <mat-sidenav
-      #enav
-      class="mat-sidenav-end"
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
-      [fixedInViewport]="mobileQuery.matches"
-      fixedBottomGap="56"
-      [opened]="chatOpened"
-      position="end"
-    >
-      <speek-chat
-        [user]="peer.user"
-        (send)="onSendMessage($event)"
-      ></speek-chat>
-    </mat-sidenav>
   </mat-sidenav-container>
 
   <mat-toolbar color="primary" class="meet-toolbar mat-elevation-z4">
@@ -42,14 +27,19 @@
 
     <span class="space"></span>
 
+    <ng-container *ngIf="peer.transfer$ | async as transfer">
+      <button
+        [disabled]="!transfer.receiver"
+        type="button"
+        mat-icon-button
+        (click)="openChat(transfer)"
+      >
+        <mat-icon>chat</mat-icon>
+      </button>
+    </ng-container>
+
     <button type="button" mat-icon-button (click)="openSettings()">
       <mat-icon>settings</mat-icon>
-    </button>
-
-    <button mat-icon-button (click)="enav.toggle()">
-      <mat-icon class="icon-flip" [ngClass]="{flipped: enav.opened}">
-        menu_open
-      </mat-icon>
     </button>
   </mat-toolbar>
 </div>

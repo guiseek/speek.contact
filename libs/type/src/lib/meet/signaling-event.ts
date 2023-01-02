@@ -1,6 +1,7 @@
 export enum SignalingEvent {
-  KnockKnock = 'knock-knock',
   Connection = 'connection',
+  KnockKnock = 'knock-knock',
+  Disconnection = 'disconnection',
   Available = 'available',
   Message = 'message',
   Answer = 'answer',
