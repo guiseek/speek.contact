@@ -1,2 +1,2 @@
-export * from './create-password';
-export * from './validate-password';
+export * from './create-password'
+export * from './validate-password'

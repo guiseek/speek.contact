@@ -1,5 +1,6 @@
 import {Component, inject} from '@angular/core'
 import {Router} from '@angular/router'
+import {Clipboard} from '@angular/cdk/clipboard'
 import {AuthService} from '@speek/peer/data'
 import {short} from '@speek/utils'
 
@@ -19,5 +20,17 @@ export class HomeComponent {
   createRoom(code = '') {
     const route = ['/', code == '' ? this.randomCode : code]
     this.router.navigate(route)
+  }
+
+  onPaste(ev: ClipboardEvent) {
+    if (ev.clipboardData) {
+      const data = ev.clipboardData.getData('Text')
+      if (data.indexOf('#/') > -1) {
+        const [, code] = data.split('#/')
+        this.createRoom(code)
+      } else {
+        this.createRoom(data)
+      }
+    }
   }
 }

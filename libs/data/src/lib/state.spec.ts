@@ -24,7 +24,7 @@ class StateMock extends State<StateDataMock> {
 
 const userMock = {
   id: 0,
-  username: 'Gui'
+  username: 'Gui',
 }
 
 describe('State', () => {

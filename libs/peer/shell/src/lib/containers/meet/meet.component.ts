@@ -11,7 +11,7 @@ import {MatDialog} from '@angular/material/dialog'
 import {ActivatedRoute} from '@angular/router'
 import {AuthFacade, Peer, StorageService, Transfer} from '@speek/peer/data'
 import {PeerDirection} from '@speek/type'
-import {filter} from 'rxjs'
+import {BehaviorSubject, filter, Subject} from 'rxjs'
 import {
   ChatDialog,
   SettingsDialog,
@@ -32,14 +32,11 @@ export class MeetComponent implements OnInit, OnDestroy {
   storage = inject(StorageService)
   auth = inject(AuthFacade)
   route = inject(ActivatedRoute)
+  cdr = inject(ChangeDetectorRef)
 
   mobileQuery: MediaQueryList
 
   private _mobileQueryListener: () => void
-
-  channel$ = this.peer.transfer$.pipe(
-    filter(({sender, receiver}) => !!sender && !!receiver)
-  )
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)')

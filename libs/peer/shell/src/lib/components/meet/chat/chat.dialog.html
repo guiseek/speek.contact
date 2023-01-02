@@ -22,7 +22,7 @@
       <mat-card-subtitle>{{ message.time | date: 'short' }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ message.text }}</p>
+      <p [innerHTML]="message.text | linkify"></p>
     </mat-card-content>
   </mat-card>
 </section>

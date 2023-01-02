@@ -82,7 +82,7 @@ a:link {
 }
 
 a[href] {
-  display: flex;
+  display: inline-flex;
   height: auto;
   &:hover {
     cursor: pointer;
@@ -94,7 +94,6 @@ a[href] {
 
   &.col {
     flex-direction: column;
-
   }
   &.row {
     flex-direction: row;

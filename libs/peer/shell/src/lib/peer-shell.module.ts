@@ -9,6 +9,7 @@ import {MeetComponent, HomeComponent, AuthComponent} from './containers'
 import {peerShellRoutes} from './lib.routes'
 // prettier-ignore
 import {SettingsDialog, AudioFrequencyDirective, AudioComponent, VideoComponent, SignInComponent, SignUpComponent, CheckUserDirective, ToolbarComponent, LocalStreamComponent, ChatDialog} from './components';
+import {LinkifyPipe} from './components/meet/chat/linkify.pipe'
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import {SettingsDialog, AudioFrequencyDirective, AudioComponent, VideoComponent,
     ToolbarComponent,
     LocalStreamComponent,
     ChatDialog,
+    LinkifyPipe,
   ],
 })
 export class PeerShellModule {}

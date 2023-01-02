@@ -70,19 +70,14 @@ export class PeerImpl implements Peer {
 
         this._stream.next(stream)
 
-        // const [videoTrack] = this.stream.getVideoTracks()
-        // const [audioTrack] = this.stream.getAudioTracks()
-
-        // this.conn.addTrack(videoTrack)
-        // this.conn.addTrack(audioTrack)
         this.stream.getTracks().forEach((track) => {
           this.conn.addTrack(track, this.stream)
         })
 
         this.remote = new MediaStream()
 
-        this.conn.ontrack = ({isTrusted, track}) => {
-          if (this.remote && isTrusted && track) {
+        this.conn.ontrack = ({isTrusted, track, streams}) => {
+          if (this.remote && isTrusted && streams) {
             this.remote.addTrack(track)
             this._track.next(track)
           }
@@ -104,7 +99,6 @@ export class PeerImpl implements Peer {
   waitData() {
     const sender = this.conn.createDataChannel(`${this.meet}-${this.user}`)
     this.conn.ondatachannel = ({channel}) => {
-      console.log(channel)
       this._transfer.next({
         sender: new TransferImpl(sender),
         receiver: new TransferImpl(channel),

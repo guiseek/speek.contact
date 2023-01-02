@@ -14,7 +14,7 @@ import {BehaviorSubject} from 'rxjs'
 
 @Component({
   templateUrl: './chat.dialog.html',
-  styleUrls: ['./chat.dialog.scss']
+  styleUrls: ['./chat.dialog.scss'],
 })
 export class ChatDialog implements OnInit {
   @ViewChild('section', {static: true})

@@ -90,9 +90,8 @@ export class AuthFacadeImpl extends State<AuthState> implements AuthFacade {
   }
 
   throwError = <T>(err: HttpErrorResponse, caught: T) => {
-
     if (err && err.error) {
-      console.log(err);
+      console.log(err)
       this.setState({error: err.error.message})
       throw err
     }
