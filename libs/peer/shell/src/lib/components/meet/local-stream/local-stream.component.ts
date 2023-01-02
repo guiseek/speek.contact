@@ -9,36 +9,6 @@ import {
 } from '@angular/core'
 import {PeerUiState} from '@speek/type'
 
-interface frameNumberArgInfo {
-  framesCounts: number[]
-  framesDurations: number[]
-  timeScale: number
-}
-
-const getTimestampIndex = (
-  argInfo: frameNumberArgInfo,
-  timestampToFind: number
-) => {
-  // Convert user time to time units
-  const findTime = timestampToFind * argInfo.timeScale
-  let k = 0
-  let time = 0
-
-  for (let i = 0; i < argInfo.framesCounts.length; i += 1) {
-    for (let j = 0; j < argInfo.framesCounts[i]; j += 1) {
-      if (time >= findTime) {
-        return Math.max(1, k - 1)
-      }
-      time += argInfo.framesDurations[i]
-      k += 1
-    }
-  }
-
-  return time >= findTime ? Math.max(0, k - 1) : k - 1
-}
-
-const BACKGROUND = `/assets/backgrounds/interior-of-empty-modern-office-it-company-modern.jpg`
-
 @Component({
   selector: 'speek-local-stream',
   templateUrl: './local-stream.component.html',
@@ -74,7 +44,7 @@ export class LocalStreamComponent implements OnDestroy {
   chromaKeyEnabled = false
   private animationFrame = -1
 
-  enableChromeKey(background = BACKGROUND) {
+  enableChromeKey() {
     this.canvas.width = this.video.videoWidth
     this.canvas.height = this.video.videoHeight
 
