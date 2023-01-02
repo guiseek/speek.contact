@@ -6,7 +6,7 @@
 @include mat.core();
 
 $peer-primary: mat.define-palette(palette.$grey-palette);
-$peer-accent: mat.define-palette(palette.$yellow-palette);
+$peer-accent: mat.define-palette(palette.$green-palette, 400, 900, A700);
 $peer-warn: mat.define-palette(mat.$red-palette);
 
 $peer-dark-theme: mat.define-dark-theme(
@@ -31,15 +31,6 @@ $peer-light-theme: mat.define-light-theme(
 @include mat.all-component-themes($peer-light-theme);
 
 /* You can add global styles to this file, and also import other style files */
-
-:root {
-  --background-muted: #E6E6E6;
-}
-
-.secondary {
-  fill: #E6E6E6;
-  /* fill: var(--background-muted); */
-}
 
 html,
 body {
