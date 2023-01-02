@@ -26,6 +26,7 @@
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "15.4.1",
     "@types/bcrypt": "^5.0.0",
+    "@types/dom-mediacapture-transform": "^0.1.4",
     "@types/google.accounts": "^0.0.4",
     "@types/jest": "28.1.1",
     "@types/node": "18.7.1",

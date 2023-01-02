@@ -70,11 +70,14 @@ export class PeerImpl implements Peer {
 
         this._stream.next(stream)
 
-        const [videoTrack] = this.stream.getVideoTracks()
-        const [audioTrack] = this.stream.getAudioTracks()
+        // const [videoTrack] = this.stream.getVideoTracks()
+        // const [audioTrack] = this.stream.getAudioTracks()
 
-        this.conn.addTrack(videoTrack)
-        this.conn.addTrack(audioTrack)
+        // this.conn.addTrack(videoTrack)
+        // this.conn.addTrack(audioTrack)
+        this.stream.getTracks().forEach((track) => {
+          this.conn.addTrack(track, this.stream)
+        })
 
         this.remote = new MediaStream()
 

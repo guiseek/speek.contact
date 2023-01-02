@@ -17,7 +17,6 @@ export class TransferImpl implements Transfer {
         } catch (err) {
           this._message.next(data)
         }
-        // this._onMesssage.forEach((cb) => cb(data))
       }
       if (data instanceof ArrayBuffer) {
         this._binary.next(data)

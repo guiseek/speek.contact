@@ -5,5 +5,4 @@ export abstract class Transfer {
   abstract message$: Observable<PeerChatMessage>
   abstract binary$: Observable<ArrayBuffer>
   abstract sendMessage(message: PeerChatMessage): void
-  // abstract sendBinary(binary: ArrayBuffer): void
 }

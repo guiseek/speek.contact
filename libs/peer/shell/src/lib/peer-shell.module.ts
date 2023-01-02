@@ -2,10 +2,8 @@ import {NgModule} from '@angular/core'
 import {CommonModule} from '@angular/common'
 import {RouterModule} from '@angular/router'
 import {ReactiveFormsModule} from '@angular/forms'
-import {OverlayModule} from '@angular/cdk/overlay'
-import {DialogModule} from '@angular/cdk/dialog'
-import {LayoutModule} from '@angular/cdk/layout'
 import {MaterialModule} from './shared/material.module'
+import {CdkModule} from './shared/cdk.module'
 import {PeerShellComponent} from './peer-shell.component'
 import {MeetComponent, HomeComponent, AuthComponent} from './containers'
 import {peerShellRoutes} from './lib.routes'
@@ -16,9 +14,7 @@ import {SettingsDialog, AudioFrequencyDirective, AudioComponent, VideoComponent,
   imports: [
     CommonModule,
     RouterModule.forChild(peerShellRoutes),
-    OverlayModule,
-    DialogModule,
-    LayoutModule,
+    CdkModule,
     MaterialModule,
     ReactiveFormsModule,
   ],

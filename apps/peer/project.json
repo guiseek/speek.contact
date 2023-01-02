@@ -17,10 +17,9 @@
         "inlineStyleLanguage": "scss",
         "assets": ["apps/peer/src/favicon.svg", "apps/peer/src/assets"],
         "styles": ["apps/peer/src/styles.scss"],
-        "allowedCommonJsDependencies": [
-          "json5"
-       ],
-        "scripts": []
+        "allowedCommonJsDependencies": ["json5"],
+        "scripts": [],
+        "webWorkerTsConfig": "apps/peer/tsconfig.worker.json"
       },
       "configurations": {
         "production": {
@@ -82,7 +81,8 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/peer/jest.config.ts",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "webWorkerTsConfig": "apps/peer/tsconfig.worker.json"
       }
     }
   },

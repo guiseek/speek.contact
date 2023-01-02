@@ -29,14 +29,18 @@
 
     <ng-container *ngIf="peer.transfer$ | async as transfer">
       <button
-        [disabled]="!transfer.receiver"
         type="button"
         mat-icon-button
+        [disabled]="!transfer.receiver"
         (click)="openChat(transfer)"
       >
         <mat-icon>chat</mat-icon>
       </button>
     </ng-container>
+
+    <button type="button" mat-icon-button (click)="toggleChromaKey()">
+      <mat-icon>wallpaper</mat-icon>
+    </button>
 
     <button type="button" mat-icon-button (click)="openSettings()">
       <mat-icon>settings</mat-icon>

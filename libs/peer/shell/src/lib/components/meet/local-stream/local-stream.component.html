@@ -5,23 +5,24 @@
   [expanded]="panelOpenState"
 >
   <mat-expansion-panel-header>
-    <mat-panel-title> Você </mat-panel-title>
-
     <mat-panel-description>
-      {{ panelOpenState ? '' : 'ainda' }}
-      {{ state.video ? 'não' : '' }} está visível na conversa
+      Você {{ panelOpenState ? ' ' : ' ainda' }}
+      {{ state.video ? ' não' : ' ' }} está visível na conversa
     </mat-panel-description>
   </mat-expansion-panel-header>
 
-  <ng-template matExpansionPanelContent>
+  <div class="media-stream" [ngClass]="{'chroma-key': chromaKeyEnabled}">
     <video
-      #local
+      #video
       autoplay
       playsInline
       [muted]="!!stream"
       [srcObject]="stream"
     ></video>
+    <canvas #canvas> </canvas>
+  </div>
 
+  <ng-template matExpansionPanelContent>
     <mat-action-row>
       <button
         type="button"

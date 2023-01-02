@@ -2,7 +2,15 @@ import {Component} from '@angular/core'
 
 @Component({
   selector: 'speek-peer-shell',
-  templateUrl: './peer-shell.component.html',
-  styleUrls: ['./peer-shell.component.scss'],
+  template: `<router-outlet></router-outlet>`,
+  styles: [
+    `
+      :host {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+    `,
+  ],
 })
 export class PeerShellComponent {}

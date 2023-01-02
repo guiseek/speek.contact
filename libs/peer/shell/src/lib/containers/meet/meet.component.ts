@@ -5,13 +5,18 @@ import {
   Component,
   OnDestroy,
   ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core'
 import {MatDialog} from '@angular/material/dialog'
 import {ActivatedRoute} from '@angular/router'
 import {AuthFacade, Peer, StorageService, Transfer} from '@speek/peer/data'
-import {PeerChatMessage, PeerDirection} from '@speek/type'
-import {filter, map} from 'rxjs'
-import {SettingsDialog, ChatDialog} from '../../components'
+import {PeerDirection} from '@speek/type'
+import {filter} from 'rxjs'
+import {
+  ChatDialog,
+  SettingsDialog,
+  LocalStreamComponent,
+} from '../../components'
 
 @Component({
   selector: 'speek-meet',
@@ -19,6 +24,9 @@ import {SettingsDialog, ChatDialog} from '../../components'
   styleUrls: ['./meet.component.scss'],
 })
 export class MeetComponent implements OnInit, OnDestroy {
+  @ViewChild(LocalStreamComponent)
+  localStream!: LocalStreamComponent
+
   peer = inject(Peer)
   dialog = inject(MatDialog)
   storage = inject(StorageService)
@@ -28,13 +36,6 @@ export class MeetComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList
 
   private _mobileQueryListener: () => void
-
-  panelOpenState = true
-
-  chatMeta = {
-    user: this.peer.user,
-    meet: this.peer.meet ?? location.hash.replace('#/', ''),
-  }
 
   channel$ = this.peer.transfer$.pipe(
     filter(({sender, receiver}) => !!sender && !!receiver)
@@ -53,18 +54,14 @@ export class MeetComponent implements OnInit, OnDestroy {
     if (audio && video) this.peer.connect(audio, video, id)
   }
 
-  onSelect(files: FileList | null) {
-    const file = files && files.item(0)
-    // if (file) this.peer.upload(file)
-  }
-
   openChat(channel: Record<PeerDirection, Transfer | null>) {
     const {user, meet} = this.peer
-    const data = {
-      meta: {user, meet},
-      channel,
-    }
-    this.dialog.open(ChatDialog, {data, panelClass: 'meet-chat-dialog'})
+
+    this.dialog.open(ChatDialog, {
+      data: {meta: {user, meet}, channel},
+      panelClass: 'meet-chat-dialog',
+      hasBackdrop: false,
+    })
   }
 
   openSettings() {
@@ -77,15 +74,28 @@ export class MeetComponent implements OnInit, OnDestroy {
     })
   }
 
-  onSendMessage(text: string) {
-    const time = new Date()
-    const {user, meet = ''} = this.peer
-    const message = {user, meet, time, text}
-    // this.chatComponent.addMessage(message)
-    // this.peer.sendMessage(message)
-  }
-  sendChatMessage(value: PeerChatMessage) {
-    // this.peer.sendMessage(value)
+  toggleChromaKey() {
+    if (!this.localStream.chromaKeyEnabled) {
+      const [videoTrack] = this.peer.stream.getVideoTracks()
+
+      const senderVideo = this.peer.conn
+        .getSenders()
+        .find(({track}) => track?.kind === videoTrack.kind)
+
+      const stream = this.localStream.enableChromeKey()
+      const [newVideoTrack] = stream.getVideoTracks()
+
+      if (senderVideo) {
+        senderVideo.replaceTrack(newVideoTrack)
+      }
+    } else {
+      const audio = this.storage.getItem('audioInput')
+      const video = this.storage.getItem('videoInput')
+
+      this.peer.replaceTrack(audio, video)
+
+      this.localStream.disableChromaKey()
+    }
   }
 
   ngOnDestroy() {
