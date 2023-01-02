@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core'
 import {Router} from '@angular/router'
 import {AuthService} from '@speek/peer/data'
-import {short} from '@speek/peer/utils'
+import {short} from '@speek/utils'
 
 @Component({
   selector: 'speek-home',

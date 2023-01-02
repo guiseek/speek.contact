@@ -1,122 +1,31 @@
 <div class="meet-container" [class.meet-is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="primary" class="meet-toolbar mat-elevation-z4">
-    <button mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <a routerLink="/">
-      <object data="/assets/speek.svg" type="image/svg+xml"></object>
-    </a>
-
-    <span class="space"></span>
-
-    <ng-container *ngIf="auth.user$ | async as user">
-      <button
-        mat-stroked-button
-        [matMenuTriggerFor]="beforeMenu"
-        [matMenuTriggerData]="{email: user.email}"
-      >
-        <mat-icon>account_circle</mat-icon>
-        {{ user.displayName }}
-      </button>
-
-      <mat-menu #beforeMenu="matMenu" xPosition="before">
-        <ng-template matMenuContent let-email="email">
-          <button mat-menu-item>Configurações</button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item (click)="auth.signOut()">
-            Sair ({{ email }})
-          </button>
-        </ng-template>
-      </mat-menu>
-    </ng-container>
-  </mat-toolbar>
+  <speek-meet-toolbar [auth]="auth"></speek-meet-toolbar>
 
   <mat-sidenav-container
     class="meet-sidenav-container"
     [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+    [style.marginBottom.px]="mobileQuery.matches ? 56 : 0"
   >
-    <mat-sidenav
-      #snav
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
-      [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56"
-    >
-      <mat-nav-list> </mat-nav-list>
-    </mat-sidenav>
-
     <mat-sidenav-content class="meet-sidenav-content">
       <mat-card id="remote" class="meet-card-remote">
         <video #remote autoplay playsinline [srcObject]="peer.remote"></video>
       </mat-card>
 
-      <mat-expansion-panel
-        class="meet-expansion-panel mat-elevation-z4"
-        (opened)="panelOpenState = true"
-        (closed)="panelOpenState = false"
-        [expanded]="panelOpenState"
-      >
-        <mat-expansion-panel-header>
-          <mat-panel-title> Você </mat-panel-title>
-
-          <mat-panel-description>
-            {{ panelOpenState ? '' : 'ainda' }}
-            {{ peer.uiState.video ? 'não' : '' }} está visível na conversa
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <ng-template matExpansionPanelContent>
-          <video
-            #local
-            autoplay
-            playsInline
-            [muted]="!!peer.stream"
-            [srcObject]="peer.stream"
-          ></video>
-        </ng-template>
-
-        <mat-action-row>
-          <button
-            type="button"
-            mat-icon-button
-            [color]="peer.uiState.video ? '' : 'primary'"
-            (click)="peer.toggleVideo(peer.stream)"
-          >
-            <mat-icon>
-              {{ peer.uiState.video ? 'videocam_off' : 'videocam' }}
-            </mat-icon>
-          </button>
-
-          <button
-            type="button"
-            mat-icon-button
-            [color]="peer.uiState.audio ? '' : 'primary'"
-            (click)="peer.toggleAudio(peer.stream)"
-          >
-            <mat-icon>
-              {{ peer.uiState.audio ? 'mic_off' : 'mic' }}
-            </mat-icon>
-          </button>
-
-          <button type="button" mat-icon-button (click)="inputFile.click()">
-            <mat-icon>upload</mat-icon>
-          </button>
-        </mat-action-row>
-
-        <input
-          hidden
-          type="file"
-          #inputFile
-          (change)="onSelect(inputFile.files)"
-        />
-      </mat-expansion-panel>
+      <speek-local-stream
+        [stream]="peer.stream"
+        [state]="peer.uiState"
+        (toggleAudio)="peer.toggleAudio($event)"
+        (toggleVideo)="peer.toggleVideo($event)"
+      ></speek-local-stream>
     </mat-sidenav-content>
 
     <mat-sidenav
       #enav
       class="mat-sidenav-end"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedBottomGap="56"
       [opened]="chatOpened"
-      mode="side"
       position="end"
     >
       <speek-chat

@@ -2,7 +2,7 @@ import {Component, inject, OnDestroy} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 import {AuthFacade, StorageService} from '@speek/peer/data'
 import {AuthRequest, CreateUser} from '@speek/type'
-import {SubAsync} from '@speek/peer/utils'
+import {SubAsync} from '@speek/utils'
 
 @Component({
   selector: 'speek-auth',

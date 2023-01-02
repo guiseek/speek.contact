@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core'
 import {MatDialog} from '@angular/material/dialog'
+import {ActivatedRoute} from '@angular/router'
 import {AuthFacade, Peer, StorageService} from '@speek/peer/data'
 import {PeerChatMessage} from '@speek/type'
 import {ChatComponent} from '../../components/chat/chat.component'
@@ -26,6 +27,7 @@ export class MeetComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog)
   storage = inject(StorageService)
   auth = inject(AuthFacade)
+  route = inject(ActivatedRoute)
 
   mobileQuery: MediaQueryList
 
@@ -48,7 +50,8 @@ export class MeetComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const audio = this.storage.getItem('audioInput')
     const video = this.storage.getItem('videoInput')
-    if (audio && video) this.peer.connect(audio, video)
+    const {id} = this.route.snapshot.params
+    if (audio && video) this.peer.connect(audio, video, id)
 
     this.peer.onDataChannel = (dc) => {
       console.log(dc)

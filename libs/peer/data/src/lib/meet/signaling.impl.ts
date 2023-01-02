@@ -4,9 +4,11 @@ import {io, Socket} from 'socket.io-client'
 
 export class SignalingImpl implements Signaling {
   conn: Socket
+
   constructor(readonly signalingServer: string) {
     this.conn = io(signalingServer)
   }
+
   on<K extends keyof PeerMessageMap>(
     event: K,
     fn: Callback<PeerMessageMap[K]>

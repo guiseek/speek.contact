@@ -5,7 +5,7 @@ import {
   PeerUiState,
   PeerChatMessage,
 } from '@speek/type'
-import {long} from '@speek/peer/utils'
+import {long} from '@speek/utils'
 import {Signaling} from './ports/signaling'
 import {TransferImpl} from './transfer.impl'
 import {Socket} from './ports/socket'
@@ -249,9 +249,12 @@ export class PeerImpl implements Peer {
       if (user === this.user) return
 
       if (sdp) {
-        await this.conn.setRemoteDescription(sdp)
+        if (this.conn.signalingState !== 'stable') {
+          await this.conn.setRemoteDescription(sdp)
+        }
         if (sdp.type === 'offer') {
-          this.conn.createAnswer().then(this.setDescription())
+          this.conn.restartIce()
+          await this.conn.createAnswer().then(this.setDescription())
         }
       } else if (ice) {
         this.conn.addIceCandidate(ice).catch(this.errorHandler)

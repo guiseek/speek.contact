@@ -7,7 +7,7 @@ import {
   EventEmitter,
   AfterViewInit,
 } from '@angular/core'
-import {SubAsync} from '@speek/peer/utils'
+import {SubAsync} from '@speek/utils'
 import {fromEvent, map} from 'rxjs'
 import {DeviceComponent} from '../device.compopnent'
 
