@@ -20,7 +20,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       password,
     })
     if (!user) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException(`Usuário não encontrado ou a senha está incorreta`)
     }
     return user
   }

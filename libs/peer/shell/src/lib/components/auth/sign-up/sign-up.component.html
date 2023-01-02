@@ -50,7 +50,13 @@
     </mat-form-field>
   </section>
 
+  <ng-content select="mat-error"></ng-content>
+
   <footer>
+    <a routerLink="/" mat-button>
+      <mat-icon>chevron_left</mat-icon>
+      Voltar
+    </a>
     <button mat-raised-button>Enviar</button>
   </footer>
 </form>

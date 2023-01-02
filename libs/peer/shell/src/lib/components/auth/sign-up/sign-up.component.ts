@@ -11,25 +11,23 @@ import {SignComponent, SignForm} from '../sign.component'
 export class SignUpComponent extends SignComponent<CreateUser> {
   @Output() sign = new EventEmitter<CreateUser>()
 
-  form = new FormGroup<SignForm<CreateUser>>(
-    {
-      username: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
-      password: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(6)],
-      }),
-      email: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.email],
-      }),
-      displayName: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.maxLength(500)],
-      }),
-    },
-    {updateOn: 'blur'}
-  )
+  form = new FormGroup<SignForm<CreateUser>>({
+    username: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+      updateOn: 'blur',
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(6)],
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    displayName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(500)],
+    }),
+  })
 }

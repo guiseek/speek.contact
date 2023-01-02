@@ -1,8 +1,14 @@
 import {Component, inject, OnDestroy} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
-import {AuthFacade, StorageService} from '@speek/peer/data'
 import {AuthRequest, CreateUser} from '@speek/type'
+import {AuthFacade} from '@speek/peer/data'
 import {SubAsync} from '@speek/utils'
+
+// type AuthParams = Record<'action', 'in' | 'up'>
+interface AuthParams {
+  action?: 'in' | 'up'
+  redirectTo?: string
+}
 
 @Component({
   selector: 'speek-auth',
@@ -10,10 +16,6 @@ import {SubAsync} from '@speek/utils'
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnDestroy {
-  links = [
-    {path: '/auth/sign/in', label: 'In'},
-    {path: '/auth/sign/up', label: 'Up'},
-  ]
   sub = new SubAsync()
 
   router = inject(Router)
@@ -21,20 +23,22 @@ export class AuthComponent implements OnDestroy {
 
   auth = inject(AuthFacade)
 
-  storage = inject(StorageService)
-
   get queryParams() {
-    return this.route.snapshot.queryParams
+    return this.route.snapshot.queryParams as AuthParams
+  }
+
+  actions = ['in', 'up']
+  get actionIndex() {
+    const {action = 'in'} = this.queryParams
+    const validAction = this.actions.includes(action)
+    return validAction ? this.actions.indexOf(action) : 0
   }
 
   onSignIn<T extends AuthRequest>(value: T) {
     this.auth.signIn(value)
 
     this.sub.async = this.auth.isAuthenticated$.subscribe((state) => {
-      if (state) {
-        const {redirectTo = '/'} = this.queryParams
-        this.router.navigateByUrl(redirectTo)
-      }
+      if (state) this.redirect()
     })
   }
 
@@ -42,11 +46,13 @@ export class AuthComponent implements OnDestroy {
     this.auth.signUp(value)
 
     this.sub.async = this.auth.isAuthenticated$.subscribe((state) => {
-      if (state) {
-        const {redirectTo = '/'} = this.queryParams
-        this.router.navigateByUrl(redirectTo)
-      }
+      if (state) this.redirect()
     })
+  }
+
+  redirect() {
+    const {redirectTo = '/'} = this.queryParams
+    this.router.navigateByUrl(redirectTo)
   }
 
   ngOnDestroy() {

@@ -6,15 +6,19 @@
   </mat-card-header>
   <mat-divider></mat-divider>
   <section>
-    <mat-tab-group color="accent" dynamicHeight>
-      <mat-tab label="In">
+    <mat-tab-group color="accent" [selectedIndex]="actionIndex" dynamicHeight>
+      <mat-tab label="Acesse sua conta">
         <ng-template matTabContent>
-          <speek-sign-in (sign)="onSignIn($event)"></speek-sign-in>
+          <speek-sign-in (sign)="onSignIn($event)">
+            <mat-error> {{ auth.error$ | async }} </mat-error>
+          </speek-sign-in>
         </ng-template>
       </mat-tab>
-      <mat-tab label="Up">
+      <mat-tab label="Crie sua conta">
         <ng-template matTabContent>
-          <speek-sign-up (sign)="onSignUp($event)"></speek-sign-up>
+          <speek-sign-up (sign)="onSignUp($event)">
+            <mat-error> {{ auth.error$ | async }} </mat-error>
+          </speek-sign-up>
         </ng-template>
       </mat-tab>
     </mat-tab-group>
