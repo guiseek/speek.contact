@@ -52,6 +52,7 @@ export class MeetComponent implements OnInit, OnDestroy {
     const video = this.storage.getItem('videoInput')
     const {id} = this.route.snapshot.params
     if (audio && video) this.peer.connect(audio, video, id)
+    if (!audio || !video) this.openSettings()
   }
 
   openChat(channel: Record<PeerDirection, Transfer | null>) {
