@@ -7,7 +7,7 @@ import {AuthController} from './auth/auth.controller'
 import {JwtAuthGuard} from './auth/guards/jwt-auth.guard'
 import {JwtStrategy, LocalStrategy} from './auth/strategies'
 import {UserController} from './user/user.controller'
-import {authConfig} from './config/auth'
+import {apisOptions} from './config/apis-options'
 import {MeetGateway} from './meet/meet.gateway'
 
 @Module({
@@ -15,7 +15,7 @@ import {MeetGateway} from './meet/meet.gateway'
     KeepDataModule,
     PassportModule,
     JwtModule.register({
-      secret: authConfig.secret,
+      secret: apisOptions.jwtSecret,
       signOptions: {expiresIn: '24h'},
     }),
   ],
