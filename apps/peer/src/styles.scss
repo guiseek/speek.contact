@@ -97,6 +97,14 @@ a[href] {
   }
   &.row {
     flex-direction: row;
+
+    &.space-between {
+      justify-content: space-between;
+    }
+
+    &.space-around {
+      justify-content: space-around;
+    }
   }
 
   &.align-center {
