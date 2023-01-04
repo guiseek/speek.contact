@@ -1,7 +1,10 @@
+import {HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http'
+import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core'
 import {Provider, LOCALE_ID} from '@angular/core'
 import {registerLocaleData} from '@angular/common'
 import pt from '@angular/common/locales/pt'
 import ptBr from '@angular/common/locales/extra/br'
+import {HttpService} from '@speek/type'
 import {env} from '../envs/env'
 import {
   Peer,
@@ -16,9 +19,9 @@ import {
   UserServiceImpl,
   StorageService,
   AuthInterceptor,
+  UserFacade,
+  UserFacadeImpl,
 } from '@speek/peer/data'
-import {HttpService} from '@speek/type'
-import {HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http'
 
 registerLocaleData(pt, 'pt-BR', ptBr)
 
@@ -33,6 +36,7 @@ const storageProvider = {
 }
 
 const localeProvider = {provide: LOCALE_ID, useValue: 'pt-BR'}
+const dateLocaleProvider = {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'}
 
 const configurationProvider = {
   provide: 'peer.configuration',
@@ -96,10 +100,17 @@ const userProvider = {
   deps: [HttpService],
 }
 
+const userFacadeProvider = {
+  provide: UserFacade,
+  useFactory: (userService: UserService) => new UserFacadeImpl(userService),
+  deps: [UserService],
+}
+
 export const appProviders: Provider[] = [
   localStorageProvider,
   storageProvider,
   localeProvider,
+  dateLocaleProvider,
   configurationProvider,
   constraintsProvider,
   gatewayProvider,
@@ -110,4 +121,5 @@ export const appProviders: Provider[] = [
   authInterceptorProvider,
   authFacadeProvider,
   userProvider,
+  userFacadeProvider,
 ]

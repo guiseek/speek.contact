@@ -8,7 +8,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm'
 
-@Entity()
+@Entity({
+  name: 'users',
+})
 @Unique(['username'])
 export class UserImpl extends BaseEntity implements User {
   @PrimaryGeneratedColumn()
@@ -40,10 +42,9 @@ export class UserImpl extends BaseEntity implements User {
   email: string
 
   @Column({
-    type: 'date',
-    nullable: true,
+    type: 'datetime'
   })
-  birthday?: Date
+  birthday?: string
 
   @Column({
     type: 'varchar',

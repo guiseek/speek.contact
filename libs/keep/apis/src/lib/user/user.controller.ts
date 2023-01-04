@@ -1,6 +1,5 @@
 import {Get, Body, Patch, Param, Delete, Controller} from '@nestjs/common'
 import {
-  ApiBody,
   ApiTags,
   ApiResponse,
   ApiOperation,
@@ -39,10 +38,9 @@ export class UserController {
   @ApiResponse({status: 401, description: 'Unauthorized.'})
   @ApiResponse({
     status: 200,
-    description: 'The access token',
+    description: 'The user updated',
     type: UserResponseDto,
   })
-  @ApiBody({type: UpdateUserDto})
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return new UserResponseDto(
       await this.userService.update(+id, updateUserDto)

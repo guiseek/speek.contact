@@ -25,6 +25,9 @@ export class UserResponseDto implements UserResponse {
   photoUrl: string
 
   @ApiProperty()
+  birthday?: string
+
+  @ApiProperty()
   status: boolean
 
   @ApiProperty()

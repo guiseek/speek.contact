@@ -7,6 +7,6 @@ import {AuthFacade} from '@speek/peer/data'
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToolbarComponent {
+export class MeetToolbarComponent {
   @Input() auth?: AuthFacade
 }

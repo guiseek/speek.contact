@@ -14,6 +14,7 @@
       <speek-local-stream
         [stream]="peer.stream"
         [state]="peer.uiState"
+        (toggleChromaKey)="toggleChromaKey()"
         (toggleAudio)="peer.toggleAudio($event)"
         (toggleVideo)="peer.toggleVideo($event)"
       ></speek-local-stream>
@@ -37,10 +38,6 @@
         <mat-icon>chat</mat-icon>
       </button>
     </ng-container>
-
-    <button type="button" mat-icon-button (click)="toggleChromaKey()">
-      <mat-icon>wallpaper</mat-icon>
-    </button>
 
     <button type="button" mat-icon-button (click)="openSettings()">
       <mat-icon>settings</mat-icon>

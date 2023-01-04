@@ -8,7 +8,7 @@ export interface User {
   displayName: string
   firstName: string
   lastName: string
-  birthday?: Date
+  birthday?: string
   status: boolean
   createdAt: Date
   updatedAt: Date

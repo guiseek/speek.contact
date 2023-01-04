@@ -9,6 +9,32 @@ import {
 } from '@angular/core'
 import {PeerUiState} from '@speek/type'
 
+function getElementPosition<E extends HTMLElement>(obj: E) {
+  let curleft = 0
+  let curtop = 0
+  if (obj.offsetParent) {
+    do {
+      curleft += obj.offsetLeft
+      curtop += obj.offsetTop
+    } while ((obj = obj.offsetParent as E))
+    return {x: curleft, y: curtop}
+  }
+  return {x: 0, y: 0}
+}
+
+function getEventLocation<E extends HTMLElement>(
+  element: E,
+  event: MouseEvent
+) {
+  // Relies on the getElementPosition function.
+  var pos = getElementPosition(element)
+
+  return {
+    x: event.pageX - pos.x,
+    y: event.pageY - pos.y,
+  }
+}
+
 @Component({
   selector: 'speek-local-stream',
   templateUrl: './local-stream.component.html',
@@ -40,14 +66,21 @@ export class LocalStreamComponent implements OnDestroy {
 
   @Output() toggleAudio = new EventEmitter<MediaStream>()
 
+  @Output() toggleChromaKey = new EventEmitter<void>()
+
   panelOpenState = true
   chromaKeyEnabled = false
   private animationFrame = -1
+  private mins = [120]
+  private isMins(value: number) {
+    return this.mins.some((v) => value > v)
+  }
 
   enableChromeKey() {
     this.canvas.width = this.video.videoWidth
     this.canvas.height = this.video.videoHeight
 
+    this.onCanvasClick(this.canvas)
     this.context = this.canvas.getContext('2d', {willReadFrequently: true})
 
     this.chromaKeyEnabled = true
@@ -99,6 +132,16 @@ export class LocalStreamComponent implements OnDestroy {
       }
     }
     return image
+  }
+
+  onCanvasClick(canvas: HTMLCanvasElement) {
+    canvas.onclick = (ev) => {
+      const {x, y} = getEventLocation(canvas, ev)
+      if (this.context) {
+        const {data} = this.context.getImageData(x, y, 1, 1)
+        this.mins.push(data[1])
+      }
+    }
   }
 
   ngOnDestroy() {

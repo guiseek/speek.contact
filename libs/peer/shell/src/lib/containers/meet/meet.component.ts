@@ -4,14 +4,14 @@ import {
   OnInit,
   Component,
   OnDestroy,
-  ChangeDetectorRef,
   ViewChild,
+  ChangeDetectorRef,
 } from '@angular/core'
 import {MatDialog} from '@angular/material/dialog'
 import {ActivatedRoute} from '@angular/router'
 import {AuthFacade, Peer, StorageService, Transfer} from '@speek/peer/data'
+import {SidenavContainer} from '../sidenav.container'
 import {PeerDirection} from '@speek/type'
-import {BehaviorSubject, filter, Subject} from 'rxjs'
 import {
   ChatDialog,
   SettingsDialog,
@@ -23,7 +23,10 @@ import {
   templateUrl: './meet.component.html',
   styleUrls: ['./meet.component.scss'],
 })
-export class MeetComponent implements OnInit, OnDestroy {
+export class MeetComponent
+  extends SidenavContainer
+  implements OnInit, OnDestroy
+{
   @ViewChild(LocalStreamComponent)
   localStream!: LocalStreamComponent
 
@@ -32,16 +35,9 @@ export class MeetComponent implements OnInit, OnDestroy {
   storage = inject(StorageService)
   auth = inject(AuthFacade)
   route = inject(ActivatedRoute)
-  cdr = inject(ChangeDetectorRef)
 
-  mobileQuery: MediaQueryList
-
-  private _mobileQueryListener: () => void
-
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)')
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges()
-    this.mobileQuery.addEventListener('change', this._mobileQueryListener)
+  constructor(cdr: ChangeDetectorRef, media: MediaMatcher) {
+    super(cdr, media)
   }
 
   ngOnInit() {
@@ -97,7 +93,7 @@ export class MeetComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.mobileQuery.removeEventListener('change', this._mobileQueryListener)
+    super.onDestroy()
     this.peer.close()
   }
 }

@@ -1,6 +1,5 @@
 import {Component, inject} from '@angular/core'
 import {Router} from '@angular/router'
-import {Clipboard} from '@angular/cdk/clipboard'
 import {AuthService} from '@speek/peer/data'
 import {short} from '@speek/utils'
 

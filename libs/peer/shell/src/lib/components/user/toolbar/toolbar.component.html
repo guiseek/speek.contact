@@ -1,5 +1,5 @@
-<mat-toolbar color="primary" class="meet-toolbar mat-elevation-z4">
-  <a class="meet-toolbar-logo" routerLink="/">
+<mat-toolbar color="primary" class="user-toolbar mat-elevation-z4">
+  <a class="user-toolbar-logo" routerLink="/">
     <object data="/assets/speek.svg" type="image/svg+xml"></object>
   </a>
 
@@ -18,7 +18,9 @@
 
       <mat-menu #beforeMenu="matMenu" xPosition="before">
         <ng-template matMenuContent let-email="email">
-          <a routerLink="/user" mat-menu-item>Minha conta</a>
+          <button mat-menu-item (click)="initCall()">
+            Iniciar uma chamada
+          </button>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="auth.signOut()">
             Sair <span class="text-muted">({{ email }})</span>

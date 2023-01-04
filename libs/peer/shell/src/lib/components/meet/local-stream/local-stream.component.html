@@ -46,6 +46,16 @@
         </mat-icon>
       </button>
 
+      <button type="button" mat-icon-button (click)="toggleChromaKey.emit()">
+        <mat-icon
+          aria-hidden="false"
+          [svgIcon]="
+            chromaKeyEnabled ? 'background_replace_off' : 'background_replace'
+          "
+          aria-label="Usar efeito Chroma Key"
+        ></mat-icon>
+      </button>
+
       <!-- <button type="button" mat-icon-button (click)="inputFile.click()">
     <mat-icon>upload</mat-icon>
   </button> -->

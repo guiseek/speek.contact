@@ -50,6 +50,15 @@ export class AuthComponent implements OnDestroy {
     })
   }
 
+  onTabChange() {
+    const form = document.querySelector('form')
+    if (form) this.getInputOfForm(form).focus()
+  }
+
+  getInputOfForm(form: HTMLFormElement) {
+    return form.querySelector(`[autofocus]`) as HTMLInputElement
+  }
+
   redirect() {
     const {redirectTo = '/'} = this.queryParams
     this.router.navigateByUrl(redirectTo)

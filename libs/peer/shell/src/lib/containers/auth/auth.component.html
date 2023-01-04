@@ -6,7 +6,12 @@
   </mat-card-header>
   <mat-divider></mat-divider>
   <section>
-    <mat-tab-group color="accent" [selectedIndex]="actionIndex" dynamicHeight>
+    <mat-tab-group
+      color="accent"
+      [selectedIndex]="actionIndex"
+      dynamicHeight
+      (animationDone)="onTabChange()"
+    >
       <mat-tab label="Acesse sua conta">
         <ng-template matTabContent>
           <speek-sign-in (sign)="onSignIn($event)">
