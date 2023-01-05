@@ -38,8 +38,8 @@ export class AuthServiceImpl implements AuthService {
   }
 
   async login(user: User) {
-    const {id, email, displayName} = user
-    const payload = {sub: id, email, displayName}
+    const {id, email, displayName, username} = user
+    const payload = {sub: id, email, username, displayName}
     return new AuthResponseDto(this.jwtService.sign(payload))
   }
 }

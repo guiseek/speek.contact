@@ -6,14 +6,23 @@ export class AuthUserResponseDto implements AuthUserResponse {
   id: number
 
   @ApiProperty()
-  displayName: string
+  username: string
 
   @ApiProperty()
   email: string
 
-  constructor(id: number, email: string, displayName: string) {
+  @ApiProperty()
+  displayName: string
+
+  constructor(
+    id: number,
+    email: string,
+    username: string,
+    displayName: string
+  ) {
     this.id = id
     this.email = email
+    this.username = username
     this.displayName = displayName
   }
 }
