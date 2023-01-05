@@ -8,13 +8,7 @@ import {CdkModule, MaterialModule} from '@speek/peer/shared/layout'
 import {PeerShellComponent} from './peer-shell.component'
 import {HomeComponent} from './home/home.component'
 import {peerShellRoutes} from './lib.routes'
-import {
-  ToolbarComponent,
-  SettingsDialog,
-  AudioFrequencyDirective,
-  AudioComponent,
-  VideoComponent,
-} from './components'
+import {ToolbarComponent} from './components'
 
 @NgModule({
   imports: [
@@ -24,15 +18,7 @@ import {
     MaterialModule,
     ReactiveFormsModule,
   ],
-  declarations: [
-    PeerShellComponent,
-    ToolbarComponent,
-    SettingsDialog,
-    AudioComponent,
-    VideoComponent,
-    HomeComponent,
-    AudioFrequencyDirective,
-  ],
+  declarations: [PeerShellComponent, ToolbarComponent, HomeComponent],
 })
 export class PeerShellModule {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {

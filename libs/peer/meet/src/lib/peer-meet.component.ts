@@ -3,7 +3,8 @@ import {MatDialog} from '@angular/material/dialog'
 import {ActivatedRoute} from '@angular/router'
 import {AuthFacade, Peer, StorageService, Transfer} from '@speek/peer/data'
 import {PeerDirection} from '@speek/type'
-import {ChatDialog, StreamComponent} from './components'
+import {SubAsync} from '@speek/utils'
+import {ChatDialog, SettingsDialog, StreamComponent} from './components'
 
 @Component({
   selector: 'peer-meet',
@@ -20,12 +21,21 @@ export class PeerMeetComponent implements OnInit, OnDestroy {
   auth = inject(AuthFacade)
   route = inject(ActivatedRoute)
 
+  sub = new SubAsync()
+
   ngOnInit() {
     const audio = this.storage.getItem('audioInput')
     const video = this.storage.getItem('videoInput')
-    const {id} = this.route.snapshot.params
-    if (audio && video) this.peer.connect(audio, video, id)
     if (!audio || !video) this.openSettings()
+
+    const {id} = this.route.snapshot.params
+
+    this.sub.async = this.auth.user$.subscribe((user) => {
+      if (audio && video && user) {
+        console.log(user)
+        this.peer.connect(audio, video, id, user.username)
+      }
+    })
   }
 
   openChat(channel: Record<PeerDirection, Transfer | null>) {
@@ -39,12 +49,12 @@ export class PeerMeetComponent implements OnInit, OnDestroy {
   }
 
   openSettings() {
-    // const dialog = this.dialog.open(SettingsDialog)
-    // dialog.afterClosed().subscribe(() => {
-    //   const audio = this.storage.getItem('audioInput')
-    //   const video = this.storage.getItem('videoInput')
-    //   this.peer.replaceTrack(audio, video)
-    // })
+    const dialog = this.dialog.open(SettingsDialog)
+    dialog.afterClosed().subscribe(() => {
+      const audio = this.storage.getItem('audioInput')
+      const video = this.storage.getItem('videoInput')
+      this.peer.replaceTrack(audio, video)
+    })
   }
 
   toggleChromaKey() {
@@ -73,5 +83,6 @@ export class PeerMeetComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.peer.close()
+    this.sub.unsub()
   }
 }

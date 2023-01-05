@@ -1,9 +1,4 @@
-import {
-  PeerChatMessage,
-  PeerDirection,
-  PeerMessage,
-  PeerUiState,
-} from '@speek/type'
+import {PeerDirection, PeerMessage, PeerUiState} from '@speek/type'
 import {Observable} from 'rxjs'
 import {Transfer} from './transfer'
 
@@ -44,7 +39,8 @@ export abstract class Peer {
   public abstract connect(
     audio: MediaTrackConstraints,
     video: MediaTrackConstraints,
-    uuid?: string
+    meet: string,
+    user?: string
   ): void
 
   public abstract replaceTrack(

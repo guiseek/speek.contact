@@ -48,12 +48,13 @@ export class PeerImpl implements Peer {
   public connect(
     audio: MediaTrackConstraints,
     video: MediaTrackConstraints,
-    meet?: string
+    meet: string,
+    user?: string
   ) {
     if (meet) this.meet = meet
 
-    this.signaling.on('connection', ({user}) => {
-      this.user = user
+    this.signaling.on('connection', (data) => {
+      this.user = user ? user : data.user
       this.signalUp(audio, video)
       this.waitData()
     })

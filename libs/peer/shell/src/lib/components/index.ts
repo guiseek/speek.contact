@@ -1,6 +1,1 @@
-export * from './settings/device.compopnent'
-export * from './settings/audio/audio-frequency.directive'
-export * from './settings/audio/audio.component'
-export * from './settings/video/video.component'
-export * from './settings/settings.dialog'
 export * from './toolbar/toolbar.component'

@@ -16,15 +16,19 @@
 </mat-toolbar>
 
 <section #section>
-  <mat-card *ngFor="let message of messages$ | async" class="speek-chat-card">
-    <mat-card-header>
-      <mat-card-title>{{ isYou(message.user) }}</mat-card-title>
-      <mat-card-subtitle>{{ message.time | date: 'short' }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p [innerHTML]="message.text | linkify"></p>
-    </mat-card-content>
-  </mat-card>
+  <ng-container *ngFor="let message of messages$ | async">
+    <mat-card class="speek-chat-card">
+      <mat-card-header>
+        <mat-card-title>{{message.user}}</mat-card-title>
+        <small mat-card-subtitle>
+          {{ message.time | date: 'short' }}
+        </small>
+      </mat-card-header>
+      <mat-card-content>
+        <p [innerHTML]="message.text | linkify"></p>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
 </section>
 <mat-form-field>
   <input
