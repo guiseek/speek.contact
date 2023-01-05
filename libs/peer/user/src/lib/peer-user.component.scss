@@ -1,0 +1,16 @@
+:host {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  form {
+    padding: 24px 0 0;
+    section {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-column-gap: 1em;
+      grid-row-gap: 1em;
+    }
+  }
+}

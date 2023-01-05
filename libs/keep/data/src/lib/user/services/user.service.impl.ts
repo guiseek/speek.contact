@@ -26,7 +26,7 @@ export class UserServiceImpl implements UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.findOneBy({id})
     if (!user) throw new Error(`User with id ${id} not found`)
-    return this.userRepository.save({ id, ...updateUserDto})
+    return this.userRepository.save({id, ...updateUserDto})
   }
 
   async remove(id: number) {

@@ -1,0 +1,32 @@
+<mat-toolbar color="primary" class="toolbar mat-elevation-z4">
+  <a class="toolbar-logo" routerLink="/">
+    <object data="/assets/speek.svg" type="image/svg+xml"></object>
+  </a>
+
+  <span class="space"></span>
+
+  <ng-container *ngIf="auth">
+    <ng-container *ngIf="auth.user$ | async as user">
+      <button
+        mat-stroked-button
+        [matMenuTriggerFor]="beforeMenu"
+        [matMenuTriggerData]="{email: user.email}"
+      >
+        <mat-icon>account_circle</mat-icon>
+        {{ user.displayName }}
+      </button>
+
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent let-email="email">
+          <button mat-menu-item (click)="initCall()">
+            Iniciar uma chamada
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="auth.signOut()">
+            Sair <span class="text-muted">({{ email }})</span>
+          </button>
+        </ng-template>
+      </mat-menu>
+    </ng-container>
+  </ng-container>
+</mat-toolbar>

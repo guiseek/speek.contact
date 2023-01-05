@@ -2,18 +2,19 @@ import {NgModule} from '@angular/core'
 import {CommonModule} from '@angular/common'
 import {RouterModule} from '@angular/router'
 import {ReactiveFormsModule} from '@angular/forms'
-import {MaterialModule} from './shared/material.module'
-import {CdkModule} from './shared/cdk.module'
-import {PeerShellComponent} from './peer-shell.component'
-import {MeetComponent, HomeComponent, AuthComponent} from './containers'
-import {peerShellRoutes} from './lib.routes'
-// prettier-ignore
-import {SettingsDialog, AudioFrequencyDirective, AudioComponent, VideoComponent, SignInComponent, SignUpComponent, CheckUserDirective, MeetToolbarComponent, LocalStreamComponent, ChatDialog} from './components';
-import {LinkifyPipe} from './components/meet/chat/linkify.pipe'
-import {UserComponent} from './containers/user/user.component'
-import {UserToolbarComponent} from './components/user/toolbar/toolbar.component'
 import {MatIconRegistry} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
+import {CdkModule, MaterialModule} from '@speek/peer/shared/layout'
+import {PeerShellComponent} from './peer-shell.component'
+import {HomeComponent} from './home/home.component'
+import {peerShellRoutes} from './lib.routes'
+import {
+  ToolbarComponent,
+  SettingsDialog,
+  AudioFrequencyDirective,
+  AudioComponent,
+  VideoComponent,
+} from './components'
 
 @NgModule({
   imports: [
@@ -25,22 +26,12 @@ import {DomSanitizer} from '@angular/platform-browser'
   ],
   declarations: [
     PeerShellComponent,
+    ToolbarComponent,
     SettingsDialog,
     AudioComponent,
     VideoComponent,
-    MeetComponent,
     HomeComponent,
     AudioFrequencyDirective,
-    AuthComponent,
-    SignInComponent,
-    SignUpComponent,
-    CheckUserDirective,
-    MeetToolbarComponent,
-    LocalStreamComponent,
-    ChatDialog,
-    LinkifyPipe,
-    UserComponent,
-    UserToolbarComponent,
   ],
 })
 export class PeerShellModule {

@@ -1,0 +1,13 @@
+:host {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .meet-card-remote {
+    margin: 8px;
+    overflow: hidden;
+    min-width: 1280px;
+    max-width: calc(100% - 128px);
+  }
+}

@@ -1,33 +1,32 @@
 import {Route} from '@angular/router'
 import {PeerShellComponent} from './peer-shell.component'
-import {HomeComponent} from './containers/home/home.component'
-import {AuthComponent} from './containers/auth/auth.component'
-import {MeetComponent} from './containers/meet/meet.component'
-import {UserGuard} from './auth/guards/user.guard'
-import {UserComponent} from './containers/user/user.component'
+import {HomeComponent} from './home/home.component'
+import {UserGuard} from './guards/user.guard'
 
 export const peerShellRoutes: Route[] = [
   {
     path: 'auth',
-    component: AuthComponent,
+    loadChildren: () =>
+      import('@speek/peer/auth').then((m) => m.PeerAuthModule),
   },
   {
-    path: 'user',
-    canActivate: [UserGuard],
-    component: UserComponent,
+    path: '',
+    component: HomeComponent,
   },
   {
     path: '',
     component: PeerShellComponent,
+    canActivate: [UserGuard],
     children: [
       {
-        path: '',
-        component: HomeComponent,
+        path: 'user',
+        loadChildren: () =>
+          import('@speek/peer/user').then((m) => m.PeerUserModule),
       },
       {
         path: ':id',
-        canActivate: [UserGuard],
-        component: MeetComponent,
+        loadChildren: () =>
+          import('@speek/peer/meet').then((m) => m.PeerMeetModule),
       },
     ],
   },

@@ -17,6 +17,15 @@ if (typeof Worker !== 'undefined') {
 @Component({
   selector: 'speek-root',
   template: `<router-outlet></router-outlet>`,
+  styles: [
+    `
+      :host {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+    `,
+  ],
 })
 export class AppComponent {
   title = 'peer'

@@ -1,0 +1,18 @@
+<div class="shell-container" [class.shell-is-mobile]="mobileQuery.matches">
+  <speek-toolbar [auth]="auth"></speek-toolbar>
+  <mat-sidenav-container
+    class="shell-sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+    [style.marginBottom.px]="mobileQuery.matches ? 56 : 0"
+  >
+    <mat-sidenav-content class="shell-sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <mat-toolbar color="primary" class="shell-toolbar mat-elevation-z4">
+    <a routerLink="/">
+      <img src="/assets/speek.svg" height="52" alt="Speek" />
+    </a>
+  </mat-toolbar>
+</div>

@@ -42,7 +42,7 @@ export class UserImpl extends BaseEntity implements User {
   email: string
 
   @Column({
-    type: 'datetime'
+    type: 'datetime',
   })
   birthday?: string
 

@@ -1,10 +1,5 @@
 import {ApiProperty} from '@nestjs/swagger'
-import {
-  IsNumber,
-  IsString,
-  MaxLength,
-  IsDateString,
-} from 'class-validator'
+import {IsNumber, IsString, MaxLength, IsDateString} from 'class-validator'
 import {UpdateUser} from '@speek/type'
 
 export class UpdateUserDto implements UpdateUser {
