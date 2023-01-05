@@ -43,6 +43,7 @@ export class UserImpl extends BaseEntity implements User {
 
   @Column({
     type: 'datetime',
+    default: '00-00-0000 00:00:00'
   })
   birthday?: string
 
