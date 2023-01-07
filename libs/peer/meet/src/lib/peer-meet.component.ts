@@ -26,14 +26,13 @@ export class PeerMeetComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const audio = this.storage.getItem('audioInput')
     const video = this.storage.getItem('videoInput')
-    if (!audio || !video) this.openSettings()
 
-    const {id} = this.route.snapshot.params
+    const {meet} = this.route.snapshot.params
 
     this.sub.async = this.auth.user$.subscribe((user) => {
       if (audio && video && user) {
         console.log(user)
-        this.peer.connect(audio, video, id, user.username)
+        this.peer.connect(audio, video, meet, user.username)
       }
     })
   }

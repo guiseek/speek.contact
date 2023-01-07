@@ -1,17 +1,22 @@
 import {NgModule} from '@angular/core'
 import {CommonModule} from '@angular/common'
 import {RouterModule} from '@angular/router'
+import {ReactiveFormsModule} from '@angular/forms'
 import {CdkModule, MaterialModule} from '@speek/peer/shared/layout'
-import {peerMeetRoutes} from './lib.routes'
 import {PeerMeetComponent} from './peer-meet.component'
-import {ChatDialog, LinkifyPipe, StreamComponent} from './components'
+import {FormatDeviceLabelPipe, FilterDevicesPipe} from './pipes'
+import {SettingsComponent} from './settings/settings.component'
+import {peerMeetRoutes} from './lib.routes'
 import {
+  ChatDialog,
+  LinkifyPipe,
+  StreamComponent,
   SettingsDialog,
-  AudioFrequencyDirective,
   AudioComponent,
   VideoComponent,
+  DevicesComponent,
+  AudioFrequencyDirective,
 } from './components'
-import { ReactiveFormsModule } from '@angular/forms'
 
 @NgModule({
   imports: [
@@ -30,6 +35,10 @@ import { ReactiveFormsModule } from '@angular/forms'
     AudioComponent,
     VideoComponent,
     AudioFrequencyDirective,
+    FilterDevicesPipe,
+    SettingsComponent,
+    DevicesComponent,
+    FormatDeviceLabelPipe,
   ],
 })
 export class PeerMeetModule {}

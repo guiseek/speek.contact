@@ -1,6 +1,6 @@
-import {Settings} from '@speek/type'
+import {LocalSettings} from '@speek/type'
 
-export class StorageService<T extends Settings = Settings> {
+export class StorageService<T extends LocalSettings = LocalSettings> {
   private _storage: Storage
 
   constructor(storage: Storage) {
@@ -9,7 +9,7 @@ export class StorageService<T extends Settings = Settings> {
 
   getItem<K extends keyof T>(key: K) {
     const data = this._storage.getItem(String(key)) ?? null
-    if (data) {
+    if (data || data === 'false') {
       try {
         return JSON.parse(data) as T[K] | null
       } catch {
@@ -20,7 +20,7 @@ export class StorageService<T extends Settings = Settings> {
   }
 
   setItem<K extends keyof T>(key: K, value: T[K]) {
-    if (value) {
+    if (value || value === false) {
       const data =
         typeof value !== 'string' //
           ? JSON.stringify(value)

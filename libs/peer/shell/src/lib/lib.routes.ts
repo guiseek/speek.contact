@@ -24,7 +24,7 @@ export const peerShellRoutes: Route[] = [
           import('@speek/peer/user').then((m) => m.PeerUserModule),
       },
       {
-        path: ':id',
+        path: ':meet',
         loadChildren: () =>
           import('@speek/peer/meet').then((m) => m.PeerMeetModule),
       },

@@ -114,6 +114,10 @@ a[href] {
   &.justify-center {
     justify-content: center;
   }
+
+  &.justify-end {
+    justify-content: flex-end;
+  }
 }
 
 .text-small {
@@ -121,4 +125,9 @@ a[href] {
 }
 .text-muted {
   opacity: 0.6;
+}
+
+video.video-element {
+  width: 720px;
+  max-width: 720px;
 }

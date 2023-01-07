@@ -1,6 +1,7 @@
 <main class="home-main">
   <figure class="flex row justify-center">
-    <svg
+    <img width="256" src="/assets/animations/box-stream.svg" alt="">
+    <!-- <svg
       width="256"
       height="256"
       viewBox="0 0 32 32"
@@ -22,12 +23,12 @@
         d="M12.7235 28.1916L11.4183 18.6317L0 27.3378L15.7766 5.1088L16.6004 12.8385L25.7747 4.06152L32 10.5005L12.7235 28.1916ZM12.5699 16.3296L13.8389 25.458L30.1667 10.4303L25.7404 5.8621L15.9164 15.2865L15.2008 8.02429L5.01417 22.1597L12.5699 16.3296Z"
         fill="black"
       />
-    </svg>
+    </svg> -->
   </figure>
   <section>
     <button
       type="button"
-      color="accent"
+      color="primary"
       class="new-meet-btn"
       mat-raised-button
       (click)="createRoom()"
@@ -49,8 +50,8 @@
     <mat-hint>Somente códigos de reuniões existentes serão aceitos</mat-hint>
   </mat-form-field>
   <section class="flex row space-between">
-    <a mat-stroked-button routerLink="/user"> Acesse sua conta </a>
-    <a mat-stroked-button routerLink="/auth" [queryParams]="{action: 'up'}">
+    <a mat-raised-button routerLink="/user"> Acesse sua conta </a>
+    <a mat-raised-button color="accent" routerLink="/auth" [queryParams]="{action: 'up'}">
       Crie sua conta
     </a>
   </section>

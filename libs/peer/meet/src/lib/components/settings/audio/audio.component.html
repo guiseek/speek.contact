@@ -1,4 +1,6 @@
-<canvas width="480" height="270" [speekAudioFrequency]="stream"></canvas>
+<ng-container *ngIf="stream">
+  <canvas width="480" height="270" [speekAudioFrequency]="stream"></canvas>
+</ng-container>
 
 <mat-form-field>
   <mat-label>Entrada de áudio</mat-label>
