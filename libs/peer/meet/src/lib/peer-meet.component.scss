@@ -10,4 +10,22 @@
     min-width: 1280px;
     max-width: calc(100% - 128px);
   }
+
+  .meet-expansion-panel {
+    max-width: 320px;
+    position: absolute;
+    margin: 8px;
+    bottom: 0;
+    right: 0;
+    align-self: flex-end;
+
+    .mat-expansion-panel-header-title {
+      flex-grow: unset;
+    }
+    .mat-expansion-panel-header-description {
+      flex-grow: 1;
+      font-size: 85%;
+    }
+  }
 }
+

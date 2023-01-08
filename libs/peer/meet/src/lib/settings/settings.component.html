@@ -1,9 +1,6 @@
 <section>
   <mat-card>
-
     <div class="video-container" #videoRef></div>
-
-    <!-- <video autoplay [srcObject]="service.stream$ | async"></video> -->
     <footer>
       <button mat-fab color="primary" (click)="toggleAudio()">
         <mat-icon>
@@ -20,9 +17,9 @@
 </section>
 
 <form [formGroup]="form">
-  <mat-card *ngIf="service.devices$ | async as devices">
+  <mat-card *ngIf="facade.devices$ | async as devices">
     <div>
-      <mat-tab-group>
+      <!-- <mat-tab-group>
         <mat-tab label="Dispositivos">
           <ng-template matTabContent>
             <mat-card-content>
@@ -31,15 +28,15 @@
                   formControlName="deviceId"
                   kind="audioinput"
                   label="Entrada de áudio"
-                  (selectionChange)="onSelectionChange('audioinput', $event)"
+                  (selectionChange)="onAudioChange($event)"
                 ></peer-devices>
               </section>
               <section formGroupName="video">
                 <peer-devices
-                formControlName="deviceId"
-                kind="videoinput"
-                label="Entrada de vídeo"
-                (selectionChange)="onSelectionChange('videoinput', $event)"
+                  formControlName="deviceId"
+                  kind="videoinput"
+                  label="Entrada de vídeo"
+                  (selectionChange)="onVideoChange($event)"
                 ></peer-devices>
               </section>
               <section formGroupName="speaker">
@@ -47,6 +44,7 @@
                   formControlName="deviceId"
                   kind="audiooutput"
                   label="Saída de áudio"
+                  [disable]="!facade.setSinkIdSupported"
                   (selectionChange)="onSpeakerChange($event)"
                 ></peer-devices>
               </section>
@@ -85,14 +83,14 @@
             </mat-card-content>
           </ng-template>
         </mat-tab>
-      </mat-tab-group>
+      </mat-tab-group> -->
 
       <footer class="flex row justify-end">
         <a mat-raised-button routerLink="../meet" color="accent"> Continuar </a>
       </footer>
     </div>
 
-    <ng-container *ngIf="service.stream$ | async as stream">
+    <ng-container *ngIf="facade.stream$ | async as stream">
       <canvas [speekAudioFrequency]="stream" [opacity]="0.12"></canvas>
     </ng-container>
   </mat-card>

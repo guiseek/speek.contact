@@ -1,4 +1,4 @@
-import {BehaviorSubject, Subject} from 'rxjs'
+import {BehaviorSubject} from 'rxjs'
 import {PeerMessage, PeerUiState, PeerDirection} from '@speek/type'
 import {Signaling} from './ports/signaling'
 import {TransferImpl} from './transfer.impl'
@@ -7,16 +7,13 @@ import {Socket} from './ports/socket'
 import {Peer} from './ports/peer'
 
 export class PeerImpl implements Peer {
-  user?: string
-  meet?: string
-
   uiState: PeerUiState = {
     audio: false,
     video: false,
   }
 
   stream = new MediaStream()
-  remote?: MediaStream
+  remote = new MediaStream()
 
   conn: RTCPeerConnection
 
@@ -28,15 +25,6 @@ export class PeerImpl implements Peer {
     this.conn = new RTCPeerConnection(configuration)
   }
 
-  private _track = new Subject<MediaStreamTrack>()
-  readonly track$ = this._track.asObservable()
-
-  private _stream = new Subject<MediaStream>()
-  readonly stream$ = this._stream.asObservable()
-
-  private _dataChannel = new Subject<RTCDataChannel>()
-  readonly dataChannel$ = this._dataChannel.asObservable()
-
   private _transfer = new BehaviorSubject<
     Record<PeerDirection, Transfer | null>
   >({
@@ -45,60 +33,29 @@ export class PeerImpl implements Peer {
   })
   readonly transfer$ = this._transfer.asObservable()
 
-  public connect(
-    audio: MediaTrackConstraints,
-    video: MediaTrackConstraints,
-    meet: string,
-    user?: string
-  ) {
-    if (meet) this.meet = meet
+  public connect(stream: MediaStream, meet: string, user: string) {
+    this.stream = stream
 
-    this.signaling.on('connection', (data) => {
-      this.user = user ? user : data.user
-      this.signalUp(audio, video)
-      this.waitData()
+    this.stream.getTracks().forEach((track) => {
+      this.conn.addTrack(track, this.stream)
     })
-  }
 
-  async signalUp(audio: MediaTrackConstraints, video: MediaTrackConstraints) {
-    await navigator.mediaDevices
-      .getUserMedia({
-        audio: {...this.constraints, deviceId: audio.deviceId},
-        video: {...this.constraints, deviceId: video.deviceId},
-      })
-      .then((stream: MediaStream) => {
-        this.stream = stream
+    this.conn.ontrack = ({isTrusted, track}) => {
+      if (isTrusted && track) this.remote.addTrack(track)
+    }
 
-        this._stream.next(stream)
+    this.conn.onicecandidate = this.getIceCandidate(meet, user)
 
-        this.stream.getTracks().forEach((track) => {
-          this.conn.addTrack(track, this.stream)
-        })
+    this.conn
+      .createOffer()
+      .then(this.setDescription(meet, user))
+      .catch(this.errorHandler)
 
-        this.remote = new MediaStream()
+    this.conn.onicecandidate = this.getIceCandidate(meet, user)
 
-        this.conn.ontrack = ({isTrusted, track, streams}) => {
-          if (this.remote && isTrusted && streams) {
-            this.remote.addTrack(track)
-            this._track.next(track)
-          }
-        }
+    this.signaling.on('message', this.getSignalMessage(meet, user))
 
-        this.conn.onicecandidate = this.getIceCandidate()
-
-        this.conn
-          .createOffer()
-          .then(this.setDescription())
-          .catch(this.errorHandler)
-      })
-
-    this.conn.onicecandidate = this.getIceCandidate()
-
-    this.signaling.on('message', this.getSignalMessage())
-  }
-
-  waitData() {
-    const sender = this.conn.createDataChannel(`${this.meet}-${this.user}`)
+    const sender = this.conn.createDataChannel(`${meet}-${user}`)
     this.conn.ondatachannel = ({channel}) => {
       this._transfer.next({
         sender: new TransferImpl(sender),
@@ -107,52 +64,70 @@ export class PeerImpl implements Peer {
     }
   }
 
-  async replaceTrack(
-    audio: MediaTrackConstraints,
-    video: MediaTrackConstraints
-  ) {
-    const [videoTrack] = this.stream.getVideoTracks()
-    const [audioTrack] = this.stream.getAudioTracks()
+  replaceTrack(oldStream: MediaStream, newStream: MediaStream) {
+    const [videoTrack] = oldStream.getVideoTracks()
+    const [audioTrack] = oldStream.getAudioTracks()
 
-    const senderVideo = this.conn
-      .getSenders()
-      .find(({track}) => track?.kind === videoTrack.kind)
+    const senderVideo = this.conn.getSenders().find(({track}) => {
+      return track?.kind === videoTrack.kind
+    })
+    const senderAudio = this.conn.getSenders().find(({track}) => {
+      return track?.kind === audioTrack.kind
+    })
 
-    const senderAudio = this.conn
-      .getSenders()
-      .find(({track}) => track?.kind === audioTrack.kind)
+    const [newVideoTrack] = newStream.getVideoTracks()
+    const [newAudioTrack] = newStream.getAudioTracks()
 
-    this.stream = await this.getStream(audio, video)
-
-    const [newVideoTrack] = this.stream.getVideoTracks()
     if (senderVideo) senderVideo.replaceTrack(newVideoTrack)
-
-    const [newAudioTrack] = this.stream.getAudioTracks()
     if (senderAudio) senderAudio.replaceTrack(newAudioTrack)
   }
 
-  getStream(audio: MediaTrackConstraints, video: MediaTrackConstraints) {
-    return navigator.mediaDevices.getUserMedia({
-      audio: {...this.constraints, deviceId: audio.deviceId},
-      video: {...this.constraints, deviceId: video.deviceId},
-    })
-  }
+  // async replaceTrack(
+  //   audio: MediaTrackConstraints,
+  //   video: MediaTrackConstraints
+  // ) {
+  //   const [videoTrack] = this.stream.getVideoTracks()
+  //   const [audioTrack] = this.stream.getAudioTracks()
 
-  setDescription() {
+  //   const senderVideo = this.conn
+  //     .getSenders()
+  //     .find(({track}) => track?.kind === videoTrack.kind)
+
+  //   const senderAudio = this.conn
+  //     .getSenders()
+  //     .find(({track}) => track?.kind === audioTrack.kind)
+
+  //   this.stream = await this.getStream(audio, video)
+
+  //   const [newVideoTrack] = this.stream.getVideoTracks()
+  //   if (senderVideo) senderVideo.replaceTrack(newVideoTrack)
+
+  //   const [newAudioTrack] = this.stream.getAudioTracks()
+  //   if (senderAudio) senderAudio.replaceTrack(newAudioTrack)
+  // }
+
+  // getStream(audio: MediaTrackConstraints, video: MediaTrackConstraints) {
+  //   return navigator.mediaDevices.getUserMedia({
+  //     audio: {...this.constraints, deviceId: audio.deviceId},
+  //     video: {...this.constraints, deviceId: video.deviceId},
+  //   })
+  // }
+
+  setDescription(meet: string, user: string) {
     return (description: RTCSessionDescriptionInit) => {
       this.conn.setLocalDescription(description).then(() => {
         this.signaling.emit('message', {
           sdp: this.conn.localDescription,
-          meet: `${this.meet}`,
-          user: `${this.user}`,
+          meet: `${meet}`,
+          user: `${user}`,
         })
       })
     }
   }
 
-  getSignalMessage() {
+  getSignalMessage(meet: string, localUser: string) {
     return async ({user, sdp, ice}: PeerMessage) => {
-      if (user === this.user) return
+      if (user === localUser) return
 
       if (sdp) {
         if (this.conn.signalingState !== 'stable') {
@@ -160,7 +135,9 @@ export class PeerImpl implements Peer {
         }
         if (sdp.type === 'offer') {
           this.conn.restartIce()
-          await this.conn.createAnswer().then(this.setDescription())
+          await this.conn
+            .createAnswer()
+            .then(this.setDescription(meet, localUser))
         }
       } else if (ice) {
         this.conn.addIceCandidate(ice).catch(this.errorHandler)
@@ -168,29 +145,16 @@ export class PeerImpl implements Peer {
     }
   }
 
-  getIceCandidate() {
+  getIceCandidate(meet: string, user: string) {
     return (event: RTCPeerConnectionIceEvent) => {
       if (event.candidate != null) {
         this.signaling.emit('message', {
           ice: event.candidate,
-          meet: `${this.meet}`,
-          user: `${this.user}`,
+          meet: `${meet}`,
+          user: `${user}`,
         })
       }
     }
-  }
-
-  toggleAudio(stream: MediaStream) {
-    const tracks = stream.getAudioTracks()
-    tracks.forEach((t) => (t.enabled = !t.enabled))
-    this.uiState.audio = !this.uiState.audio
-  }
-
-  toggleVideo(stream: MediaStream) {
-    const tracks = stream.getVideoTracks()
-    tracks.forEach((t) => (t.enabled = !t.enabled))
-
-    this.uiState.video = !this.uiState.video
   }
 
   errorHandler(error: RTCPeerConnectionIceErrorEvent): void {

@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
 } from '@angular/core'
 import {
   NgControl,
@@ -66,6 +67,15 @@ export class DevicesComponent extends SelectControlValueAccessor {
   @Input() kind: 'audioinput' | 'videoinput' | 'audiooutput' = 'audioinput'
 
   @Output() selectionChange = new EventEmitter<string>()
+
+  @Input('disable')
+  set disable(state: boolean) {
+    queueMicrotask(() => {
+      if (state && this.control) {
+        this.control.disable()
+      }
+    })
+  }
 
   private _devices = navigator.mediaDevices
   readonly devices$ = fromEvent(this._devices, 'devicechange').pipe(

@@ -1,5 +1,5 @@
 import {HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http'
-import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core'
+import {MAT_DATE_LOCALE} from '@angular/material/core'
 import {Provider, LOCALE_ID} from '@angular/core'
 import {registerLocaleData} from '@angular/common'
 import pt from '@angular/common/locales/pt'
@@ -14,8 +14,13 @@ import {
   AuthService,
   AuthFacade,
   AuthFacadeImpl,
+  MediaService,
+  MediaState,
+  MediaFacade,
+  MediaFacadeImpl,
   SignalingImpl,
   AuthServiceImpl,
+  MediaServiceImpl,
   UserServiceImpl,
   StorageService,
   AuthInterceptor,
@@ -80,6 +85,13 @@ const authProvider = {
   deps: [HttpService],
 }
 
+const mediaProvider = {
+  provide: MediaService,
+  useFactory: (storageService: StorageService<Omit<MediaState, 'stream'>>) =>
+    new MediaServiceImpl(storageService),
+  deps: [StorageService],
+}
+
 const authInterceptorProvider = {
   provide: HTTP_INTERCEPTORS,
   useClass: AuthInterceptor,
@@ -92,6 +104,12 @@ const authFacadeProvider = {
   useFactory: (authService: AuthService, storageService: StorageService) =>
     new AuthFacadeImpl(authService, storageService),
   deps: [AuthService, StorageService],
+}
+
+const mediaFacadeProvider = {
+  provide: MediaFacade,
+  useFactory: (authService: MediaService) => new MediaFacadeImpl(authService),
+  deps: [MediaService],
 }
 
 const userProvider = {
@@ -120,6 +138,8 @@ export const appProviders: Provider[] = [
   authProvider,
   authInterceptorProvider,
   authFacadeProvider,
+  mediaProvider,
+  mediaFacadeProvider,
   userProvider,
   userFacadeProvider,
 ]

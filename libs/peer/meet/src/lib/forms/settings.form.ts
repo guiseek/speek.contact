@@ -1,8 +1,19 @@
 import {FormControl, FormGroup, Validators} from '@angular/forms'
 import {AudioSettings, BaseSettings, VideoSettings} from '@speek/type'
+import {Observable} from 'rxjs'
 import {TypeForm} from './types'
 
+interface SettingsValue {
+  audio: AudioSettings
+  speaker: BaseSettings
+  video: VideoSettings
+}
+
 export class SettingsForm extends FormGroup {
+  get changes(): Observable<SettingsValue> {
+    return super.valueChanges
+  }
+
   constructor() {
     super({
       audio: new FormGroup<TypeForm<AudioSettings>>({

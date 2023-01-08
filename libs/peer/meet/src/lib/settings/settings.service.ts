@@ -11,15 +11,18 @@ declare global {
 
 @Injectable({providedIn: 'root'})
 export class SettingsService {
-  private _stream = new Subject<MediaStream>()
-  readonly stream$ = this._stream.asObservable()
+  // private _stream = new Subject<MediaStream>()
+  // readonly stream$ = this._stream.asObservable()
 
-  private _devices = navigator.mediaDevices
-  readonly devices$ = fromEvent(this._devices, 'devicechange').pipe(
-    startWith(() => this._devices.enumerateDevices()),
-    switchMap(() => this._devices.enumerateDevices()),
-    map((devices) => devices.map((dvc) => dvc.toJSON()))
-  )
+  // private _state = new Subject<MediaStream>()
+  // readonly state$ = this._state.asObservable()
+
+  // private _devices = navigator.mediaDevices
+  // readonly devices$ = fromEvent(this._devices, 'devicechange').pipe(
+  //   startWith(() => this._devices.enumerateDevices()),
+  //   switchMap(() => this._devices.enumerateDevices()),
+  //   map((devices) => devices.map((dvc) => dvc.toJSON()))
+  // )
 
   readonly videoElement
 
@@ -30,17 +33,35 @@ export class SettingsService {
     this.videoElement.autoplay = true
   }
 
+  get setSinkIdSupported() {
+    return 'setSinkId' in this.videoElement
+  }
+
   setSinkId(deviceId: string) {
     if ('setSinkId' in this.videoElement) {
       this.videoElement.setSinkId(deviceId)
     }
   }
 
-  loadStream(constraints: MediaStreamConstraints) {
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-      this.videoElement.srcObject = stream
-      this._stream.next(stream)
-    })
+  setVideoStream(stream: MediaStream) {
+    this.videoElement.srcObject = stream
+  }
+
+  // loadStream(constraints: MediaStreamConstraints = {}) {
+  //   navigator.mediaDevices
+  //     .getUserMedia(this.getConstraints(constraints))
+  //     .then((stream) => {
+  //       this.videoElement.srcObject = stream
+  //       this._stream.next(stream)
+  //     })
+  // }
+
+  getStream(constraints: MediaStreamConstraints = {}) {
+    return navigator.mediaDevices.getUserMedia(this.getConstraints(constraints))
+  }
+
+  getDevices() {
+    return navigator.mediaDevices.enumerateDevices()
   }
 
   getDeviceId(kind: MediaDeviceKind) {

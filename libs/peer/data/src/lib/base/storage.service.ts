@@ -1,6 +1,6 @@
 import {LocalSettings} from '@speek/type'
 
-export class StorageService<T extends LocalSettings = LocalSettings> {
+export class StorageService<T = LocalSettings> {
   private _storage: Storage
 
   constructor(storage: Storage) {

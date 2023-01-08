@@ -8,9 +8,8 @@ import {
   AfterViewInit,
 } from '@angular/core'
 import {SubAsync} from '@speek/utils'
-import {combineLatest} from 'rxjs'
 import {SettingsForm} from '../forms/settings.form'
-import {SettingsService} from './settings.service'
+import {SettingsFacade} from './settings.facade'
 
 @Component({
   selector: 'peer-settings',
@@ -28,84 +27,58 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     @Inject('peer.constraints')
     private constraints: MediaStreamConstraints,
-    readonly service: SettingsService
+    readonly facade: SettingsFacade
   ) {}
 
-  protected onSelectionChange(kind: MediaDeviceKind, deviceId: string) {
-    this.service.setItem(kind, deviceId)
-    this.service.loadStream(this.getConstraints())
+  protected onAudioChange(deviceId: string) {
+    this.facade.setAudioId(deviceId)
+    this.facade.loadStream()
+  }
+
+  protected onVideoChange(deviceId: string) {
+    this.facade.setVideoId(deviceId)
+    this.facade.loadStream()
   }
 
   protected onSpeakerChange(deviceId: string) {
-    this.service.setItem('audiooutput', deviceId)
-    this.service.setSinkId(deviceId)
+    this.facade.setSpeakerId(deviceId)
+    this.facade.loadStream()
   }
 
   protected toggleAudio() {
     this.form.toggleAudio()
-    this.service.setItem('audioenabled', !!this.form.audioEnabled)
+    this.facade.toggleAudioState()
   }
 
   protected toggleVideo() {
     this.form.toggleVideo()
-    this.service.setItem('videoenabled', !!this.form.videoEnabled)
-  }
-
-  private getConstraints() {
-    return this.service.getConstraints(this.constraints)
+    this.facade.toggleVideoState()
   }
 
   ngAfterViewInit() {
-    this.videoRef.nativeElement.appendChild(this.service.videoElement)
-
-    this.service.loadStream(this.getConstraints())
+    const videoElement = this.videoRef.nativeElement
+    videoElement.appendChild(this.facade.videoElement)
   }
 
   ngOnInit() {
-    const audioDeviceId = this.service.getDeviceId('audioinput')
-    const audioEnabled = this.service.getDeviceState('audioenabled')
 
-    const videoDeviceId = this.service.getDeviceId('videoinput')
-    const videoEnabled = this.service.getDeviceState('videoenabled')
+    // this.facade.loadState()
+    // console.log(this.facade.deviceState);
 
-    this.sub.async = this.service.stream$.subscribe((stream) => {
-      stream
-        .getAudioTracks()
-        .forEach((track) => (track.enabled = !!audioEnabled))
-      stream
-        .getVideoTracks()
-        .forEach((track) => (track.enabled = !!videoEnabled))
-    })
+    // this.form.patchValue(this.facade.deviceState)
+    // this.facade.loadStream(this.constraints)
 
-    this.form.patchValue({
-      audio: {
-        echoCancellation: true,
-        deviceId: audioDeviceId,
-        enabled: audioEnabled,
-      },
-      video: {
-        deviceId: videoDeviceId,
-        enabled: videoEnabled,
-      },
-      speaker: {
-        deviceId: this.service.getDeviceId('audiooutput'),
-        enabled: this.service.getDeviceState('speakerenabled') ?? true,
-      },
-    })
+    // this.form.audio.valueChanges.subscribe(({deviceId}) => {
+    //   if (deviceId) this.facade.setAudioId(deviceId)
+    // })
 
-    combineLatest([
-      this.service.stream$,
-      this.form.audio.valueChanges,
-    ]).subscribe(([stream, {enabled}]) =>
-      stream.getAudioTracks().forEach((track) => (track.enabled = !!enabled))
-    )
+    // this.form.video.valueChanges.subscribe(({deviceId}) => {
+    //   if (deviceId) this.facade.setVideoId(deviceId)
+    // })
 
-    combineLatest([
-      this.service.stream$,
-      this.form.video.valueChanges,
-    ]).subscribe(([stream, {enabled}]) =>
-      stream.getVideoTracks().forEach((track) => (track.enabled = !!enabled))
-    )
+    // this.form.speaker.valueChanges.subscribe(({deviceId}) => {
+    //   if (deviceId) this.facade.setSpeakerId(deviceId)
+    // })
   }
 
   ngOnDestroy() {

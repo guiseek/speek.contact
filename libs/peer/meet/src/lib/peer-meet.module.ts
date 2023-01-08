@@ -17,6 +17,9 @@ import {
   DevicesComponent,
   AudioFrequencyDirective,
 } from './components'
+import {AudioConstraintsComponent} from './components/media/audio-constraints/audio-constraints.component'
+import {VideoConstraintsComponent} from './components/media/video-constraints/video-constraints.component'
+import {LobbyComponent} from './lobby/lobby.component'
 
 @NgModule({
   imports: [
@@ -39,6 +42,9 @@ import {
     SettingsComponent,
     DevicesComponent,
     FormatDeviceLabelPipe,
+    AudioConstraintsComponent,
+    VideoConstraintsComponent,
+    LobbyComponent,
   ],
 })
 export class PeerMeetModule {}

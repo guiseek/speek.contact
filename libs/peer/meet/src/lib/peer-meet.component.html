@@ -2,7 +2,23 @@
   <video #remote autoplay playsinline [srcObject]="peer.remote"></video>
 </mat-card>
 
-<peer-stream
+<mat-expansion-panel
+  class="meet-expansion-panel mat-elevation-z4"
+  (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false"
+  [expanded]="panelOpenState"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-description>
+      Você {{ panelOpenState ? ' ' : ' ainda' }} {{ peer.uiState.video ? ' não' : ' ' }} está
+      visível na conversa
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="video-container" #videoRef></div>
+</mat-expansion-panel>
+
+<!-- <peer-stream
   [stream]="peer.stream"
   [state]="peer.uiState"
   [transfer]="peer.transfer$ | async"
@@ -10,7 +26,7 @@
   (toggleChromaKey)="toggleChromaKey()"
   (toggleAudio)="peer.toggleAudio($event)"
   (toggleVideo)="peer.toggleVideo($event)"
-></peer-stream>
+></peer-stream> -->
 
 <!-- <mat-toolbar color="primary" class="meet-toolbar mat-elevation-z4">
   <a routerLink="/">
