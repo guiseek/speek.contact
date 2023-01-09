@@ -3,22 +3,16 @@ import {CommonModule} from '@angular/common'
 import {RouterModule} from '@angular/router'
 import {ReactiveFormsModule} from '@angular/forms'
 import {CdkModule, MaterialModule} from '@speek/peer/shared/layout'
+import {FormatDeviceLabelPipe, FilterDevicesPipe, LinkifyPipe} from './pipes'
+import {AudioFrequencyDirective} from './directives'
 import {PeerMeetComponent} from './peer-meet.component'
-import {FormatDeviceLabelPipe, FilterDevicesPipe} from './pipes'
-import {SettingsComponent} from './settings/settings.component'
 import {LobbyComponent} from './lobby/lobby.component'
 import {peerMeetRoutes} from './lib.routes'
 import {
   ChatDialog,
-  LinkifyPipe,
   StreamComponent,
-  SettingsDialog,
-  AudioComponent,
-  VideoComponent,
-  DevicesComponent,
   AudioConstraintsComponent,
   VideoConstraintsComponent,
-  AudioFrequencyDirective,
 } from './components'
 
 @NgModule({
@@ -34,13 +28,8 @@ import {
     LinkifyPipe,
     PeerMeetComponent,
     StreamComponent,
-    SettingsDialog,
-    AudioComponent,
-    VideoComponent,
     AudioFrequencyDirective,
     FilterDevicesPipe,
-    SettingsComponent,
-    DevicesComponent,
     FormatDeviceLabelPipe,
     AudioConstraintsComponent,
     VideoConstraintsComponent,

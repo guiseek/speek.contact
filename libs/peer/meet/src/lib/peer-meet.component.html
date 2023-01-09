@@ -10,43 +10,34 @@
 >
   <mat-expansion-panel-header>
     <mat-panel-description>
-      Você {{ panelOpenState ? ' ' : ' ainda' }} {{ peer.uiState.video ? ' não' : ' ' }} está
-      visível na conversa
+      Você {{ panelOpenState ? ' ' : ' ainda' }}
+      {{ (facade.video$ | async) ? ' ' : ' não' }} está visível na conversa
     </mat-panel-description>
   </mat-expansion-panel-header>
 
-  <div class="video-container" #videoRef></div>
+  <section>
+    <div class="video-container" #videoRef></div>
+    <footer>
+      <button
+        mat-mini-fab
+        color="primary"
+        [disabled]="!(facade.stream$ | async)?.active"
+        (click)="facade.toggleAudio()"
+      >
+        <mat-icon>
+          {{ (facade.audio$ | async) ? 'mic' : 'mic_off' }}
+        </mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        color="primary"
+        [disabled]="!(facade.stream$ | async)?.active"
+        (click)="facade.toggleVideo()"
+      >
+        <mat-icon>
+          {{ (facade.video$ | async) ? 'videocam' : 'videocam_off' }}
+        </mat-icon>
+      </button>
+    </footer>
+  </section>
 </mat-expansion-panel>
-
-<!-- <peer-stream
-  [stream]="peer.stream"
-  [state]="peer.uiState"
-  [transfer]="peer.transfer$ | async"
-  (openChat)="openChat($event)"
-  (toggleChromaKey)="toggleChromaKey()"
-  (toggleAudio)="peer.toggleAudio($event)"
-  (toggleVideo)="peer.toggleVideo($event)"
-></peer-stream> -->
-
-<!-- <mat-toolbar color="primary" class="meet-toolbar mat-elevation-z4">
-  <a routerLink="/">
-    <img src="/assets/speek.svg" height="52" alt="Speek" />
-  </a>
-
-  <span class="space"></span>
-
-  <ng-container *ngIf="peer.transfer$ | async as transfer">
-    <button
-      type="button"
-      mat-icon-button
-      [disabled]="!transfer.receiver"
-      (click)="openChat(transfer)"
-    >
-      <mat-icon>chat</mat-icon>
-    </button>
-  </ng-container>
-
-  <button type="button" mat-icon-button (click)="openSettings()">
-    <mat-icon>settings</mat-icon>
-  </button>
-</mat-toolbar> -->

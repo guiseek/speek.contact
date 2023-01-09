@@ -32,7 +32,7 @@ export class VideoConstraintsComponent
       this.form = this.formGroup.form as VideoForm
     }
 
-    this.afterViewInit('audioinput')
+    this.afterViewInit('videoinput')
   }
 
   ngOnDestroy() {

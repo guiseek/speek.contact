@@ -46,10 +46,9 @@ export class StreamComponent implements OnDestroy {
 
   @Output() toggleChromaKey = new EventEmitter<void>()
 
-  @Output() openChat = new EventEmitter<Record<
-    PeerDirection,
-    Transfer | null
-  >>()
+  @Output() openChat = new EventEmitter<
+    Record<PeerDirection, Transfer | null>
+  >()
 
   chromaKeyEnabled = false
   private animationFrame = -1

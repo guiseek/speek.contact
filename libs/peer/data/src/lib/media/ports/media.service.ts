@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs'
-import {MediaConstraints} from './media.state'
+import {MediaConstraints, MediaPermissions} from './media.state'
 
 export abstract class MediaService {
   abstract videoElement: HTMLVideoElement
@@ -9,15 +9,13 @@ export abstract class MediaService {
   abstract getConstraints(): MediaConstraints | null
 
   abstract get audioState(): boolean
-  abstract enableAudio(): void
-  abstract disableAudio(): void
+  abstract toggleAudio(): void
 
   abstract get videoState(): boolean
-  abstract enableVideo(): void
-  abstract disableVideo(): void
+  abstract toggleVideo(): void
 
-  abstract checkPermission(
-    device: 'camera' | 'microphone'
+  abstract checkPermission<K extends keyof MediaPermissions>(
+    device: K
   ): Observable<PermissionState>
 
   abstract getUser(constraints: MediaConstraints): Promise<MediaStream>

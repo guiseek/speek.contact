@@ -5,7 +5,7 @@ import {
 } from '../ports/media.state'
 import {MediaService} from '../ports/media.service'
 import {StorageService} from '../../base'
-import {EMPTY, from, fromEvent, map, of, startWith, switchMap, take} from 'rxjs'
+import {EMPTY, from, fromEvent, map, startWith, switchMap, take} from 'rxjs'
 import {Platform} from '@speek/utils'
 
 export class MediaServiceImpl implements MediaService {
@@ -63,12 +63,11 @@ export class MediaServiceImpl implements MediaService {
     }
     return audio
   }
-  enableAudio() {
-    this.storage.setItem('audio', true)
+  toggleAudio() {
+    const audio = !!this.storage.getItem('audio')
+    this.storage.setItem('audio', !audio)
   }
-  disableAudio() {
-    this.storage.setItem('audio', false)
-  }
+
 
   get videoState() {
     const video = this.storage.getItem('video')
@@ -78,23 +77,20 @@ export class MediaServiceImpl implements MediaService {
     }
     return video
   }
-  enableVideo() {
-    this.storage.setItem('video', true)
-  }
-  disableVideo() {
-    this.storage.setItem('video', false)
+  toggleVideo() {
+    const video = !!this.storage.getItem('video')
+    this.storage.setItem('video', !video)
   }
 
   private getStreamConstraints(defaults: Partial<MediaConstraints>) {
-    const constraints = this.getConstraints()
     if (this.platform.CHROME) {
       return {
         ...defaults,
-        ...constraints,
+        ...this.getConstraints(),
       } as MediaStreamConstraints
     }
 
-    const {audio, video} = constraints ?? {}
+    const {audio, video} = this.getConstraints() ?? {}
 
     return {
       audio: {
@@ -110,6 +106,8 @@ export class MediaServiceImpl implements MediaService {
   }
 
   getUser(constraints: Partial<MediaConstraints>): Promise<MediaStream> {
+    console.log(this.getStreamConstraints(constraints))
+
     return navigator.mediaDevices.getUserMedia(
       this.getStreamConstraints(constraints)
     )
@@ -118,5 +116,11 @@ export class MediaServiceImpl implements MediaService {
     return navigator.mediaDevices.getDisplayMedia(
       this.getStreamConstraints(constraints)
     )
+  }
+}
+
+declare global {
+  interface HTMLMediaElement {
+    setSinkId(id: string): Promise<void>
   }
 }

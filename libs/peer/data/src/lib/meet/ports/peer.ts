@@ -12,15 +12,11 @@ export abstract class Peer {
 
   abstract transfer$: Observable<Record<PeerDirection, Transfer | null>>
 
-  public abstract connect(
-    stream: MediaStream,
-    meet: string,
-    user: string
-  ): void
+  public abstract connect(stream: MediaStream, meet: string, user: string): void
 
   public abstract replaceTrack(
     oldStream: MediaStream,
-    newStream: MediaStream,
+    newStream: MediaStream
   ): void
 
   // public abstract replaceTrack(
@@ -28,11 +24,20 @@ export abstract class Peer {
   //   video: MediaTrackConstraints
   // ): Promise<void>
 
-  abstract setDescription(meet: string, user: string): (value: RTCSessionDescriptionInit) => void
+  abstract setDescription(
+    meet: string,
+    user: string
+  ): (value: RTCSessionDescriptionInit) => void
 
-  abstract getSignalMessage(meet: string, user: string): (message: PeerMessage) => Promise<void>
+  abstract getSignalMessage(
+    meet: string,
+    user: string
+  ): (message: PeerMessage) => Promise<void>
 
-  abstract getIceCandidate(meet: string, user: string): (event: RTCPeerConnectionIceEvent) => void
+  abstract getIceCandidate(
+    meet: string,
+    user: string
+  ): (event: RTCPeerConnectionIceEvent) => void
 
   // abstract toggleVideo(stream: MediaStream): void
 

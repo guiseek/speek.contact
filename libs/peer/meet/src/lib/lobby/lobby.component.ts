@@ -7,7 +7,7 @@ import {
   AfterViewInit,
 } from '@angular/core'
 import {MediaFacade} from '@speek/peer/data'
-import {Platform, SubAsync} from '@speek/utils'
+import {SubAsync} from '@speek/utils'
 import {combineLatest} from 'rxjs'
 import {MediaForm} from '../forms/media.form'
 
@@ -24,9 +24,7 @@ export class LobbyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sub = new SubAsync()
 
-  constructor(readonly facade: MediaFacade, public platform: Platform) {
-    console.log(platform)
-  }
+  constructor(readonly facade: MediaFacade) {}
 
   ngOnInit() {
     this.facade.load()
@@ -45,8 +43,6 @@ export class LobbyComponent implements OnInit, AfterViewInit, OnDestroy {
       this.facade.constraints$,
     ]).subscribe(([{camera, microphone}, constraints]) => {
       if (camera !== 'denied' && microphone !== 'denied') {
-        console.log(camera, microphone)
-
         this.facade.loadStream(constraints)
 
         const patchOptions = {emitEvent: false}

@@ -3,7 +3,7 @@ import {MediaFacade} from '../ports/media.facade'
 import {MediaService} from '../ports/media.service'
 import {MediaConstraints, MediaState} from '../ports/media.state'
 
-const initialValue: MediaState = Object.freeze({
+const initialValue: MediaState = {
   audio: true,
   video: true,
   constraints: {
@@ -25,7 +25,7 @@ const initialValue: MediaState = Object.freeze({
     camera: null,
     microphone: null,
   },
-})
+}
 
 export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
   constraints$ = this.select((state) => state.constraints)
@@ -85,11 +85,6 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
         this.setState({stream: null})
       }
 
-      console.log(navigator.mediaDevices.getSupportedConstraints())
-
-      // eslint-disable-next-line no-debugger
-      // debugger
-
       this.service.getUser(constraints).then((stream) => {
         this.videoElement.srcObject = stream
         this.setState({stream})
@@ -104,10 +99,9 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
   }
 
   toggleAudio() {
-    const audio = !this.state.audio
+    this.service.toggleAudio()
 
-    if (audio) this.service.enableAudio()
-    else this.service.disableAudio()
+    const audio = !!this.service.audioState
 
     if (this.state.stream) {
       this.state.stream
@@ -119,10 +113,9 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
   }
 
   toggleVideo() {
-    const video = !this.state.video
+    this.service.toggleVideo()
 
-    if (video) this.service.enableVideo()
-    else this.service.disableVideo()
+    const video = !!this.service.videoState
 
     if (this.state.stream) {
       this.state.stream

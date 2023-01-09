@@ -12,6 +12,10 @@
   }
 
   .meet-expansion-panel {
+    .mdc-fab {
+      --mdc-fab-container-color: rgba(255, 255, 255, 0.2);
+    }
+
     max-width: 320px;
     position: absolute;
     margin: 8px;
@@ -25,7 +29,31 @@
     .mat-expansion-panel-header-description {
       flex-grow: 1;
       font-size: 85%;
+      transition: color 250ms ease-in-out;
+    }
+
+    footer {
+      position: absolute;
+      width: 100%;
+      bottom: 16px;
+      display: flex;
+      justify-content: center;
+      column-gap: 32px;
+      opacity: 1;
+      transition: opacity 1s ease-in;
+    }
+
+    &:not(.mat-expanded) {
+      .mat-expansion-panel-header-description {
+        color: #111;
+        font-weight: 600;
+      }
+
+      footer {
+        transition: opacity 100ms ease-out;
+        opacity: 0;
+      }
+
     }
   }
 }
-

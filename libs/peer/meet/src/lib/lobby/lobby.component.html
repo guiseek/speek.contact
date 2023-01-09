@@ -1,14 +1,22 @@
-<pre> {{ platform | json }} </pre>
-
 <mat-card>
   <div class="video-container" #videoRef></div>
   <footer>
-    <button mat-fab color="primary" (click)="facade.toggleAudio()">
+    <button
+      mat-fab
+      color="primary"
+      [disabled]="!(facade.stream$ | async)?.active"
+      (click)="facade.toggleAudio()"
+    >
       <mat-icon>
         {{ (facade.audio$ | async) ? 'mic' : 'mic_off' }}
       </mat-icon>
     </button>
-    <button mat-fab color="primary" (click)="facade.toggleVideo()">
+    <button
+      mat-fab
+      color="primary"
+      [disabled]="!(facade.stream$ | async)?.active"
+      (click)="facade.toggleVideo()"
+    >
       <mat-icon>
         {{ (facade.video$ | async) ? 'videocam' : 'videocam_off' }}
       </mat-icon>

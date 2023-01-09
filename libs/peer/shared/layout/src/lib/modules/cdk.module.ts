@@ -4,7 +4,7 @@ import {DialogModule} from '@angular/cdk/dialog'
 import {LayoutModule} from '@angular/cdk/layout'
 import {DragDropModule} from '@angular/cdk/drag-drop'
 import {ClipboardModule} from '@angular/cdk/clipboard'
-import {PlatformModule} from '@angular/cdk/platform';
+import {PlatformModule} from '@angular/cdk/platform'
 
 @NgModule({
   exports: [
