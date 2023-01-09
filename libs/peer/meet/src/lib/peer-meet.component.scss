@@ -9,18 +9,30 @@
     overflow: hidden;
     min-width: 1280px;
     max-width: calc(100% - 128px);
+
+    .remote-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
-  .meet-expansion-panel {
+  footer.meet-footer-panels {
+    display: flex;
+    column-gap: 8px;
+    position: absolute;
+    margin: 8px;
+    bottom: 0;
+    right: 0;
+  }
+  .meet-video-panel,
+  .meet-chat-panel {
     .mdc-fab {
       --mdc-fab-container-color: rgba(255, 255, 255, 0.2);
     }
 
     max-width: 320px;
-    position: absolute;
-    margin: 8px;
-    bottom: 0;
-    right: 0;
     align-self: flex-end;
 
     .mat-expansion-panel-header-title {

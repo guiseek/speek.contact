@@ -75,7 +75,8 @@ a:link {
   width: 100%;
 }
 
-.meet-expansion-panel .mat-expansion-panel-content > .mat-expansion-panel-body {
+.meet-chat-panel .mat-expansion-panel-content > .mat-expansion-panel-body,
+.meet-video-panel .mat-expansion-panel-content > .mat-expansion-panel-body {
   padding: 0;
   margin-bottom: -4px;
 }
@@ -132,8 +133,9 @@ a[href] {
 }
 
 video.video-element {
-  width: 720px;
-  max-width: 720px;
+  flex: 1;
+  // width: 720px;
+  // max-width: 720px;
 }
 
 .video-container {

@@ -26,6 +26,10 @@ import {
   AuthInterceptor,
   UserFacade,
   UserFacadeImpl,
+  SignalingService,
+  SignalingServiceImpl,
+  PeerFacade,
+  PeerFacadeImpl,
 } from '@speek/peer/data'
 import {Platform} from '@speek/utils'
 
@@ -65,20 +69,31 @@ const gatewayProvider = {
 }
 
 const signalingProvider = {
-  provide: Signaling,
-  useFactory: (url: string) => new SignalingImpl(url),
+  provide: SignalingService,
+  useFactory: (url: string) => new SignalingServiceImpl(url),
   deps: ['gateway.url'],
 }
+// const signalingProvider = {
+//   provide: Signaling,
+//   useFactory: (url: string) => new SignalingImpl(url),
+//   deps: ['gateway.url'],
+// }
 
 const peerProvider = {
-  provide: Peer,
-  useFactory: (
-    configuration: RTCConfiguration,
-    signaling: Signaling,
-    constraints: MediaStreamConstraints
-  ) => new PeerImpl(configuration, signaling, constraints),
-  deps: ['peer.configuration', Signaling, 'peer.constraints'],
+  provide: PeerFacade,
+  useFactory: (configuration: RTCConfiguration, signaling: SignalingService) =>
+    new PeerFacadeImpl(configuration, signaling),
+  deps: ['peer.configuration', SignalingService],
 }
+// const peerProvider = {
+//   provide: Peer,
+//   useFactory: (
+//     configuration: RTCConfiguration,
+//     signaling: Signaling,
+//     constraints: MediaStreamConstraints
+//   ) => new PeerImpl(configuration, signaling, constraints),
+//   deps: ['peer.configuration', Signaling, 'peer.constraints'],
+// }
 
 const httpProvider = {
   provide: HttpService,

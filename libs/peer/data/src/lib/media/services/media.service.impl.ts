@@ -19,6 +19,7 @@ export class MediaServiceImpl implements MediaService {
     this.videoElement.poster = '/assets/images/video.svg'
     this.videoElement.classList.add('video-element')
     this.videoElement.autoplay = true
+    this.videoElement.muted = true
   }
 
   setSinkId(deviceId: string) {
