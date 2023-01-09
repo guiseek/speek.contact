@@ -1,10 +1,5 @@
 import {Injectable} from '@angular/core'
-import {
-  Router,
-  CanActivate,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot,
-} from '@angular/router'
+import {Router, CanActivate, ActivatedRouteSnapshot} from '@angular/router'
 import {MediaService} from '@speek/peer/data'
 import {of} from 'rxjs'
 
@@ -14,14 +9,13 @@ import {of} from 'rxjs'
 export class LobbyGuard implements CanActivate {
   constructor(readonly service: MediaService, readonly router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const constraints = this.service.getConstraints()
+  canActivate(route: ActivatedRouteSnapshot) {
     const {meet} = route.params
-
     if (!meet) {
       return this.router.navigate(['/'])
     }
 
+    const constraints = this.service.getConstraints()
     if (!constraints) {
       return this.router.navigate([meet, 'lobbby'])
     }

@@ -75,10 +75,18 @@ a:link {
   width: 100%;
 }
 
-.meet-chat-panel .mat-expansion-panel-content > .mat-expansion-panel-body,
 .meet-video-panel .mat-expansion-panel-content > .mat-expansion-panel-body {
   padding: 0;
   margin-bottom: -4px;
+}
+
+.meet-channel-panel {
+  .mat-expansion-panel-content > .mat-expansion-panel-body {
+    padding: 4px;
+  }
+  .mat-content {
+    overflow: visible;
+  }
 }
 
 .meet-chat-dialog {
@@ -134,6 +142,7 @@ a[href] {
 
 video.video-element {
   flex: 1;
+  object-fit: cover;
   // width: 720px;
   // max-width: 720px;
 }

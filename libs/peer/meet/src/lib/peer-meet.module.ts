@@ -13,6 +13,7 @@ import {
   StreamComponent,
   AudioConstraintsComponent,
   VideoConstraintsComponent,
+  ChannelMessageComponent,
 } from './components'
 
 @NgModule({
@@ -34,6 +35,7 @@ import {
     AudioConstraintsComponent,
     VideoConstraintsComponent,
     LobbyComponent,
+    ChannelMessageComponent,
   ],
 })
 export class PeerMeetModule {}

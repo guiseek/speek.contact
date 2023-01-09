@@ -4,11 +4,13 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
+  ViewContainerRef,
 } from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
+import {combineLatest, forkJoin} from 'rxjs'
 import {AuthFacade, MediaFacade, PeerFacade} from '@speek/peer/data'
 import {SubAsync} from '@speek/utils'
-import {combineLatest} from 'rxjs'
+import {createChannelMessage} from './components'
 
 @Component({
   selector: 'peer-meet',
@@ -22,8 +24,10 @@ export class PeerMeetComponent implements AfterViewInit, OnDestroy {
   @ViewChild('remoteRef')
   private remoteRef!: ElementRef<HTMLDivElement>
 
+  @ViewChild('channelMessage', {read: ViewContainerRef})
+  private channelMessage!: ViewContainerRef
+
   protected videoPanelOpen = true
-  protected chatPanelOpen = false
 
   sub = new SubAsync()
 
@@ -53,21 +57,20 @@ export class PeerMeetComponent implements AfterViewInit, OnDestroy {
       }
     })
 
-
     this.sub.async = this.peerFacade.stream$.subscribe((stream) => {
       this.peerFacade.videoElement.srcObject = stream
     })
 
     this.sub.async = this.peerFacade.code$.subscribe((code) => {
       if (code) this.peerFacade.loadChannel(code)
-    })
 
-    this.sub.async = this.peerFacade.sender$.subscribe((sender) => {
-      console.log({sender})
-    })
-
-    this.sub.async = this.peerFacade.channel$.subscribe((channel) => {
-      console.log({channel})
+      this.peerFacade.sender$.subscribe((sender) => {
+        this.peerFacade.channel$.subscribe((channel) => {
+          if (sender && channel) {
+            createChannelMessage(this.channelMessage, sender, channel, meet)
+          }
+        })
+      })
     })
   }
 

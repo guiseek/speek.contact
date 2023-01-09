@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core'
 import {MatToolbarModule} from '@angular/material/toolbar'
 import {MatSidenavModule} from '@angular/material/sidenav'
 import {MatListModule} from '@angular/material/list'
+import {MatBadgeModule} from '@angular/material/badge'
 import {MatFormFieldModule} from '@angular/material/form-field'
 import {MatCheckboxModule} from '@angular/material/checkbox'
 import {MatInputModule} from '@angular/material/input'
@@ -23,6 +24,7 @@ import {MatCardModule} from '@angular/material/card'
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
+    MatBadgeModule,
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,

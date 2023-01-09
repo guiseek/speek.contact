@@ -1,0 +1,47 @@
+<mat-expansion-panel
+  class="meet-channel-panel mat-elevation-z4"
+  (opened)="chatPanelOpen = true"
+  (closed)="chatPanelOpen = false"
+  [expanded]="chatPanelOpen"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-description
+      [matBadge]="unread$ | async"
+      [matBadgeHidden]="(unread$ | async) === 0"
+      matBadgePosition="before"
+      [matBadgeOverlap]="true"
+      matBadgeColor="warn"
+    >
+      {{ (unread$ | async) ? 'Novas mensagens' : 'Canal de mensagens' }}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <section #section>
+    <ng-container *ngFor="let message of messages$ | async">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ message.user }}</mat-card-title>
+          <mat-card-subtitle>{{
+            message.timestamp | date : 'short'
+          }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>{{ message.text }}</mat-card-content>
+      </mat-card>
+    </ng-container>
+  </section>
+
+  <footer>
+    <mat-form-field appearance="outline">
+      <mat-label>Mensagem</mat-label>
+      <input
+        matInput
+        #control
+        (focus)="handleRead()"
+        (keyup.enter)="send(control)"
+      />
+      <button matSuffix mat-icon-button (click)="send(control)">
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </footer>
+</mat-expansion-panel>

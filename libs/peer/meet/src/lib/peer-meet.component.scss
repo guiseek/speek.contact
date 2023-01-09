@@ -7,8 +7,9 @@
   .meet-card-remote {
     margin: 8px;
     overflow: hidden;
-    min-width: 1280px;
-    max-width: calc(100% - 128px);
+    width: 1280px;
+    min-width: calc(100vw - 128px);
+    max-width: calc(100vw - 128px);
 
     .remote-container {
       width: 100%;
@@ -65,7 +66,6 @@
         transition: opacity 100ms ease-out;
         opacity: 0;
       }
-
     }
   }
 }

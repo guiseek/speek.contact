@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  section {
+    min-height: 172px;
+    max-height: 172px;
+    overflow: auto;
+
+    .mat-mdc-card {
+      margin-top: 24px;
+    }
+  }
+
+  footer {
+    margin-bottom: -20px;
+  }
+}
+
