@@ -1,0 +1,57 @@
+<mat-card>
+  <div class="video-container" #videoRef></div>
+  <footer>
+    <button
+      mat-fab
+      color="primary"
+      [disabled]="!(facade.stream$ | async)?.active"
+      (click)="facade.toggleAudio()"
+    >
+      <mat-icon>
+        {{ (facade.audio$ | async) ? 'mic' : 'mic_off' }}
+      </mat-icon>
+    </button>
+    <button
+      mat-fab
+      color="primary"
+      [disabled]="!(facade.stream$ | async)?.active"
+      (click)="facade.toggleVideo()"
+    >
+      <mat-icon>
+        {{ (facade.video$ | async) ? 'videocam' : 'videocam_off' }}
+      </mat-icon>
+    </button>
+  </footer>
+</mat-card>
+
+<mat-card>
+  <form [formGroup]="form">
+    <mat-tab-group dynamicHeight>
+      <mat-tab label="Áudio">
+        <ng-template matTabContent>
+          <mat-card-content>
+            <peer-audio-constraints
+              [formGroup]="form.audio"
+            ></peer-audio-constraints>
+          </mat-card-content>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Vídeo">
+        <ng-template matTabContent>
+          <mat-card-content>
+            <peer-video-constraints
+              [formGroup]="form.video"
+            ></peer-video-constraints>
+          </mat-card-content>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+  <footer class="flex row justify-end">
+    <a mat-raised-button routerLink="../meet" color="accent"> Continuar </a>
+  </footer>
+
+  <ng-container *ngIf="facade.stream$ | async as stream">
+    <canvas [speekAudioFrequency]="stream" [opacity]="0.12"></canvas>
+  </ng-container>
+</mat-card>

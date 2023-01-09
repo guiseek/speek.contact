@@ -71,7 +71,12 @@ a:link {
   }
 }
 
-.meet-expansion-panel .mat-expansion-panel-content > .mat-expansion-panel-body {
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.meet-chat-panel .mat-expansion-panel-content > .mat-expansion-panel-body,
+.meet-video-panel .mat-expansion-panel-content > .mat-expansion-panel-body {
   padding: 0;
   margin-bottom: -4px;
 }
@@ -114,6 +119,10 @@ a[href] {
   &.justify-center {
     justify-content: center;
   }
+
+  &.justify-end {
+    justify-content: flex-end;
+  }
 }
 
 .text-small {
@@ -121,4 +130,25 @@ a[href] {
 }
 .text-muted {
   opacity: 0.6;
+}
+
+video.video-element {
+  flex: 1;
+  // width: 720px;
+  // max-width: 720px;
+}
+
+.video-container {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  width: 320px;
+  height: 240px;
+  video.video-element {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }

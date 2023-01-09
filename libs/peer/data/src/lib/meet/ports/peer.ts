@@ -3,9 +3,6 @@ import {Observable} from 'rxjs'
 import {Transfer} from './transfer'
 
 export abstract class Peer {
-  abstract user?: string
-  abstract meet?: string
-
   abstract uiState: PeerUiState
 
   abstract stream: MediaStream
@@ -13,50 +10,38 @@ export abstract class Peer {
 
   abstract conn: RTCPeerConnection
 
-  /**
-   * A nova mídia de entrada foi negociada para um
-   * determinado RTCRtpReceivere esse receptor track foi
-   * adicionado a quaisquer MediaStreams remotos associados.
-   */
-  abstract track$: Observable<MediaStreamTrack>
-  // abstract set onTrack(callback: Callback<MediaStreamTrack>)
-
-  /**
-   * Stream local disponível
-   */
-  abstract stream$: Observable<MediaStream>
-  // abstract set onStream(callback: Callback<MediaStream>)
-
-  /**
-   * Um novo RTCDataChannel é despachado para o script
-   * em resposta ao outro par criando um canal.
-   */
-  abstract dataChannel$: Observable<RTCDataChannel>
-  // abstract set onDataChannel(callback: Callback<RTCDataChannel>)
-
   abstract transfer$: Observable<Record<PeerDirection, Transfer | null>>
 
-  public abstract connect(
-    audio: MediaTrackConstraints,
-    video: MediaTrackConstraints,
-    meet: string,
-    user?: string
-  ): void
+  public abstract connect(stream: MediaStream, meet: string, user: string): void
 
   public abstract replaceTrack(
-    audio: MediaTrackConstraints,
-    video: MediaTrackConstraints
-  ): Promise<void>
+    oldStream: MediaStream,
+    newStream: MediaStream
+  ): void
 
-  abstract setDescription(): (value: RTCSessionDescriptionInit) => void
+  // public abstract replaceTrack(
+  //   audio: MediaTrackConstraints,
+  //   video: MediaTrackConstraints
+  // ): Promise<void>
 
-  abstract getSignalMessage(): (message: PeerMessage) => Promise<void>
+  abstract setDescription(
+    meet: string,
+    user: string
+  ): (value: RTCSessionDescriptionInit) => void
 
-  abstract getIceCandidate(): (event: RTCPeerConnectionIceEvent) => void
+  abstract getSignalMessage(
+    meet: string,
+    user: string
+  ): (message: PeerMessage) => Promise<void>
 
-  abstract toggleVideo(stream: MediaStream): void
+  abstract getIceCandidate(
+    meet: string,
+    user: string
+  ): (event: RTCPeerConnectionIceEvent) => void
 
-  abstract toggleAudio(stream: MediaStream): void
+  // abstract toggleVideo(stream: MediaStream): void
+
+  // abstract toggleAudio(stream: MediaStream): void
 
   abstract errorHandler(error: Event): void
 

@@ -1,20 +1,22 @@
 import {Input, OnDestroy, Directive, ElementRef} from '@angular/core'
 
-@Directive({
-  selector: 'canvas[speekAudioFrequency]',
-})
+@Directive({selector: 'canvas[speekAudioFrequency]'})
 export class AudioFrequencyDirective implements OnDestroy {
-  @Input()
-  set speekAudioFrequency(stream: MediaStream | undefined) {
+  @Input() background = '#ffffff'
+  @Input() color = '#666666'
+  @Input() opacity = 100
+
+  @Input() set speekAudioFrequency(stream: MediaStream) {
     if (stream) this.renderFrequency(stream)
   }
+
+  stream?: MediaStream
+
+  animationFrame?: number
 
   get canvas() {
     return this.elRef.nativeElement
   }
-
-  stream?: MediaStream
-  animationFrame?: number
 
   constructor(readonly elRef: ElementRef<HTMLCanvasElement>) {}
 
@@ -44,21 +46,22 @@ export class AudioFrequencyDirective implements OnDestroy {
         const dataArray = new Uint8Array(bufferLength)
         analyserNode.getByteTimeDomainData(dataArray)
 
-        canvasCtx.fillStyle = `#ffffff`
+        canvasCtx.fillStyle = this.background
 
         canvasCtx.fillRect(0, 0, width, height)
-        const barWidth = (width / bufferLength) * 2
+        const barWidth = width / bufferLength
 
         let barHeight
-        let x = 0
+        let xPosition = 0
 
-        for (let i = 0; i < bufferLength; i++) {
-          barHeight = dataArray[i]
+        for (let index = 0; index < bufferLength; index++) {
+          barHeight = dataArray[index] / 1.6
 
-          canvasCtx.fillStyle = this.hexToRgba('#5732AA', 0.16)
-          canvasCtx.fillRect(x, height - barHeight, barWidth, barHeight)
+          canvasCtx.fillStyle = this.hexToRgba(this.color, this.opacity)
 
-          x += barWidth
+          canvasCtx.fillRect(xPosition, height - barHeight, barWidth, barHeight)
+
+          xPosition += barWidth
         }
 
         this.animationFrame = requestAnimationFrame(draw)

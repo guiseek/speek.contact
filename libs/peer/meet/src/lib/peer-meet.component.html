@@ -1,36 +1,62 @@
 <mat-card id="remote" class="meet-card-remote">
-  <video #remote autoplay playsinline [srcObject]="peer.remote"></video>
+  <div class="remote-container" #remoteRef></div>
+  <!-- <video #remote autoplay playsinline [srcObject]="peer.remote"></video> -->
 </mat-card>
 
-<peer-stream
-  [stream]="peer.stream"
-  [state]="peer.uiState"
-  [transfer]="peer.transfer$ | async"
-  (openChat)="openChat($event)"
-  (toggleChromaKey)="toggleChromaKey()"
-  (toggleAudio)="peer.toggleAudio($event)"
-  (toggleVideo)="peer.toggleVideo($event)"
-></peer-stream>
+<footer class="meet-footer-panels">
+  <mat-expansion-panel
+    class="meet-chat-panel mat-elevation-z4"
+    (opened)="chatPanelOpen = true"
+    (closed)="chatPanelOpen = false"
+    [expanded]="chatPanelOpen"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        {{ chatPanelOpen ? 'Sem novas ' : ' Novas' }}
+        mensagens
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-<!-- <mat-toolbar color="primary" class="meet-toolbar mat-elevation-z4">
-  <a routerLink="/">
-    <img src="/assets/speek.svg" height="52" alt="Speek" />
-  </a>
+    <section></section>
+  </mat-expansion-panel>
 
-  <span class="space"></span>
+  <mat-expansion-panel
+    class="meet-video-panel mat-elevation-z4"
+    (opened)="videoPanelOpen = true"
+    (closed)="videoPanelOpen = false"
+    [expanded]="videoPanelOpen"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        Você {{ videoPanelOpen ? ' ' : ' ainda' }}
+        {{ (mediaFacade.video$ | async) ? ' ' : ' não' }} está visível na conversa
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-  <ng-container *ngIf="peer.transfer$ | async as transfer">
-    <button
-      type="button"
-      mat-icon-button
-      [disabled]="!transfer.receiver"
-      (click)="openChat(transfer)"
-    >
-      <mat-icon>chat</mat-icon>
-    </button>
-  </ng-container>
-
-  <button type="button" mat-icon-button (click)="openSettings()">
-    <mat-icon>settings</mat-icon>
-  </button>
-</mat-toolbar> -->
+    <section>
+      <div class="video-container" #videoRef></div>
+      <footer>
+        <button
+          mat-mini-fab
+          color="primary"
+          [disabled]="!(mediaFacade.stream$ | async)?.active"
+          (click)="mediaFacade.toggleAudio()"
+        >
+          <mat-icon>
+            {{ (mediaFacade.audio$ | async) ? 'mic' : 'mic_off' }}
+          </mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          color="primary"
+          [disabled]="!(mediaFacade.stream$ | async)?.active"
+          (click)="mediaFacade.toggleVideo()"
+        >
+          <mat-icon>
+            {{ (mediaFacade.video$ | async) ? 'videocam' : 'videocam_off' }}
+          </mat-icon>
+        </button>
+      </footer>
+    </section>
+  </mat-expansion-panel>
+</footer>

@@ -1,0 +1,22 @@
+<ng-container [formGroup]="form">
+  <section formGroupName="deviceId">
+    <mat-form-field>
+      <mat-label>Entrada de áudio</mat-label>
+      <mat-select formControlName="exact">
+        <mat-option
+          *ngFor="let device of devices$ | async; index as i"
+          [value]="device.deviceId"
+        >
+          {{ device.label | formatDeviceLabel : i : 'Microfone' }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <section formGroupName="echoCancellation">
+    <mat-checkbox formControlName="exact"> Cancelamento de eco </mat-checkbox>
+  </section>
+  <section formGroupName="noiseSupression">
+    <mat-checkbox formControlName="exact"> Redução de ruído </mat-checkbox>
+  </section>
+</ng-container>

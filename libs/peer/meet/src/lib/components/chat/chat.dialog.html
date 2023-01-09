@@ -20,9 +20,7 @@
     <mat-card class="speek-chat-card">
       <mat-card-header>
         <mat-card-title>{{message.user}}</mat-card-title>
-        <small mat-card-subtitle>
-          {{ message.time | date: 'short' }}
-        </small>
+        <small mat-card-subtitle> {{ message.time | date: 'short' }} </small>
       </mat-card-header>
       <mat-card-content>
         <p [innerHTML]="message.text | linkify"></p>

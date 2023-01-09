@@ -33,13 +33,13 @@ export const env = {
     video: {
       width: {
         min: 480,
-        max: 1280,
-        ideal: 1280,
+        max: 1440,
+        ideal: 640,
       },
       height: {
-        min: 320,
-        max: 720,
-        ideal: 720,
+        min: 360,
+        max: 1080,
+        ideal: 480,
       },
       facingMode: {
         ideal: 'user',

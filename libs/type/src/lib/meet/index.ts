@@ -1,3 +1,6 @@
+export * from './settings/base-settings'
+export * from './settings/audio-settings'
+export * from './settings/video-settings'
 export * from './peer-message-map'
 export * from './peer-direction'
 export * from './peer-message'

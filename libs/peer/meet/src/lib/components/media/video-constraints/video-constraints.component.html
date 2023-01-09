@@ -1,0 +1,27 @@
+<ng-container [formGroup]="form">
+  <section formGroupName="deviceId">
+    <mat-form-field>
+      <mat-label>Entrada de vídeo</mat-label>
+      <mat-select formControlName="exact">
+        <mat-option
+          *ngFor="let device of devices$ | async; index as i"
+          [value]="device.deviceId"
+        >
+          {{ device.label | formatDeviceLabel : i : 'Câmera' }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+  <section formGroupName="height">
+    <mat-form-field>
+      <mat-label>Resolução da câmera</mat-label>
+
+      <mat-select formControlName="exact">
+        <mat-option [value]="1080"> Definição Full HD (1080p) </mat-option>
+        <mat-option [value]="720"> Alta definição (720p) </mat-option>
+        <mat-option [value]="480"> Definição padrão (480p) </mat-option>
+        <mat-option [value]="360"> Baixa definição (360p) </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+</ng-container>

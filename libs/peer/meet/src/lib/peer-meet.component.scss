@@ -9,5 +9,63 @@
     overflow: hidden;
     min-width: 1280px;
     max-width: calc(100% - 128px);
+
+    .remote-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  footer.meet-footer-panels {
+    display: flex;
+    column-gap: 8px;
+    position: absolute;
+    margin: 8px;
+    bottom: 0;
+    right: 0;
+  }
+  .meet-video-panel,
+  .meet-chat-panel {
+    .mdc-fab {
+      --mdc-fab-container-color: rgba(255, 255, 255, 0.2);
+    }
+
+    max-width: 320px;
+    align-self: flex-end;
+
+    .mat-expansion-panel-header-title {
+      flex-grow: unset;
+    }
+    .mat-expansion-panel-header-description {
+      flex-grow: 1;
+      font-size: 85%;
+      transition: color 250ms ease-in-out;
+    }
+
+    footer {
+      position: absolute;
+      width: 100%;
+      bottom: 16px;
+      display: flex;
+      justify-content: center;
+      column-gap: 32px;
+      opacity: 1;
+      transition: opacity 1s ease-in;
+    }
+
+    &:not(.mat-expanded) {
+      .mat-expansion-panel-header-description {
+        color: #111;
+        font-weight: 600;
+      }
+
+      footer {
+        transition: opacity 100ms ease-out;
+        opacity: 0;
+      }
+
+    }
   }
 }
