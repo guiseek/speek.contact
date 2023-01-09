@@ -1,8 +1,9 @@
 import {Observable} from 'rxjs'
-import {MediaConstraints} from './media.state'
+import {MediaConstraints, MediaPermissions} from './media.state'
 
 export abstract class MediaFacade {
   abstract constraints$: Observable<MediaConstraints>
+  abstract permissions$: Observable<MediaPermissions>
   abstract get constraints(): MediaConstraints | null
   abstract stream$: Observable<MediaStream | null>
   abstract audio$: Observable<boolean>

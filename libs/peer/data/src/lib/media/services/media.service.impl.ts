@@ -1,11 +1,20 @@
-import {MediaConstraints, MediaState} from '../ports/media.state'
+import {
+  MediaConstraints,
+  MediaPermissions,
+  MediaState,
+} from '../ports/media.state'
 import {MediaService} from '../ports/media.service'
 import {StorageService} from '../../base'
+import {EMPTY, from, fromEvent, map, of, startWith, switchMap, take} from 'rxjs'
+import {Platform} from '@speek/utils'
 
 export class MediaServiceImpl implements MediaService {
   videoElement: HTMLVideoElement
 
-  constructor(private storage: StorageService<Omit<MediaState, 'stream'>>) {
+  constructor(
+    private storage: StorageService<Omit<MediaState, 'stream'>>,
+    private platform: Platform
+  ) {
     this.videoElement = document.createElement('video')
     this.videoElement.poster = '/assets/images/video.svg'
     this.videoElement.classList.add('video-element')
@@ -23,6 +32,27 @@ export class MediaServiceImpl implements MediaService {
   }
   getConstraints(): MediaConstraints | null {
     return this.storage.getItem('constraints')
+  }
+
+  get devices() {
+    return navigator.mediaDevices.enumerateDevices()
+  }
+
+  checkPermission<K extends keyof MediaPermissions>(device: K) {
+    return this.platform.CHROME
+      ? from(
+          navigator.permissions.query({name: device as PermissionName})
+        ).pipe(
+          take(1),
+          switchMap((status) =>
+            fromEvent(status, 'change').pipe(
+              take(1),
+              startWith(''),
+              map(() => status.state)
+            )
+          )
+        )
+      : EMPTY
   }
 
   get audioState() {
@@ -56,9 +86,26 @@ export class MediaServiceImpl implements MediaService {
   }
 
   private getStreamConstraints(defaults: Partial<MediaConstraints>) {
+    const constraints = this.getConstraints()
+    if (this.platform.CHROME) {
+      return {
+        ...defaults,
+        ...constraints,
+      } as MediaStreamConstraints
+    }
+
+    const {audio, video} = constraints ?? {}
+
     return {
-      ...defaults,
-      ...this.getConstraints(),
+      audio: {
+        deviceId: audio?.deviceId.exact ?? 'default',
+        echoCancellation: audio?.echoCancellation.exact ?? true,
+        noiseSuppression: audio?.noiseSupression.exact ?? true,
+      },
+      video: {
+        deviceId: video?.deviceId.exact ?? 'default',
+        height: video?.height.exact ?? 480,
+      },
     } as MediaStreamConstraints
   }
 

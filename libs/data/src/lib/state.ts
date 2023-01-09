@@ -1,5 +1,4 @@
-import {distinctUntilChanged, map} from 'rxjs/operators'
-import {BehaviorSubject, Observable} from 'rxjs'
+import {BehaviorSubject, distinctUntilChanged, map, filter} from 'rxjs'
 
 export abstract class State<T> {
   private _state: BehaviorSubject<T>
@@ -11,8 +10,16 @@ export abstract class State<T> {
     this._state = new BehaviorSubject<T>(initialState)
   }
 
-  protected select<K>(mapFn: (state: T) => K): Observable<K> {
+  protected select<K>(mapFn: (state: T) => K) {
     return this._state.asObservable().pipe(
+      map((state: T) => mapFn(state)),
+      distinctUntilChanged()
+    )
+  }
+
+  protected filter<K>(filterFn: (state: T) => boolean, mapFn: (state: T) => K) {
+    return this._state.asObservable().pipe(
+      filter((state: T) => filterFn(state)),
       map((state: T) => mapFn(state)),
       distinctUntilChanged()
     )

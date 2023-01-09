@@ -7,7 +7,7 @@ import {
   AfterViewInit,
 } from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
-import {AuthFacade, Peer} from '@speek/peer/data'
+import {AuthFacade, MediaFacade, Peer} from '@speek/peer/data'
 import {SubAsync} from '@speek/utils'
 import {combineLatest} from 'rxjs'
 import { SettingsFacade } from './settings/settings.facade'
@@ -29,15 +29,19 @@ export class PeerMeetComponent implements AfterViewInit, OnDestroy {
   constructor(
     @Inject('peer.constraints')
     private constraints: MediaStreamConstraints,
-    readonly service: SettingsService,
-    readonly facade: SettingsFacade,
+    // readonly service: SettingsService,
+    readonly facade: MediaFacade,
+    // readonly facade: SettingsFacade,
     readonly route: ActivatedRoute,
     readonly auth: AuthFacade,
     readonly peer: Peer
   ) {}
 
   ngAfterViewInit() {
-    this.videoRef.nativeElement.appendChild(this.service.videoElement)
+    this.videoRef.nativeElement.appendChild(this.facade.videoElement)
+    console.log(this.facade.videoElement.paused);
+    this.facade.loadStream()
+
 
     const {meet} = this.route.snapshot.params
 
@@ -48,7 +52,7 @@ export class PeerMeetComponent implements AfterViewInit, OnDestroy {
       }
     })
 
-    this.facade.loadStream(this.constraints)
+    // this.facade.loadStream(this.constraints)
     // this.service.loadStream(this.constraints)
   }
 

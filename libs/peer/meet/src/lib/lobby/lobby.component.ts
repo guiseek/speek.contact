@@ -7,8 +7,9 @@ import {
   AfterViewInit,
 } from '@angular/core'
 import {MediaFacade} from '@speek/peer/data'
+import {Platform, SubAsync} from '@speek/utils'
+import {combineLatest} from 'rxjs'
 import {MediaForm} from '../forms/media.form'
-import {SubAsync} from '@speek/utils'
 
 @Component({
   selector: 'peer-lobby',
@@ -23,18 +24,12 @@ export class LobbyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sub = new SubAsync()
 
-  constructor(readonly facade: MediaFacade) {}
+  constructor(readonly facade: MediaFacade, public platform: Platform) {
+    console.log(platform)
+  }
 
   ngOnInit() {
     this.facade.load()
-
-    if (this.facade.constraints) {
-      this.form.patchValue(this.facade.constraints)
-    }
-
-    this.sub.async = this.facade.constraints$.subscribe((constraints) => {
-      this.facade.loadStream(constraints)
-    })
 
     this.sub.async = this.form.valueChanges.subscribe((value) => {
       this.facade.updateConstraints(value)
@@ -44,7 +39,20 @@ export class LobbyComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     const videoElement = this.videoRef.nativeElement
     videoElement.appendChild(this.facade.videoElement)
-    this.facade.loadStream()
+
+    this.sub.async = combineLatest([
+      this.facade.permissions$,
+      this.facade.constraints$,
+    ]).subscribe(([{camera, microphone}, constraints]) => {
+      if (camera !== 'denied' && microphone !== 'denied') {
+        console.log(camera, microphone)
+
+        this.facade.loadStream(constraints)
+
+        const patchOptions = {emitEvent: false}
+        this.form.patchValue(constraints, patchOptions)
+      }
+    })
   }
 
   ngOnDestroy() {

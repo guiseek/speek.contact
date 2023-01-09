@@ -6,6 +6,7 @@ import {CdkModule, MaterialModule} from '@speek/peer/shared/layout'
 import {PeerMeetComponent} from './peer-meet.component'
 import {FormatDeviceLabelPipe, FilterDevicesPipe} from './pipes'
 import {SettingsComponent} from './settings/settings.component'
+import {LobbyComponent} from './lobby/lobby.component'
 import {peerMeetRoutes} from './lib.routes'
 import {
   ChatDialog,
@@ -15,11 +16,10 @@ import {
   AudioComponent,
   VideoComponent,
   DevicesComponent,
+  AudioConstraintsComponent,
+  VideoConstraintsComponent,
   AudioFrequencyDirective,
 } from './components'
-import {AudioConstraintsComponent} from './components/media/audio-constraints/audio-constraints.component'
-import {VideoConstraintsComponent} from './components/media/video-constraints/video-constraints.component'
-import {LobbyComponent} from './lobby/lobby.component'
 
 @NgModule({
   imports: [

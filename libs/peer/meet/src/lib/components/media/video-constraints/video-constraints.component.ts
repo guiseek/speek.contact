@@ -7,43 +7,35 @@ import {
 } from '@angular/core'
 import {FormGroupDirective} from '@angular/forms'
 import {VideoConstraints} from '@speek/type'
-import {SubAsync} from '@speek/utils'
-import {BehaviorSubject} from 'rxjs'
+import {MediaConstraintsBase} from '../media-constraints-base'
 import {VideoForm} from '../../../forms/video.form'
 
 @Component({
-  selector: 'peer-video-constraints[formGroup]',
+  selector: 'peer-video-constraints',
   templateUrl: './video-constraints.component.html',
-  styleUrls: ['./video-constraints.component.scss'],
+  styleUrls: ['../media-constraints-base.scss'],
 })
-export class VideoConstraintsComponent implements AfterViewInit, OnDestroy {
+export class VideoConstraintsComponent
+  extends MediaConstraintsBase<VideoConstraints>
+  implements AfterViewInit, OnDestroy
+{
   form = new VideoForm()
-
-  private _devices = new BehaviorSubject<MediaDeviceInfo[]>([])
-  devices$ = this._devices.asObservable()
 
   @Output() valueChanges = new EventEmitter<VideoConstraints>()
 
-  sub = new SubAsync()
+  constructor(readonly formGroup: FormGroupDirective) {
+    super()
+  }
 
-  constructor(readonly formGroup: FormGroupDirective) {}
-
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     if (this.formGroup.form) {
       this.form = this.formGroup.form as VideoForm
     }
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      this._devices.next(
-        devices.filter((device) => device.kind === 'videoinput')
-      )
-    })
 
-    this.sub.async = this.form.valueChanges.subscribe((value) => {
-      this.valueChanges.emit(value)
-    })
+    this.afterViewInit('audioinput')
   }
 
   ngOnDestroy() {
-    this.sub.unsub()
+    this.onDestroy()
   }
 }

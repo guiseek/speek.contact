@@ -27,6 +27,7 @@ import {
   UserFacade,
   UserFacadeImpl,
 } from '@speek/peer/data'
+import {Platform} from '@speek/utils'
 
 registerLocaleData(pt, 'pt-BR', ptBr)
 
@@ -42,6 +43,11 @@ const storageProvider = {
 
 const localeProvider = {provide: LOCALE_ID, useValue: 'pt-BR'}
 const dateLocaleProvider = {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'}
+
+const platformProvider = {
+  provide: Platform,
+  useFactory: () => new Platform('browser'),
+}
 
 const configurationProvider = {
   provide: 'peer.configuration',
@@ -87,9 +93,11 @@ const authProvider = {
 
 const mediaProvider = {
   provide: MediaService,
-  useFactory: (storageService: StorageService<Omit<MediaState, 'stream'>>) =>
-    new MediaServiceImpl(storageService),
-  deps: [StorageService],
+  useFactory: (
+    storageService: StorageService<Omit<MediaState, 'stream'>>,
+    platform: Platform
+  ) => new MediaServiceImpl(storageService, platform),
+  deps: [StorageService, Platform],
 }
 
 const authInterceptorProvider = {
@@ -131,6 +139,7 @@ export const appProviders: Provider[] = [
   dateLocaleProvider,
   configurationProvider,
   constraintsProvider,
+  platformProvider,
   gatewayProvider,
   signalingProvider,
   peerProvider,

@@ -7,43 +7,35 @@ import {
 } from '@angular/core'
 import {FormGroupDirective} from '@angular/forms'
 import {AudioConstraints} from '@speek/type'
-import {SubAsync} from '@speek/utils'
-import {BehaviorSubject} from 'rxjs'
+import {MediaConstraintsBase} from '../media-constraints-base'
 import {AudioForm} from '../../../forms/audio.form'
 
 @Component({
   selector: 'peer-audio-constraints',
   templateUrl: './audio-constraints.component.html',
-  styleUrls: ['./audio-constraints.component.scss'],
+  styleUrls: ['../media-constraints-base.scss'],
 })
-export class AudioConstraintsComponent implements AfterViewInit, OnDestroy {
+export class AudioConstraintsComponent
+  extends MediaConstraintsBase<AudioConstraints>
+  implements AfterViewInit, OnDestroy
+{
   form = new AudioForm()
-
-  private _devices = new BehaviorSubject<MediaDeviceInfo[]>([])
-  devices$ = this._devices.asObservable()
 
   @Output() valueChanges = new EventEmitter<AudioConstraints>()
 
-  sub = new SubAsync()
-
-  constructor(readonly formGroup: FormGroupDirective) {}
+  constructor(readonly formGroup: FormGroupDirective) {
+    super()
+  }
 
   ngAfterViewInit(): void {
     if (this.formGroup.form) {
       this.form = this.formGroup.form as AudioForm
     }
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      this._devices.next(
-        devices.filter((device) => device.kind === 'audioinput')
-      )
-    })
 
-    this.sub.async = this.form.valueChanges.subscribe((value) => {
-      this.valueChanges.emit(value)
-    })
+    this.afterViewInit('audioinput')
   }
 
   ngOnDestroy() {
-    this.sub.unsub()
+    this.onDestroy()
   }
 }

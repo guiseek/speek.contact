@@ -13,16 +13,4 @@ export class ConstrainForm<T extends Primitive = string> extends FormGroup<
       }),
     })
   }
-
-  update(exact: T) {
-    this.patchValue({exact})
-  }
-
-  get exact() {
-    return this.get('exact') as FormControl<T>
-  }
-
-  get ideal() {
-    return this.get('ideal') as FormControl<T>
-  }
 }
