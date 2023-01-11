@@ -6,16 +6,24 @@ export class AudioForm extends FormGroup {
     super({
       deviceId: new ConstrainForm<string>({
         ideal: 'default',
-        exact: null,
       }),
       echoCancellation: new ConstrainForm<boolean>({
         ideal: true,
-        exact: null,
+        exact: true,
       }),
       noiseSupression: new ConstrainForm<boolean>({
         ideal: true,
-        exact: null,
+        exact: true,
       }),
     })
+  }
+  get deviceId() {
+    return this.get('deviceId') as ConstrainForm<string>
+  }
+  get echoCancellation() {
+    return this.get('echoCancellation') as ConstrainForm<boolean>
+  }
+  get noiseSupression() {
+    return this.get('noiseSupression') as ConstrainForm<boolean>
   }
 }

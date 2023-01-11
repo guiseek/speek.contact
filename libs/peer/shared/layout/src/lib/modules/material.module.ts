@@ -3,6 +3,7 @@ import {MatToolbarModule} from '@angular/material/toolbar'
 import {MatSidenavModule} from '@angular/material/sidenav'
 import {MatListModule} from '@angular/material/list'
 import {MatBadgeModule} from '@angular/material/badge'
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatFormFieldModule} from '@angular/material/form-field'
 import {MatCheckboxModule} from '@angular/material/checkbox'
 import {MatInputModule} from '@angular/material/input'
@@ -25,6 +26,7 @@ import {MatCardModule} from '@angular/material/card'
     MatSidenavModule,
     MatListModule,
     MatBadgeModule,
+    MatSlideToggleModule,
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,

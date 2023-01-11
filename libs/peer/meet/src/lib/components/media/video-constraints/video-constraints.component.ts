@@ -13,7 +13,6 @@ import {VideoForm} from '../../../forms/video.form'
 @Component({
   selector: 'peer-video-constraints',
   templateUrl: './video-constraints.component.html',
-  styleUrls: ['../media-constraints-base.scss'],
 })
 export class VideoConstraintsComponent
   extends MediaConstraintsBase<VideoConstraints>

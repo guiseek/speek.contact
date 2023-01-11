@@ -7,7 +7,8 @@ export class AudioFrequencyDirective implements OnDestroy {
   @Input() opacity = 100
 
   @Input() set speekAudioFrequency(stream: MediaStream) {
-    if (stream) this.renderFrequency(stream)
+    const audioTracks = stream.getAudioTracks()
+    if (stream && audioTracks.length) this.renderFrequency(stream)
   }
 
   stream?: MediaStream
