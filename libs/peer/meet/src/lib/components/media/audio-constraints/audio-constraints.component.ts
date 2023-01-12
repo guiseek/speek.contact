@@ -13,7 +13,6 @@ import {AudioForm} from '../../../forms/audio.form'
 @Component({
   selector: 'peer-audio-constraints',
   templateUrl: './audio-constraints.component.html',
-  styleUrls: ['../media-constraints-base.scss'],
 })
 export class AudioConstraintsComponent
   extends MediaConstraintsBase<AudioConstraints>

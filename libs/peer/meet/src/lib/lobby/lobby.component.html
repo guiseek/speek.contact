@@ -1,54 +1,71 @@
 <mat-card>
   <div class="video-container" #videoRef></div>
-  <footer>
-    <button
-      mat-fab
-      color="primary"
-      [disabled]="!(facade.stream$ | async)?.active"
-      (click)="facade.toggleAudio()"
-    >
-      <mat-icon>
-        {{ (facade.audio$ | async) ? 'mic' : 'mic_off' }}
-      </mat-icon>
-    </button>
-    <button
-      mat-fab
-      color="primary"
-      [disabled]="!(facade.stream$ | async)?.active"
-      (click)="facade.toggleVideo()"
-    >
-      <mat-icon>
-        {{ (facade.video$ | async) ? 'videocam' : 'videocam_off' }}
-      </mat-icon>
-    </button>
-  </footer>
 </mat-card>
 
 <mat-card>
   <form [formGroup]="form">
-    <mat-tab-group dynamicHeight>
-      <mat-tab label="Áudio">
-        <ng-template matTabContent>
+    <section>
+      <mat-tab-group dynamicHeight>
+        <mat-tab label="Áudio">
           <mat-card-content>
-            <peer-audio-constraints
-              [formGroup]="form.audio"
-            ></peer-audio-constraints>
+            <section class="flex row space-between align-center ptb-16">
+              <div formGroupName="active">
+                <mat-slide-toggle checked formControlName="audio">
+                  {{ form.active.video.value ? 'Habilitado' : 'Desabilitado' }}
+                </mat-slide-toggle>
+              </div>
+              <div formGroupName="state">
+                <mat-checkbox color="primary" formControlName="audio"
+                  >Mudo</mat-checkbox
+                >
+              </div>
+            </section>
+            <section formGroupName="constraints">
+              <peer-audio-constraints
+                [formGroup]="form.constraints.audio"
+              ></peer-audio-constraints>
+            </section>
           </mat-card-content>
-        </ng-template>
-      </mat-tab>
-      <mat-tab label="Vídeo">
-        <ng-template matTabContent>
+        </mat-tab>
+        <mat-tab label="Vídeo">
           <mat-card-content>
-            <peer-video-constraints
-              [formGroup]="form.video"
-            ></peer-video-constraints>
+            <section class="flex row space-between align-center ptb-16">
+              <div formGroupName="active">
+                <mat-slide-toggle checked formControlName="video">
+                  {{ form.active.video.value ? 'Habilitado' : 'Desabilitado' }}
+                </mat-slide-toggle>
+              </div>
+              <div formGroupName="state">
+                <mat-checkbox color="primary" formControlName="video">
+                  Desligada
+                </mat-checkbox>
+              </div>
+            </section>
+            <section formGroupName="constraints">
+              <peer-video-constraints
+                [formGroup]="form.constraints.video"
+              ></peer-video-constraints>
+            </section>
           </mat-card-content>
-        </ng-template>
-      </mat-tab>
-    </mat-tab-group>
+        </mat-tab>
+      </mat-tab-group>
+    </section>
+    <p class="media-error prl-32">
+      {{ form.active.getError('active') }}
+      {{ form.constraints.getError('constraints') }}
+      {{ facade.error$ | async }}
+    </p>
   </form>
+
   <footer class="flex row justify-end">
-    <a mat-raised-button routerLink="../meet" color="accent"> Continuar </a>
+    <button
+      mat-raised-button
+      [disabled]="form.constraints.invalid"
+      (click)="next()"
+      color="accent"
+    >
+      Continuar
+    </button>
   </footer>
 
   <ng-container *ngIf="facade.stream$ | async as stream">

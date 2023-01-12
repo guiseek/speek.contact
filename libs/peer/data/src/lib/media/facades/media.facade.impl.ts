@@ -1,7 +1,7 @@
 import {State} from '@speek/data'
 import {MediaFacade} from '../ports/media.facade'
 import {MediaService} from '../ports/media.service'
-import {MediaConstraints, MediaState} from '../ports/media.state'
+import {MediaState} from '../ports/media.state'
 
 const initialValue: MediaState = {
   audio: true,
@@ -10,7 +10,7 @@ const initialValue: MediaState = {
     audio: {
       deviceId: {exact: 'default', ideal: 'default'},
       echoCancellation: {exact: true, ideal: true},
-      noiseSupression: {exact: true, ideal: true},
+      noiseSuppression: {exact: true, ideal: true},
     },
     video: {
       deviceId: {
@@ -21,6 +21,7 @@ const initialValue: MediaState = {
     },
   },
   stream: null,
+  error: null,
   permissions: {
     camera: null,
     microphone: null,
@@ -31,6 +32,7 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
   constraints$ = this.select((state) => state.constraints)
   permissions$ = this.select((state) => state.permissions)
   stream$ = this.select((state) => state.stream)
+  error$ = this.select((state) => state.error)
   audio$ = this.select((state) => state.audio)
   video$ = this.select((state) => state.video)
 
@@ -78,21 +80,27 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
     })
   }
 
-  loadStream(constraints: MediaConstraints = this.state.constraints) {
+  loadStream(constraints: MediaStreamConstraints) {
     if (constraints) {
       if (this.state.stream) {
         this.state.stream.getTracks().forEach((track) => track.stop())
         this.setState({stream: null})
       }
 
-      this.service.getUser(constraints).then((stream) => {
-        this.videoElement.srcObject = stream
-        this.setState({stream})
-      })
+      this.service
+        .getUser(constraints)
+        .then((stream) => {
+          this.videoElement.srcObject = stream
+          this.setState({stream, error: null})
+          this.updateConstraints(constraints)
+        })
+        .catch(({message}) => {
+          this.setState({error: message})
+        })
     }
   }
 
-  updateConstraints(value: Partial<MediaConstraints>) {
+  updateConstraints(value: Partial<MediaStreamConstraints>) {
     const constraints = {...this.state.constraints, ...value}
     this.service.setConstraints(constraints)
     this.setState({constraints})
@@ -101,6 +109,18 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
   toggleAudio() {
     this.service.toggleAudio()
 
+    const audio = !!this.service.audioState
+
+    if (this.state.stream) {
+      this.state.stream
+        .getAudioTracks()
+        .forEach((track) => (track.enabled = audio))
+    }
+
+    this.setState({audio})
+  }
+
+  setAudio() {
     const audio = !!this.service.audioState
 
     if (this.state.stream) {

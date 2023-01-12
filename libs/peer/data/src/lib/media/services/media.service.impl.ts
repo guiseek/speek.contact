@@ -28,10 +28,10 @@ export class MediaServiceImpl implements MediaService {
     }
   }
 
-  setConstraints(constraints: MediaConstraints) {
+  setConstraints(constraints: MediaStreamConstraints) {
     this.storage.setItem('constraints', constraints)
   }
-  getConstraints(): MediaConstraints | null {
+  getConstraints(): MediaStreamConstraints | null {
     return this.storage.getItem('constraints')
   }
 
@@ -69,7 +69,6 @@ export class MediaServiceImpl implements MediaService {
     this.storage.setItem('audio', !audio)
   }
 
-
   get videoState() {
     const video = this.storage.getItem('video')
     if (video === null) {
@@ -83,40 +82,13 @@ export class MediaServiceImpl implements MediaService {
     this.storage.setItem('video', !video)
   }
 
-  private getStreamConstraints(defaults: Partial<MediaConstraints>) {
-    if (this.platform.CHROME) {
-      return {
-        ...defaults,
-        ...this.getConstraints(),
-      } as MediaStreamConstraints
-    }
+  getUser(constraints: Partial<MediaStreamConstraints>): Promise<MediaStream> {
+    console.log(constraints)
 
-    const {audio, video} = this.getConstraints() ?? {}
-
-    return {
-      audio: {
-        deviceId: audio?.deviceId.exact ?? 'default',
-        echoCancellation: audio?.echoCancellation.exact ?? true,
-        noiseSuppression: audio?.noiseSupression.exact ?? true,
-      },
-      video: {
-        deviceId: video?.deviceId.exact ?? 'default',
-        height: video?.height.exact ?? 480,
-      },
-    } as MediaStreamConstraints
+    return navigator.mediaDevices.getUserMedia(constraints)
   }
-
-  getUser(constraints: Partial<MediaConstraints>): Promise<MediaStream> {
-    console.log(this.getStreamConstraints(constraints))
-
-    return navigator.mediaDevices.getUserMedia(
-      this.getStreamConstraints(constraints)
-    )
-  }
-  getDisplay(constraints: MediaConstraints): Promise<MediaStream> {
-    return navigator.mediaDevices.getDisplayMedia(
-      this.getStreamConstraints(constraints)
-    )
+  getDisplay(constraints: MediaStreamConstraints): Promise<MediaStream> {
+    return navigator.mediaDevices.getDisplayMedia(constraints)
   }
 }
 

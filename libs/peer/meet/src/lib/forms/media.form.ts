@@ -1,19 +1,24 @@
 import {FormGroup} from '@angular/forms'
-import {AudioForm} from './audio.form'
-import {VideoForm} from './video.form'
+import {ConstraintsForm} from './constraints.form'
+import {ActiveForm} from './active.form'
+import {StateForm} from './state.form'
 
 export class MediaForm extends FormGroup {
   constructor() {
     super({
-      audio: new AudioForm(),
-      video: new VideoForm(),
+      active: new ActiveForm(),
+      state: new StateForm(),
+      constraints: new ConstraintsForm(),
     })
   }
 
-  get audio() {
-    return this.get('audio') as AudioForm
+  get active() {
+    return this.get('active') as ActiveForm
   }
-  get video() {
-    return this.get('video') as VideoForm
+  get state() {
+    return this.get('state') as StateForm
+  }
+  get constraints() {
+    return this.get('constraints') as ConstraintsForm
   }
 }

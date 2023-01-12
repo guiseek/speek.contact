@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form">
-  <section formGroupName="deviceId">
-    <mat-form-field>
+  <section>
+    <mat-form-field formGroupName="deviceId">
       <mat-label>Entrada de áudio</mat-label>
       <mat-select formControlName="exact">
         <mat-option
@@ -14,9 +14,13 @@
   </section>
 
   <section formGroupName="echoCancellation">
-    <mat-checkbox formControlName="exact"> Cancelamento de eco </mat-checkbox>
+    <mat-checkbox color="primary" formControlName="exact">
+      Cancelamento de eco
+    </mat-checkbox>
   </section>
   <section formGroupName="noiseSupression">
-    <mat-checkbox formControlName="exact"> Redução de ruído </mat-checkbox>
+    <mat-checkbox color="primary" formControlName="exact">
+      Redução de ruído
+    </mat-checkbox>
   </section>
 </ng-container>

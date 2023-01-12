@@ -17,4 +17,17 @@ export class ConstrainIntForm extends FormGroup<TypeForm<ConstrainInt>> {
       }),
     })
   }
+
+  get exact() {
+    return this.get('exact') as FormControl<number>
+  }
+  get ideal() {
+    return this.get('ideal') as FormControl<number>
+  }
+  get min() {
+    return this.get('min') as FormControl<number>
+  }
+  get max() {
+    return this.get('max') as FormControl<number>
+  }
 }

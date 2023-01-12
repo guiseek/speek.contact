@@ -1,12 +1,12 @@
 import {Observable} from 'rxjs'
-import {MediaConstraints, MediaPermissions} from './media.state'
+import {MediaPermissions} from './media.state'
 
 export abstract class MediaService {
   abstract videoElement: HTMLVideoElement
   abstract setSinkId(deviceId: string): void
 
-  abstract setConstraints(constraints: MediaConstraints): void
-  abstract getConstraints(): MediaConstraints | null
+  abstract setConstraints(constraints: MediaStreamConstraints): void
+  abstract getConstraints(): MediaStreamConstraints | null
 
   abstract get audioState(): boolean
   abstract toggleAudio(): void
@@ -18,6 +18,6 @@ export abstract class MediaService {
     device: K
   ): Observable<PermissionState>
 
-  abstract getUser(constraints: MediaConstraints): Promise<MediaStream>
-  abstract getDisplay(constraints: MediaConstraints): Promise<MediaStream>
+  abstract getUser(constraints: MediaStreamConstraints): Promise<MediaStream>
+  abstract getDisplay(constraints: MediaStreamConstraints): Promise<MediaStream>
 }
