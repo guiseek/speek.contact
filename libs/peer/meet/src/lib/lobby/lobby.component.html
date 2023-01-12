@@ -15,9 +15,9 @@
                 </mat-slide-toggle>
               </div>
               <div formGroupName="state">
-                <mat-checkbox color="primary" formControlName="audio"
-                  >Mudo</mat-checkbox
-                >
+                <mat-checkbox color="primary" formControlName="audio">
+                  Mudo
+                </mat-checkbox>
               </div>
             </section>
             <section formGroupName="constraints">
@@ -45,6 +45,17 @@
               <peer-video-constraints
                 [formGroup]="form.constraints.video"
               ></peer-video-constraints>
+            </section>
+          </mat-card-content>
+        </mat-tab>
+        <mat-tab label="Som">
+          <mat-card-content>
+            <section class="flex row space-between align-center ptb-16">
+              <div formGroupName="speaker">
+                <peer-speaker-constraints
+                  [formGroup]="form.speaker"
+                ></peer-speaker-constraints>
+              </div>
             </section>
           </mat-card-content>
         </mat-tab>

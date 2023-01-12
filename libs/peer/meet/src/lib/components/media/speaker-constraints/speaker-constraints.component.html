@@ -1,0 +1,15 @@
+<ng-container [formGroup]="form">
+  <section>
+    <mat-form-field>
+      <mat-label>Saída de áudio</mat-label>
+      <mat-select formControlName="sinkId">
+        <mat-option
+          *ngFor="let device of devices$ | async; index as i"
+          [value]="device.deviceId"
+        >
+          {{ device.label | formatDeviceLabel : i : 'Alto-falante' }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+</ng-container>

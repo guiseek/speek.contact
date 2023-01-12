@@ -14,6 +14,7 @@ import {
   AudioConstraintsComponent,
   VideoConstraintsComponent,
   ChannelMessageComponent,
+  SpeakerConstraintsComponent
 } from './components'
 
 @NgModule({
@@ -34,6 +35,7 @@ import {
     FormatDeviceLabelPipe,
     AudioConstraintsComponent,
     VideoConstraintsComponent,
+    SpeakerConstraintsComponent,
     LobbyComponent,
     ChannelMessageComponent,
   ],

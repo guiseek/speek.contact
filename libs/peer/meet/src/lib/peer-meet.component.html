@@ -26,7 +26,6 @@
           mat-mini-fab
           color="primary"
           [disabled]="!(mediaFacade.stream$ | async)?.active"
-          (click)="mediaFacade.toggleAudio()"
         >
           <mat-icon>
             {{ (mediaFacade.audio$ | async) ? 'mic' : 'mic_off' }}
@@ -36,7 +35,6 @@
           mat-mini-fab
           color="primary"
           [disabled]="!(mediaFacade.stream$ | async)?.active"
-          (click)="mediaFacade.toggleVideo()"
         >
           <mat-icon>
             {{ (mediaFacade.video$ | async) ? 'videocam' : 'videocam_off' }}

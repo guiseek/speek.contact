@@ -42,7 +42,11 @@ export class PeerMeetComponent implements AfterViewInit, OnDestroy {
     this.videoRef.nativeElement.appendChild(this.mediaFacade.videoElement)
     this.remoteRef.nativeElement.appendChild(this.peerFacade.videoElement)
 
-    this.mediaFacade.loadStream()
+    console.log(this.mediaFacade.constraints);
+
+    if (this.mediaFacade.constraints) {
+      this.mediaFacade.loadStream(this.mediaFacade.constraints)
+    }
 
     const {meet} = this.route.snapshot.params
 
@@ -52,6 +56,8 @@ export class PeerMeetComponent implements AfterViewInit, OnDestroy {
     ])
 
     this.sub.async = userStream$.subscribe(([user, stream]) => {
+      console.log(user, stream)
+
       if (meet && user && stream && stream.active) {
         this.peerFacade.loadConnection(stream, meet, user.username)
       }

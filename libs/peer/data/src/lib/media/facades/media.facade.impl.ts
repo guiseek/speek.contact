@@ -1,7 +1,7 @@
 import {State} from '@speek/data'
 import {MediaFacade} from '../ports/media.facade'
 import {MediaService} from '../ports/media.service'
-import {MediaState} from '../ports/media.state'
+import {MediaActive, MediaState, MediaDeviceState} from '../ports/media.state'
 
 const initialValue: MediaState = {
   audio: true,
@@ -92,7 +92,7 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
         .then((stream) => {
           this.videoElement.srcObject = stream
           this.setState({stream, error: null})
-          this.updateConstraints(constraints)
+          this.videoElement.muted = true
         })
         .catch(({message}) => {
           this.setState({error: message})
@@ -100,49 +100,60 @@ export class MediaFacadeImpl extends State<MediaState> implements MediaFacade {
     }
   }
 
-  updateConstraints(value: Partial<MediaStreamConstraints>) {
-    const constraints = {...this.state.constraints, ...value}
+  stopStream(stream?: MediaStream) {
+    const _stream = stream ?? this.state.stream
+
+    if (_stream) {
+      _stream.getTracks().forEach((track) => track.stop())
+      this.setState({stream: null})
+    }
+  }
+
+  async setSinkId(sinkId: string) {
+    if (this.videoElement.sinkId !== 'undefined') {
+      await this.videoElement.setSinkId(sinkId)
+      console.log(this.videoElement.sinkId)
+    }
+  }
+
+  updateConstraints(
+    value: MediaStreamConstraints,
+    active?: Partial<MediaActive>
+  ) {
+    const {audio, video} = active ?? {}
+
+    const constraints = {
+      audio: audio ? value.audio : !!audio,
+      video: video ? value.video : !!video,
+    }
+
+    console.log('constraints:', constraints)
+
     this.service.setConstraints(constraints)
     this.setState({constraints})
   }
 
-  toggleAudio() {
-    this.service.toggleAudio()
+  updateState(
+    {audio, video}: Partial<MediaDeviceState>,
+    stream: MediaStream | null
+  ) {
+    const _stream = stream ?? this.state.stream
 
-    const audio = !!this.service.audioState
+    if (_stream) {
+      const videoTracks = _stream.getVideoTracks()
+      videoTracks.forEach((track) => (track.enabled = !video))
 
-    if (this.state.stream) {
-      this.state.stream
-        .getAudioTracks()
-        .forEach((track) => (track.enabled = audio))
+      const audioTracks = _stream.getAudioTracks()
+      audioTracks.forEach((track) => (track.enabled = !audio))
+
+      this.setState({audio, video})
     }
-
-    this.setState({audio})
   }
+}
 
-  setAudio() {
-    const audio = !!this.service.audioState
-
-    if (this.state.stream) {
-      this.state.stream
-        .getAudioTracks()
-        .forEach((track) => (track.enabled = audio))
-    }
-
-    this.setState({audio})
-  }
-
-  toggleVideo() {
-    this.service.toggleVideo()
-
-    const video = !!this.service.videoState
-
-    if (this.state.stream) {
-      this.state.stream
-        .getVideoTracks()
-        .forEach((track) => (track.enabled = video))
-    }
-
-    this.setState({video})
+declare global {
+  interface HTMLMediaElement {
+    sinkId: string
+    setSinkId(sinkId: string): Promise<void>
   }
 }

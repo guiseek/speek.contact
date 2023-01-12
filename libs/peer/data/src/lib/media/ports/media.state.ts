@@ -4,6 +4,7 @@ export interface MediaActive {
   audio: boolean
   video: boolean
 }
+export type MediaDeviceState = MediaActive
 
 export interface MediaConstraints {
   audio: AudioConstraints

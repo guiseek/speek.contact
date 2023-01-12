@@ -10,10 +10,10 @@ export class ActiveForm extends FormGroup<TypeForm<MediaActive>> {
   constructor() {
     super(
       {
-        audio: new FormControl(false, {
+        audio: new FormControl(true, {
           nonNullable: true,
         }),
-        video: new FormControl(false, {
+        video: new FormControl(true, {
           nonNullable: true,
         }),
       },
